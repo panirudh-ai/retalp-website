@@ -1,0 +1,878 @@
+/* ═══════════════════════════════════════════════════════
+   RETALP — BLACK · WHITE · GREEN THEME
+   Loaded after all page styles — overrides only colors,
+   backgrounds, borders and shadows. Zero HTML changes.
+═══════════════════════════════════════════════════════ */
+
+/* ── Canvas always behind content ── */
+.wrap {
+  position: relative;
+  z-index: 2 !important;
+}
+
+/* ── CSS variable overrides ── */
+:root {
+  --ink:          #0a0a0a;
+  --ink-80:       #1a1a1a;
+  --ink-60:       #2d2d2d;
+  --surface:      #f4f4f4;
+  --white:        #ffffff;
+  --dark-bg:      #0a0a0a;
+  --dark-green:   #111111;
+  --dark-surface: rgba(10,10,10,0.97);
+  --muted:        rgba(0,0,0,0.55);
+  --line:         rgba(0,0,0,0.1);
+  /* Green palette unchanged */
+  --g-deep:  #047857;
+  --g-mid:   #059669;
+  --g-vivid: #10b981;
+  --g-glow:  #34d399;
+  --g-pale:  #d1fae5;
+  --g-glass: rgba(16,185,129,.1);
+}
+
+/* ════════════════════════════════════
+   BODY — white page
+════════════════════════════════════ */
+html, body {
+  background: #ffffff !important;
+  color: #0a0a0a !important;
+}
+
+::-webkit-scrollbar-track { background: #f0f0f0 !important; }
+
+/* ════════════════════════════════════
+   GLOBAL TYPOGRAPHY
+   (overridden per-context below)
+════════════════════════════════════ */
+.t-mono  { color: #10b981 !important; }
+.accent  { color: #10b981 !important; }
+
+/* ════════════════════════════════════
+   NAV — stays dark frosted glass (no change)
+════════════════════════════════════ */
+
+/* ════════════════════════════════════
+   WHITE SECTIONS
+   Hero, Cap, Roadmap, CTA, section-light
+════════════════════════════════════ */
+.section-light,
+.hero-section,
+.cap-section,
+.roadmap-section,
+.final-cta-section,
+.missing-section,
+.results-section {
+  background: #ffffff !important;
+  color: #0a0a0a !important;
+}
+
+.section-light .t-h2,  .section-light .t-h3,
+.hero-section .t-h2,   .hero-section .t-h3,
+.cap-section .t-h2,    .cap-section .t-h3,
+.roadmap-section .t-h2,.roadmap-section .t-h3,
+.final-cta-section .t-h2, .final-cta-section .t-h3,
+.missing-section .t-h2, .missing-section .t-h3,
+.results-section .t-h2, .results-section .t-h3 {
+  color: #0a0a0a !important;
+}
+
+.section-light .t-body,
+.hero-section .t-body,
+.cap-section .t-body,
+.roadmap-section .t-body,
+.final-cta-section .t-body,
+.missing-section .t-body,
+.results-section .t-body {
+  color: rgba(0,0,0,0.62) !important;
+}
+
+.section-light .t-small,
+.hero-section .t-small,
+.cap-section .t-small,
+.roadmap-section .t-small,
+.final-cta-section .t-small {
+  color: rgba(0,0,0,0.42) !important;
+}
+
+/* ── section-grey → off-white ── */
+.section-grey {
+  background: #f4f4f4 !important;
+  color: #0a0a0a !important;
+}
+
+/* ════════════════════════════════════
+   SECTION SPACING — gap between
+   bento card section and dark sections
+════════════════════════════════════ */
+html body #what-is-e3 {
+  background: #ffffff !important;
+  padding-top: 100px !important;
+  padding-bottom: 120px !important;
+}
+
+#what-is-e3 .bento-grid {
+  margin-bottom: 0 !important;
+}
+
+#what-is-e3 .t-h2,
+#what-is-e3 .t-h3    { color: #0a0a0a !important; }
+#what-is-e3 .t-body  { color: rgba(0,0,0,0.62) !important; }
+#what-is-e3 .sec-kicker { color: #10b981 !important; }
+
+/* ════════════════════════════════════
+   BLACK SECTIONS
+   Dark sections, e3, impact, automate,
+   howwework, rail, workflow, footer
+════════════════════════════════════ */
+.section-dark,
+.e3-section,
+.impact-section,
+.automate-section,
+.howwework-section,
+.rail-section,
+.workflow-section,
+.integrations-section,
+.footer {
+  background: #0a0a0a !important;
+  color: #ffffff !important;
+}
+
+/* kill the dark gradient overlay – plain black is cleaner */
+.section-dark::before { display: none !important; }
+
+.section-dark .t-h2,  .section-dark .t-h3,
+.e3-section .t-h2,    .e3-section .t-h3,
+.impact-section .t-h2,.impact-section .t-h3,
+.automate-section .t-h2, .automate-section .t-h3,
+.howwework-section .t-h2, .howwework-section .t-h3,
+.rail-section .t-h2,  .rail-section .t-h3,
+.workflow-section .t-h2, .workflow-section .t-h3 {
+  color: #ffffff !important;
+}
+
+.section-dark .t-body,
+.e3-section .t-body,
+.impact-section .t-body,
+.automate-section .t-body,
+.howwework-section .t-body,
+.rail-section .t-body,
+.workflow-section .t-body {
+  color: rgba(255,255,255,0.65) !important;
+}
+
+.section-dark .t-small,
+.e3-section .t-small,
+.impact-section .t-small {
+  color: rgba(255,255,255,0.42) !important;
+}
+
+/* ════════════════════════════════════
+   HERO — index3 / retalp_landing (light hero)
+════════════════════════════════════ */
+.hero-section {
+  background: #ffffff !important;
+}
+
+/* hero text that was previously white — flip to dark */
+.hero-section .hero-headline,
+.hero-section .t-hero {
+  color: #0a0a0a !important;
+}
+
+.hero-section .t-body { color: rgba(0,0,0,0.62) !important; }
+.hero-section .t-small { color: rgba(0,0,0,0.42) !important; }
+
+/* eyebrow badge */
+.hero-eyebrow {
+  background: rgba(16,185,129,0.08) !important;
+  border-color: rgba(16,185,129,0.25) !important;
+  margin-bottom: 16px !important;
+}
+
+/* ════════════════════════════════════
+   HERO VIEWPORT FIT
+   Compress vertical space so eyebrow →
+   "Start a Pilot" button are all visible
+   on first load without scrolling
+════════════════════════════════════ */
+.hero-section {
+  padding-top: 88px !important;
+  padding-bottom: 32px !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+/* hero grid tighter gap */
+.hero {
+  gap: 40px !important;
+  min-height: unset !important;
+  align-items: center !important;
+}
+
+/* scale headline down so it doesn't dominate full height */
+.t-hero {
+  font-size: clamp(2rem, 4vw, 3.4rem) !important;
+  line-height: 1.1 !important;
+  margin-bottom: 16px !important;
+}
+
+/* tighten sub text */
+.hero-sub {
+  margin-bottom: 24px !important;
+  font-size: 0.95rem !important;
+  line-height: 1.65 !important;
+}
+
+/* buttons row — no extra margin below */
+.hero-actions {
+  margin-bottom: 0 !important;
+  gap: 12px !important;
+}
+
+/* "See the Platform" ghost button on white hero bg */
+.hero-section .btn-ghost-lg {
+  color: #0a0a0a !important;
+  border-color: rgba(0,0,0,0.18) !important;
+  background: transparent !important;
+}
+.hero-section .btn-ghost-lg:hover {
+  background: #0a0a0a !important;
+  color: #ffffff !important;
+  border-color: #0a0a0a !important;
+}
+
+/* ════════════════════════════════════
+   HERO ROLE STRIPS
+   Dark cards on white hero bg —
+   targets inline-styled rows
+════════════════════════════════════ */
+
+/* Role strip container rows */
+.hero-section [style*="margin-top:36px"] > div {
+  background: #111111 !important;
+  border-color: rgba(255,255,255,0.07) !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18) !important;
+}
+
+/* Mono label: FOR SUPPLY CHAIN HEAD etc. */
+.hero-section [style*="margin-top:36px"] > div > span:first-child {
+  color: #10b981 !important;
+}
+
+/* Description text */
+.hero-section [style*="margin-top:36px"] > div > span:last-child {
+  color: rgba(255,255,255,0.72) !important;
+}
+
+/* ── "Works with" row ── */
+.hero-section [style*="flex-wrap:wrap"] .t-small {
+  color: rgba(0,0,0,0.5) !important;
+}
+
+/* Industry tag pills → plain text, no bg or border */
+.hero-section [style*="flex-wrap:wrap"] > span[style*="border-radius:100px"] {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: rgba(0,0,0,0.55) !important;
+}
+
+/* shrink hero visual to match reduced height */
+.hero-visual {
+  height: 420px !important;
+}
+
+/* retalpE3 hero is always dark bg */
+.hero-grid-bg { opacity: 0.04 !important; }
+.hero-glow    { opacity: 0.6  !important; }
+
+/* ════════════════════════════════════
+   retalpE3 — ARCH DIAGRAM (right card)
+   Keep dark so layers/chips are visible
+════════════════════════════════════ */
+.arch-diagram {
+  background: #111111 !important;
+  border-color: rgba(16,185,129,0.25) !important;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.25), 0 1px 4px rgba(0,0,0,0.15) !important;
+}
+
+.arch-diagram::before {
+  background: radial-gradient(ellipse at 50% 0%, rgba(16,185,129,0.1) 0%, transparent 60%) !important;
+}
+
+/* individual layer cards inside the diagram */
+.arch-layer {
+  background: #1a1a1a !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
+}
+
+.arch-layer:hover {
+  background: rgba(16,185,129,0.08) !important;
+  border-color: rgba(16,185,129,0.3) !important;
+}
+
+/* E³ Core layer stays green-accented */
+.arch-layer.core {
+  background: linear-gradient(135deg, rgba(45,122,79,.3), rgba(45,122,79,.12)) !important;
+  border-color: rgba(16,185,129,0.45) !important;
+}
+
+/* layer text */
+.arch-layer-num   { color: #10b981 !important; }
+.arch-layer-title { color: #ffffff !important; }
+
+/* chips inside layers */
+.arch-chip {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: rgba(255,255,255,0.65) !important;
+}
+.arch-chip.green {
+  background: rgba(16,185,129,0.15) !important;
+  border-color: rgba(16,185,129,0.3) !important;
+  color: #10b981 !important;
+}
+
+/* ════════════════════════════════════
+   HERO VISUAL (right-side diagram card)
+   Keep dark so chips/pulses are visible
+════════════════════════════════════ */
+.hero-visual {
+  background: #111111 !important;
+  border-radius: 24px !important;
+  padding: 28px !important;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.25), 0 1px 4px rgba(0,0,0,0.15) !important;
+}
+
+/* messy chips on dark bg */
+.hero-visual .flow-chip.messy {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+  color: rgba(255,255,255,0.65) !important;
+}
+
+/* action pulse items on dark bg */
+.hero-visual .action-pulse {
+  background: rgba(16,185,129,0.12) !important;
+  border-color: rgba(16,185,129,0.28) !important;
+  color: #10b981 !important;
+}
+
+/* clean chips at the bottom */
+.hero-visual .flow-chip.clean {
+  background: rgba(16,185,129,0.1) !important;
+  border-color: rgba(16,185,129,0.25) !important;
+  color: #10b981 !important;
+}
+
+/* ════════════════════════════════════
+   BENTO CARDS (on white sections)
+════════════════════════════════════ */
+.bento-card {
+  background: #111111 !important;
+  border-color: rgba(255,255,255,0.05) !important;
+  /* shadow spreads sideways only — stops bleeding into the white gap below */
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.03) inset !important;
+}
+
+/* override hover shadow too so it doesn't bleed down */
+.bento-card:hover {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25), 0 0 0 1px rgba(16,185,129,0.1) inset !important;
+}
+.bento-card .bento-title,
+.bento-card .t-h3 { color: #ffffff !important; }
+.bento-card .bento-desc,
+.bento-card .t-body { color: rgba(255,255,255,0.6) !important; }
+.bento-card .t-small { color: rgba(255,255,255,0.4) !important; }
+
+.bento-icon-area {
+  background: rgba(255,255,255,0.04) !important;
+  border-color: rgba(255,255,255,0.07) !important;
+}
+
+/* ════════════════════════════════════
+   CAPABILITY / CAP CARDS (on white section)
+════════════════════════════════════ */
+.cap-card {
+  background: #111111 !important;
+  border-color: rgba(255,255,255,0.05) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
+}
+.cap-card .t-h3,
+.cap-card .cap-title    { color: #ffffff !important; }
+.cap-card .t-body,
+.cap-card .cap-outcome  { color: rgba(255,255,255,0.6) !important; }
+.cap-card .cap-bullets li { color: rgba(255,255,255,0.65) !important; }
+
+/* cat cards (capabilities) */
+.cat-card {
+  background: #111111 !important;
+  border-color: rgba(255,255,255,0.05) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
+}
+.cat-card .cat-title   { color: #ffffff !important; }
+.cat-card .cat-benefit { color: rgba(255,255,255,0.6) !important; }
+.cat-card .cat-bullets li { color: rgba(255,255,255,0.65) !important; }
+
+/* ════════════════════════════════════
+   AUTOMATE CARDS (on black section)
+════════════════════════════════════ */
+.automate-card {
+  background: #1a1a1a !important;
+  border-color: rgba(255,255,255,0.07) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35),
+              0 0 0 1px rgba(255,255,255,0.03) inset !important;
+}
+.automate-card .t-h3  { color: #ffffff !important; }
+.automate-card .t-body { color: rgba(255,255,255,0.6) !important; }
+
+/* flow chips */
+.flow-chip.messy {
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: rgba(255,255,255,0.65) !important;
+}
+.flow-chip.clean {
+  background: rgba(16,185,129,0.12) !important;
+  border-color: rgba(16,185,129,0.3)  !important;
+  color: #10b981 !important;
+}
+
+/* ════════════════════════════════════
+   ROADMAP / STEP CONTENT (on white)
+════════════════════════════════════ */
+.step-content {
+  background: #111111 !important;
+  border-color: rgba(255,255,255,0.06) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
+}
+.step-content .t-h3,
+.step-content .step-title { color: #ffffff !important; }
+.step-content .step-desc,
+.step-content .t-body      { color: rgba(255,255,255,0.62) !important; }
+
+.roadmap-section .step-num     { color: #10b981 !important; }
+.roadmap-section .step-label   { color: rgba(0,0,0,0.5) !important; }
+
+/* ════════════════════════════════════
+   CASE PANELS (before/after)
+════════════════════════════════════ */
+.case-panel {
+  box-shadow: 0 6px 32px rgba(0,0,0,0.18) !important;
+}
+.case-panel.problem {
+  background: #111111 !important;
+  border-color: rgba(248,113,113,0.25) !important;
+}
+.case-panel.solution {
+  background: #111111 !important;
+  border-color: rgba(16,185,129,0.25) !important;
+}
+.case-panel .case-title,
+.case-panel .case-title-text { color: #ffffff !important; }
+.case-panel .case-desc        { color: rgba(255,255,255,0.65) !important; }
+
+/* ════════════════════════════════════
+   PILOT CARDS
+════════════════════════════════════ */
+.pilot-card {
+  background: #111111 !important;
+  border-color: rgba(255,255,255,0.05) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
+}
+.pilot-card .pilot-title { color: #ffffff !important; }
+.pilot-card .pilot-desc  { color: rgba(255,255,255,0.6) !important; }
+
+/* ════════════════════════════════════
+   MISSING / WORKFLOW / INTEGRATION
+   RESULTS / SPIDER CARDS (retalpE3)
+════════════════════════════════════ */
+.missing-card,
+.workflow-step,
+.integration-card,
+.results-card,
+.spider-node {
+  background: #111111 !important;
+  border-color: rgba(255,255,255,0.06) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
+}
+.missing-card .t-h3,
+.workflow-step .t-h3,
+.integration-card .t-h3,
+.results-card .t-h3,
+.spider-node .spider-node-name { color: #ffffff !important; }
+
+.missing-card .t-body,
+.workflow-step .t-body,
+.results-card .t-body { color: rgba(255,255,255,0.62) !important; }
+
+.results-card.bad  {
+  border-color: rgba(248,113,113,0.2) !important;
+  background: #140d0d !important;
+}
+.results-card.good {
+  border-color: rgba(16,185,129,0.2) !important;
+  background: #0a1410 !important;
+}
+
+/* ════════════════════════════════════
+   CTA GLASS CARD
+════════════════════════════════════ */
+.cta-glass {
+  background: #111111 !important;
+  border-color: rgba(16,185,129,0.2) !important;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.25),
+              0 0 0 1px rgba(16,185,129,0.08) inset !important;
+}
+.cta-glass .t-h2,
+.cta-glass .cta-headline,
+.cta-glass .final-cta-headline { color: #ffffff !important; }
+.cta-glass .t-body,
+.cta-glass .cta-note  { color: rgba(255,255,255,0.65) !important; }
+
+/* ════════════════════════════════════
+   IMPACT / METRIC CARDS
+════════════════════════════════════ */
+.metric-card,
+.impact-card {
+  background: #1a1a1a !important;
+  border-color: rgba(255,255,255,0.06) !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3) !important;
+}
+.metric-val   { color: #10b981 !important; }
+.metric-label { color: rgba(255,255,255,0.55) !important; }
+
+/* ════════════════════════════════════
+   HERO MINI CARDS (capabilities hero)
+════════════════════════════════════ */
+.hero-mini-card {
+  background: #111111 !important;
+  border-color: rgba(255,255,255,0.06) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2) !important;
+}
+.hero-mini-card .t-h3 { color: #ffffff !important; }
+.hero-mini-card .t-body { color: rgba(255,255,255,0.6) !important; }
+
+/* ════════════════════════════════════
+   MATRIX / MINI MATRIX (capabilities)
+════════════════════════════════════ */
+.mini-matrix-row-label { color: rgba(255,255,255,0.65) !important; }
+.mini-cell { color: rgba(255,255,255,0.7) !important; }
+
+/* ════════════════════════════════════
+   SC STEPS
+════════════════════════════════════ */
+.sc-step {
+  background: #1a1a1a !important;
+  border-color: rgba(255,255,255,0.06) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25) !important;
+}
+.sc-step-title { color: #ffffff !important; }
+.sc-step-desc  { color: rgba(255,255,255,0.62) !important; }
+
+/* ════════════════════════════════════
+   FOOTER
+════════════════════════════════════ */
+.footer {
+  background: #0a0a0a !important;
+  border-top: 1px solid rgba(255,255,255,0.07) !important;
+}
+.footer-brand-logo .nav-logo-text { color: #ffffff !important; }
+.footer-tagline         { color: rgba(255,255,255,0.45) !important; }
+.footer-tagline-highlight { color: #10b981 !important; }
+.footer-col-title       { color: rgba(255,255,255,0.35) !important; }
+.footer-links a         { color: rgba(255,255,255,0.5) !important; }
+.footer-links a:hover   { color: #10b981 !important; }
+.footer-copy            { color: rgba(255,255,255,0.28) !important; }
+.footer-bottom          { border-top-color: rgba(255,255,255,0.06) !important; }
+
+/* ════════════════════════════════════
+   RAIL / LEGACY TRACK SECTION
+════════════════════════════════════ */
+.rail-section {
+  background: #0a0a0a !important;
+}
+.rail-subtitle,
+.rail-legend-item,
+.rail-stat-label { color: rgba(255,255,255,0.62) !important; }
+.rail-stat        { color: #ffffff !important; }
+
+/* ════════════════════════════════════
+   SYNTHETIC CHIPS / ROLE STRIPS
+════════════════════════════════════ */
+.synthetic-chip {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: rgba(255,255,255,0.7) !important;
+}
+
+/* ════════════════════════════════════
+   BUTTONS — keep green, add shadow
+════════════════════════════════════ */
+.btn-primary-xl,
+.btn-primary-lg {
+  background: #059669 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 20px rgba(5,150,105,0.35) !important;
+}
+.btn-primary-xl:hover,
+.btn-primary-lg:hover {
+  background: #10b981 !important;
+  box-shadow: 0 6px 28px rgba(16,185,129,0.4) !important;
+}
+
+.btn-ghost-lg {
+  color: rgba(0,0,0,0.65) !important;
+  border-color: rgba(0,0,0,0.2) !important;
+}
+.btn-ghost-lg:hover {
+  color: #0a0a0a !important;
+  border-color: rgba(0,0,0,0.4) !important;
+  background: rgba(0,0,0,0.04) !important;
+}
+
+/* ghost buttons on dark sections stay white */
+.section-dark .btn-ghost-lg,
+.e3-section .btn-ghost-lg,
+.impact-section .btn-ghost-lg,
+.automate-section .btn-ghost-lg,
+.cta-glass .btn-ghost-lg {
+  color: rgba(255,255,255,0.65) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+}
+.section-dark .btn-ghost-lg:hover,
+.cta-glass .btn-ghost-lg:hover {
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,0.35) !important;
+  background: rgba(255,255,255,0.05) !important;
+}
+
+/* ════════════════════════════════════
+   GENERAL SHADOW LIFT ON CARDS
+════════════════════════════════════ */
+[class$="-card"]:not(.nav-cta),
+[class*="-card "]:not(.nav-cta) {
+  box-shadow: 0 2px 16px rgba(0,0,0,0.14);
+}
+
+/* ════════════════════════════════════════════════════════
+   SPACING POLISH
+   Reduce bloated section padding / grid margins so pages
+   feel tight and professional — no empty air between sections
+════════════════════════════════════════════════════════ */
+
+/* ── Base section: 120px → 80px ── */
+.section {
+  padding: 80px 0 !important;
+}
+.section-sm {
+  padding: 56px 0 !important;
+}
+
+/* ── Specific sections that set their own padding ── */
+.automate-section,
+.howwework-section {
+  padding: 72px 0 !important;
+}
+.e3-section {
+  padding: 80px 0 !important;
+}
+.impact-section {
+  padding: 72px 0 !important;
+}
+.rail-section {
+  padding: 72px 0 80px !important;
+}
+.roadmap-section {
+  padding: 72px 0 !important;
+}
+.final-cta-section {
+  padding: 64px 0 72px !important;
+}
+.pilot-section {
+  padding: 0 0 16px !important;
+}
+
+/* ── Bento / what-is-e3 section ── */
+html body #what-is-e3 {
+  padding-top: 80px !important;
+  padding-bottom: 80px !important;
+}
+
+/* ── Section header bottom margins ── */
+.section-header {
+  margin-bottom: 28px !important;
+}
+.e3-header {
+  margin-bottom: 40px !important;
+}
+.rail-header {
+  margin-bottom: 48px !important;
+}
+
+/* ── Grid / chart margin-tops ── */
+.bento-grid {
+  margin-top: 40px !important;
+}
+.automate-grid {
+  margin-top: 36px !important;
+}
+.cat-matrix {
+  margin-top: 36px !important;
+}
+.cap-grid {
+  margin-top: 36px !important;
+}
+.pilot-cards-grid {
+  margin-top: 36px !important;
+  margin-bottom: 36px !important;
+}
+.case-grid,
+.spotlight-grid {
+  margin-top: 40px !important;
+}
+.sc-flow {
+  margin-top: 44px !important;
+}
+.rail-stats {
+  margin-top: 40px !important;
+}
+.spider-canvas-wrap {
+  margin-top: 40px !important;
+}
+.split-track-container {
+  margin-top: 40px !important;
+}
+.cap-track-wrap {
+  margin-top: 40px !important;
+}
+.roadmap-container {
+  margin-top: 40px !important;
+}
+.roadmap-hero-text {
+  margin-bottom: 36px !important;
+}
+.tech-proof-box {
+  margin-top: 28px !important;
+}
+.mcp-badge {
+  margin-top: 16px !important;
+}
+.roadmap-container .roadmap-hero-text {
+  padding: 18px 28px !important;
+}
+
+/* ── CTA glass internal padding ── */
+.cta-glass {
+  padding: 40px 48px !important;
+}
+
+/* ── Case panels internal padding ── */
+.case-panel {
+  padding: 40px 40px !important;
+}
+
+/* ── Bento card padding ── */
+.bento-card {
+  padding: 28px 24px !important;
+}
+.bento-icon-area {
+  height: 96px !important;
+  margin-bottom: 16px !important;
+}
+
+/* ── Professional typography polish ── */
+.sec-kicker {
+  margin-bottom: 12px !important;
+}
+.t-h2 {
+  margin-bottom: 12px !important;
+}
+.e3-subtitle,
+.rail-subtitle {
+  margin-top: 12px !important;
+}
+.hero-headline {
+  margin-bottom: 16px !important;
+}
+
+/* ── Pilot / step card padding ── */
+.pilot-card {
+  padding: 24px 18px !important;
+}
+.step-content {
+  padding: 20px 24px !important;
+}
+.pipeline-step {
+  margin-bottom: 24px !important;
+}
+
+/* ── Footer tighter ── */
+.footer {
+  padding: 48px 0 28px !important;
+}
+.footer-grid {
+  margin-bottom: 36px !important;
+}
+
+/* ── Automate before/after internal ── */
+.automate-before,
+.automate-after {
+  padding: 10px 14px !important;
+  font-size: 0.72rem !important;
+}
+.automate-card {
+  padding: 26px 22px !important;
+}
+
+/* ── sc-step card padding ── */
+.sc-step {
+  padding: 22px 18px !important;
+}
+
+/* ── cat card padding ── */
+.cat-card {
+  padding: 22px !important;
+}
+.cat-icon-wrap {
+  margin-bottom: 14px !important;
+}
+
+/* ── cap card (horizontal scroll) ── */
+.cap-card {
+  padding: 26px 22px !important;
+}
+.cap-icon-wrap {
+  margin-bottom: 14px !important;
+}
+
+/* ── rail stat padding ── */
+.rail-stat {
+  padding: 22px 16px !important;
+}
+
+/* ── Remove redundant bottom margin on last pipeline step ── */
+.pipeline-step:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ── Re-assert hero padding (hero sections also carry .section class in some files) ── */
+.hero-section {
+  padding-top: 88px !important;
+  padding-bottom: 32px !important;
+  min-height: 100vh !important;
+}
+
+/* ── Inline mini-matrix extra margin in CTA sections ── */
+.pilot-section [style*="margin-top:64px"],
+.final-cta-section [style*="margin-top:64px"] {
+  margin-top: 36px !important;
+}
+
+/* ── Spotlight grid inline override ── */
+.spotlight-grid[style*="margin-top"] {
+  margin-top: 40px !important;
+}

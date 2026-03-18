@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Retalp E³ — The Execution Engine for Enterprise Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Sans:ital,wdth,wght@0,75..100,400..700;1,75..100,400..500&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════
+   RETALP E³ PAGE — EXACT DESIGN SYSTEM MATCH
+   Inherits all tokens from v2 landing page
+═══════════════════════════════════════════════ */
+:root {
+  --g-deep:   #1a4d31;
+  --g-mid:    #2d7a4f;
+  --g-vivid:  #3db870;
+  --g-glow:   #5de89a;
+  --g-pale:   #e6f5ed;
+  --g-glass:  rgba(45,122,79,.12);
+  --ink:      #090d0b;
+  --ink-80:   #1c2720;
+  --ink-60:   #2e3d34;
+  --muted:    #6a7d72;
+  --line:     rgba(180,200,188,.25);
+  --surface:  #f5f9f6;
+  --white:    #ffffff;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Instrument Sans', sans-serif;
+  --ease-smooth: cubic-bezier(.4,0,.2,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--sans); background: var(--ink); color: var(--white); line-height: 1.6; overflow-x: hidden; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--g-mid); border-radius: 2px; }
+
+/* ── BG CANVAS ── */
+#bg-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .55; }
+
+/* ── LAYOUT ── */
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 2; }
+.section { padding: 120px 0; position: relative; }
+
+/* ── TYPOGRAPHY ── */
+.t-hero { font-family: var(--sans); font-size: clamp(2.6rem, 5.5vw, 5.2rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.035em; }
+.t-h2 { font-family: var(--sans); font-size: clamp(2rem, 3.5vw, 3.2rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; }
+.t-h3 { font-family: var(--sans); font-size: clamp(1.1rem, 1.8vw, 1.4rem); font-weight: 600; letter-spacing: -0.02em; }
+.t-body { font-size: 1.05rem; line-height: 1.75; color: rgba(255,255,255,.6); }
+.t-small { font-size: 0.875rem; color: rgba(255,255,255,.45); }
+.accent { color: var(--g-vivid); }
+
+/* ── KICKER ── */
+.sec-kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--g-vivid); margin-bottom: 16px;
+}
+.sec-kicker::before { content: ''; width: 20px; height: 1.5px; background: var(--g-vivid); }
+
+/* ── SCROLL REVEAL ── */
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity .7s var(--ease-smooth), transform .7s var(--ease-smooth); }
+.reveal.in { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
+.d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
+
+/* ── BREATHE ANIMATION ── */
+@keyframes breathe { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(.8); } }
+
+
+/* ══════════════════════════════════════════
+   BUTTONS (exact v2 match)
+══════════════════════════════════════════ */
+.btn-primary-lg {
+  display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px;
+  background: var(--g-mid); color: var(--white); font-size: 0.95rem; font-weight: 600;
+  border-radius: 14px; border: none; cursor: pointer; text-decoration: none;
+  transition: all .25s var(--ease-smooth);
+}
+.btn-primary-lg:hover { background: var(--g-vivid); box-shadow: 0 0 36px 6px rgba(61,184,112,.3); transform: translateY(-2px); }
+.btn-ghost-lg {
+  display: inline-flex; align-items: center; gap: 8px; padding: 16px 28px;
+  background: transparent; color: rgba(255,255,255,.65); font-size: 0.95rem; font-weight: 500;
+  border-radius: 14px; border: 1px solid rgba(255,255,255,.12); cursor: pointer; text-decoration: none; transition: all .25s;
+}
+.btn-ghost-lg:hover { color: var(--white); border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.04); }
+
+/* ══════════════════════════════════════════
+   S1: HERO — Dark bg + 3-layer arch diagram
+══════════════════════════════════════════ */
+.hero-section {
+  min-height: 100vh; padding-top: 120px; padding-bottom: 80px;
+  position: relative; overflow: hidden;
+  display: flex; align-items: center;
+}
+
+.hero-grid-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(61,184,112,.035) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(61,184,112,.035) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.hero-glow { position: absolute; top: -10%; right: -5%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(45,122,79,.1) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
+
+.hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; background: rgba(61,184,112,.1); border: 1px solid rgba(61,184,112,.25);
+  border-radius: 100px; font-family: var(--mono); font-size: 0.72rem; color: var(--g-vivid);
+  letter-spacing: .06em; text-transform: uppercase; margin-bottom: 28px;
+}
+.badge-dot { width: 6px; height: 6px; background: var(--g-glow); border-radius: 50%; box-shadow: 0 0 8px var(--g-glow); animation: breathe 2.4s ease-in-out infinite; }
+
+.hero-headline { margin-bottom: 22px; }
+.hero-sub { margin-bottom: 36px; max-width: 480px; }
+
+.hero-stats { display: flex; gap: 32px; margin-top: 40px; flex-wrap: wrap; }
+.hero-stat-num { font-family: var(--sans); font-size: 1.8rem; font-weight: 700; letter-spacing: -0.04em; color: var(--g-vivid); line-height: 1; }
+.hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,.4); margin-top: 4px; }
+
+/* ── 3-Layer Architecture Diagram ── */
+.arch-diagram {
+  position: relative;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(61,184,112,.2);
+  border-radius: 24px;
+  padding: 36px 28px;
+  backdrop-filter: blur(12px);
+}
+
+.arch-diagram::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: 24px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(61,184,112,.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.arch-layer {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  padding: 20px 20px;
+  margin-bottom: 6px;
+  transition: all .3s var(--ease-smooth);
+  position: relative;
+}
+
+.arch-layer:hover { border-color: rgba(61,184,112,.3); background: rgba(61,184,112,.06); }
+
+.arch-layer-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.arch-layer-num { font-family: var(--mono); font-size: 0.6rem; color: var(--g-vivid); letter-spacing: .1em; }
+.arch-layer-title { font-family: var(--sans); font-size: 0.88rem; font-weight: 700; color: var(--white); }
+.arch-layer-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.arch-chip {
+  padding: 4px 10px; border-radius: 6px; font-family: var(--mono); font-size: 0.68rem;
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.55);
+}
+.arch-chip.green { background: rgba(61,184,112,.12); border-color: rgba(61,184,112,.25); color: var(--g-vivid); }
+
+/* E³ Core layer */
+.arch-layer.core {
+  background: linear-gradient(135deg, rgba(45,122,79,.25), rgba(45,122,79,.1));
+  border-color: rgba(61,184,112,.4);
+  box-shadow: 0 0 30px rgba(45,122,79,.15);
+}
+
+/* Arrow between layers */
+.arch-connector {
+  display: flex; align-items: center; justify-content: center;
+  height: 28px; position: relative;
+}
+.arch-conn-line { width: 1.5px; height: 100%; background: linear-gradient(180deg, rgba(61,184,112,.4), rgba(61,184,112,.2)); }
+.arch-conn-dot { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 8px; height: 8px; background: var(--g-vivid); border-radius: 50%; box-shadow: 0 0 10px var(--g-vivid); animation: breathe 2s ease-in-out infinite; }
+
+/* ══════════════════════════════════════════
+   S2: MISSING LAYER — 4×1 Grid, Bento style
+══════════════════════════════════════════ */
+.missing-section { background: rgba(255,255,255,.01); }
+
+.missing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 56px;
+}
+
+/* Exact bento-card match from v2 */
+.missing-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 20px;
+  padding: 32px 24px;
+  position: relative; overflow: hidden;
+  cursor: pointer;
+  transition: all .35s var(--ease-smooth);
+}
+.missing-card::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(61,184,112,.08) 0%, transparent 60%);
+  opacity: 0; transition: opacity .35s;
+}
+.missing-card:hover { border-color: rgba(61,184,112,.35); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+.missing-card:hover::before { opacity: 1; }
+
+.missing-sys-icon {
+  width: 52px; height: 52px; border: 1.5px solid rgba(255,255,255,.1); border-radius: 14px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+  font-size: 1.5rem; transition: all .3s;
+}
+.missing-card:hover .missing-sys-icon { border-color: rgba(61,184,112,.35); background: rgba(61,184,112,.1); }
+
+.missing-sys-name { font-family: var(--sans); font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+.missing-sys-tag {
+  font-family: var(--mono); font-size: 0.62rem; color: rgba(220,70,70,.8);
+  letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.missing-sys-tag::before { content: ''; width: 6px; height: 6px; background: rgba(220,70,70,.7); border-radius: 50%; }
+.missing-sys-desc { font-size: 0.82rem; color: rgba(255,255,255,.4); line-height: 1.6; }
+
+.missing-center-cta {
+  text-align: center;
+  padding: 52px 0 0;
+}
+
+.missing-callout {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 14px 28px;
+  background: rgba(61,184,112,.08); border: 1px solid rgba(61,184,112,.2);
+  border-radius: 16px; margin-top: 16px;
+}
+.missing-callout-text { font-size: 0.875rem; color: rgba(255,255,255,.55); }
+.missing-callout-tag { font-family: var(--mono); font-size: 0.68rem; color: var(--g-vivid); letter-spacing: .08em; }
+
+/* ══════════════════════════════════════════
+   S3: LAYER WORKFLOW — Horizontal 3-step
+══════════════════════════════════════════ */
+.workflow-section { background: rgba(10,15,13,.6); }
+
+.workflow-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 0;
+  align-items: start;
+  margin-top: 64px;
+}
+
+/* Flow connector (exact match from v2 flow-connector) */
+.flow-connector {
+  height: 2px; align-self: center; margin-top: -40px;
+  background: linear-gradient(90deg, rgba(61,184,112,.3), rgba(61,184,112,.5), rgba(61,184,112,.3));
+  position: relative; overflow: visible; min-width: 40px;
+}
+.flow-connector::after {
+  content: '';
+  position: absolute; top: 50%; left: -20%; width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, var(--g-glow));
+  animation: flow-pulse 2s ease-in-out infinite;
+  border-radius: 2px; transform: translateY(-50%);
+}
+.flow-connector.d2::after { animation-delay: .7s; }
+@keyframes flow-pulse { 0% { left: -40%; opacity: 0; } 30% { opacity: 1; } 100% { left: 120%; opacity: 0; } }
+
+.workflow-step {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  padding: 32px 28px;
+  transition: all .35s var(--ease-smooth);
+  position: relative; overflow: hidden;
+}
+.workflow-step::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--g-vivid), transparent);
+  transform: scaleX(0); transition: transform .35s var(--ease-smooth);
+}
+.workflow-step:hover { border-color: rgba(61,184,112,.3); transform: translateY(-4px); }
+.workflow-step:hover::before { transform: scaleX(1); }
+
+.ws-num { font-family: var(--mono); font-size: 0.62rem; color: var(--g-vivid); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px; }
+.ws-icon-row { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+.ws-icon {
+  width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,.1);
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+  background: rgba(255,255,255,.04); transition: all .3s;
+}
+.workflow-step:hover .ws-icon { border-color: rgba(61,184,112,.3); background: rgba(61,184,112,.1); }
+.ws-title { font-family: var(--sans); font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+.ws-desc { font-size: 0.82rem; color: rgba(255,255,255,.45); line-height: 1.65; }
+.ws-tag { font-family: var(--mono); font-size: 0.62rem; color: var(--g-vivid); letter-spacing: .07em; margin-bottom: 6px; }
+
+/* ══════════════════════════════════════════
+   S4: SYSTEMS MATRIX — Split screen (v2 case-panel)
+══════════════════════════════════════════ */
+.matrix-section { }
+
+.matrix-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
+  border-radius: 24px; overflow: hidden; margin-top: 60px;
+}
+
+/* Exact case-panel match */
+.case-panel { padding: 52px 48px; position: relative; overflow: hidden; transition: all .3s; }
+.case-panel.problem {
+  background: linear-gradient(135deg, rgba(220,50,50,.08), rgba(220,50,50,.03));
+  border: 1px solid rgba(220,50,50,.15); border-radius: 22px 4px 4px 22px;
+}
+.case-panel.solution {
+  background: linear-gradient(135deg, rgba(61,184,112,.08), rgba(61,184,112,.03));
+  border: 1px solid rgba(61,184,112,.2); border-radius: 4px 22px 22px 4px;
+}
+
+.case-tag { display: inline-flex; align-items: center; gap: 7px; padding: 4px 14px; border-radius: 100px; font-family: var(--mono); font-size: 0.7rem; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 24px; }
+.case-tag.problem-tag { background: rgba(220,50,50,.12); border: 1px solid rgba(220,50,50,.25); color: #f87171; }
+.case-tag.solution-tag { background: rgba(61,184,112,.12); border: 1px solid rgba(61,184,112,.3); color: var(--g-vivid); }
+.case-icon-lg { font-size: 2.8rem; margin-bottom: 18px; display: block; }
+.case-title { font-family: var(--sans); font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; }
+.case-desc { font-size: 0.88rem; color: rgba(255,255,255,.5); line-height: 1.7; margin-bottom: 20px; }
+.case-metric { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: 12px; }
+.case-metric.bad { background: rgba(220,50,50,.08); border: 1px solid rgba(220,50,50,.15); }
+.case-metric.good { background: rgba(61,184,112,.08); border: 1px solid rgba(61,184,112,.2); }
+.metric-num { font-family: var(--sans); font-size: 1.7rem; font-weight: 700; line-height: 1; }
+.metric-num.red { color: #f87171; }
+.metric-num.green { color: var(--g-vivid); }
+.metric-label { font-size: 0.82rem; color: rgba(255,255,255,.45); line-height: 1.45; }
+
+/* Chaos lines SVG */
+.chaos-lines { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.chaos-line {
+  height: 2px; border-radius: 2px;
+  background: rgba(220,70,70,.35);
+  animation: chaosWiggle 3s ease-in-out infinite;
+}
+.chaos-line:nth-child(2) { animation-delay: .4s; width: 80%; }
+.chaos-line:nth-child(3) { animation-delay: .8s; width: 60%; margin-left: 20%; }
+.chaos-icon-row { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+.chaos-icon { padding: 5px 10px; background: rgba(220,70,70,.1); border: 1px solid rgba(220,70,70,.2); border-radius: 8px; font-size: 0.78rem; color: rgba(248,113,113,.8); font-family: var(--mono); }
+@keyframes chaosWiggle { 0%,100% { transform: scaleX(1) translateX(0); } 50% { transform: scaleX(.85) translateX(8px); } }
+
+/* Clean execution lines */
+.exec-line { height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--g-mid), var(--g-vivid)); margin-bottom: 8px; box-shadow: 0 0 8px rgba(61,184,112,.3); animation: execGlow 2s ease-in-out infinite; }
+.exec-line:nth-child(2) { animation-delay: .3s; opacity: .7; }
+.exec-line:nth-child(3) { animation-delay: .6s; opacity: .5; }
+@keyframes execGlow { 0%,100% { box-shadow: 0 0 8px rgba(61,184,112,.3); } 50% { box-shadow: 0 0 16px rgba(61,184,112,.6); } }
+.exec-action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.exec-action { padding: 5px 10px; background: rgba(61,184,112,.1); border: 1px solid rgba(61,184,112,.25); border-radius: 8px; font-family: var(--mono); font-size: 0.68rem; color: var(--g-vivid); display: flex; align-items: center; gap: 5px; }
+.exec-dot { width: 5px; height: 5px; background: var(--g-vivid); border-radius: 50%; animation: breathe 1.5s ease-in-out infinite; }
+
+/* ══════════════════════════════════════════
+   S5: INTEGRATIONS — Glass logo grid
+══════════════════════════════════════════ */
+.integrations-section { }
+
+.integrations-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 52px;
+  margin-bottom: 40px;
+}
+
+/* Glass card matching landing page industry-tag/bento style */
+.integration-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 24px 20px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .3s var(--ease-smooth);
+  position: relative; overflow: hidden;
+}
+.integration-card::before {
+  content: ''; position: absolute; inset: 0; border-radius: 16px;
+  background: linear-gradient(135deg, rgba(61,184,112,.07) 0%, transparent 60%);
+  opacity: 0; transition: opacity .3s;
+}
+.integration-card:hover { border-color: rgba(61,184,112,.3); transform: scale(1.04) translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,.25); }
+.integration-card:hover::before { opacity: 1; }
+
+.int-logo {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 700;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.05);
+  transition: all .3s;
+}
+.integration-card:hover .int-logo { border-color: rgba(61,184,112,.3); background: rgba(61,184,112,.1); }
+
+.int-name { font-family: var(--sans); font-size: 0.88rem; font-weight: 700; color: rgba(255,255,255,.85); }
+.int-type { font-family: var(--mono); font-size: 0.62rem; color: rgba(255,255,255,.3); letter-spacing: .06em; }
+
+.integrations-tagline {
+  text-align: center;
+  padding: 20px 0 0;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: .08em;
+  color: rgba(255,255,255,.3);
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════
+   S6: RESULTS COMPARISON — Metric cards
+══════════════════════════════════════════ */
+.results-section { background: rgba(255,255,255,.01); }
+
+.results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 56px; }
+
+.results-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 20px;
+  padding: 36px 32px;
+}
+
+.results-card.bad { border-color: rgba(220,50,50,.15); background: rgba(220,50,50,.04); }
+.results-card.good { border-color: rgba(61,184,112,.2); background: rgba(61,184,112,.05); }
+
+.results-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+.results-icon { font-size: 1.6rem; }
+.results-card-title { font-family: var(--sans); font-size: 1.1rem; font-weight: 700; }
+
+.results-metrics { display: flex; flex-direction: column; gap: 14px; }
+
+.result-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-radius: 12px;
+}
+.result-row.bad-row { background: rgba(220,50,50,.07); border: 1px solid rgba(220,50,50,.12); }
+.result-row.good-row { background: rgba(61,184,112,.07); border: 1px solid rgba(61,184,112,.15); }
+
+.result-label { font-size: 0.85rem; color: rgba(255,255,255,.55); }
+.result-val { font-family: var(--sans); font-size: 1.2rem; font-weight: 700; }
+.result-val.red { color: #f87171; }
+.result-val.green { color: var(--g-vivid); }
+
+.result-arrow { font-size: 1rem; color: var(--g-vivid); margin-left: 6px; animation: arrowPop 2s ease-in-out infinite; }
+@keyframes arrowPop { 0%,100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+
+/* ══════════════════════════════════════════
+   S7: PILOT CTA (exact v2 pilot section)
+══════════════════════════════════════════ */
+.pilot-section { text-align: center; }
+
+.pilot-cards-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 52px 0;
+}
+
+.pilot-card {
+  background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px; padding: 28px 20px; text-align: left;
+  cursor: pointer; transition: all .3s var(--ease-smooth); position: relative; overflow: hidden;
+}
+.pilot-card::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--g-vivid), transparent);
+  transform: scaleX(0); transition: transform .3s var(--ease-smooth);
+}
+.pilot-card:hover { border-color: rgba(61,184,112,.3); transform: translateY(-4px); }
+.pilot-card:hover::before { transform: scaleX(1); }
+.pilot-emoji { font-size: 1.6rem; margin-bottom: 14px; display: block; }
+.pilot-title { font-family: var(--sans); font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+.pilot-desc { font-size: 0.8rem; color: rgba(255,255,255,.45); line-height: 1.55; }
+
+/* CTA glass card (exact match) */
+.cta-glass {
+  max-width: 760px; margin: 0 auto; padding: 56px 60px;
+  background: rgba(255,255,255,.05);
+  backdrop-filter: blur(32px) saturate(150%); -webkit-backdrop-filter: blur(32px) saturate(150%);
+  border: 1px solid rgba(61,184,112,.25); border-radius: 28px;
+  box-shadow: 0 0 80px rgba(45,122,79,.15), 0 40px 80px rgba(0,0,0,.3);
+  position: relative; overflow: hidden;
+}
+.cta-glass::before {
+  content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle at 40% 40%, rgba(61,184,112,.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+.cta-eyebrow { font-family: var(--mono); font-size: 0.72rem; color: var(--g-vivid); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 18px; }
+.cta-glass .t-h2 { margin-bottom: 14px; }
+.cta-glass .t-body { margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
+.cta-actions-center { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+.cta-note { margin-top: 18px; font-family: var(--mono); font-size: 0.72rem; color: rgba(255,255,255,.3); letter-spacing: .04em; }
+
+/* Weeks badge */
+.weeks-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 18px;
+  background: rgba(61,184,112,.1); border: 1px solid rgba(61,184,112,.25);
+  border-radius: 100px; font-family: var(--mono); font-size: 0.72rem; color: var(--g-vivid); margin-bottom: 24px;
+}
+.weeks-badge-dot { width: 6px; height: 6px; background: var(--g-vivid); border-radius: 50%; box-shadow: 0 0 6px var(--g-glow); animation: breathe 2s ease-in-out infinite; }
+
+/* ══════════════════════════════════════════
+   FOOTER (exact v2 match)
+══════════════════════════════════════════ */
+.footer { padding: 60px 0 32px; border-top: 1px solid rgba(255,255,255,.05); }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-bottom: 14px; }
+.footer-tagline { font-size: 0.875rem; color: rgba(255,255,255,.35); line-height: 1.65; max-width: 280px; }
+.footer-col-title { font-family: var(--mono); font-size: 0.68rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 16px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { font-size: 0.875rem; color: rgba(255,255,255,.45); text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--g-vivid); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,.05); }
+.footer-copy { font-family: var(--mono); font-size: 0.72rem; color: rgba(255,255,255,.25); }
+.footer-status { display: inline-flex; align-items: center; gap: 7px; padding: 5px 14px; background: rgba(61,184,112,.08); border: 1px solid rgba(61,184,112,.2); border-radius: 100px; font-family: var(--mono); font-size: 0.68rem; color: var(--g-vivid); }
+.footer-status-dot { width: 6px; height: 6px; background: var(--g-vivid); border-radius: 50%; box-shadow: 0 0 6px var(--g-glow); animation: breathe 2s ease-in-out infinite; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .missing-grid { grid-template-columns: repeat(2, 1fr); }
+  .workflow-flow { grid-template-columns: 1fr; gap: 24px; }
+  .flow-connector { display: none; }
+  .matrix-grid { grid-template-columns: 1fr; }
+  .case-panel.problem { border-radius: 22px 22px 4px 4px; }
+  .case-panel.solution { border-radius: 4px 4px 22px 22px; }
+  .integrations-grid { grid-template-columns: repeat(4, 1fr); }
+  .results-grid { grid-template-columns: 1fr; }
+  .pilot-cards-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .wrap { padding: 0 20px; }
+  .nav-island { left: 20px; right: 20px; transform: none; top: 16px; }
+  .missing-grid { grid-template-columns: 1fr; }
+  .integrations-grid { grid-template-columns: repeat(2, 1fr); }
+  .pilot-cards-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .cta-glass { padding: 36px 24px; }
+}
+</style>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<script src="navbar.js"></script>
+
+<!-- ── Animated background canvas ── -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- ══════════════ S1: HERO ══════════════ -->
+<section class="hero-section section" id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="wrap" style="width:100%;">
+    <div class="hero-inner">
+
+      <!-- Left: Copy -->
+      <div>
+        <div class="hero-badge reveal">
+          <span class="badge-dot"></span>
+          Enterprise Execution Engine
+        </div>
+
+        <h1 class="t-hero hero-headline reveal d1">
+          Retalp E³<br/>
+          <span class="accent">Execution Engine</span><br/>
+          for Enterprises
+        </h1>
+
+        <p class="t-body hero-sub reveal d2">
+          E³ is the operational layer your enterprise systems never built. It connects fragmented data into real decisions — inventory replenishment, production scheduling, supply chain coordination — automatically.
+        </p>
+
+        <div style="display:flex;gap:14px;flex-wrap:wrap;" class="reveal d3">
+          <a href="#pilot" class="btn-primary-lg">
+            Start a Pilot
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8 3m5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#architecture" class="btn-ghost-lg">See the Architecture</a>
+        </div>
+
+        <div class="hero-stats reveal d4">
+          <div>
+            <div class="hero-stat-num">4–6w</div>
+            <div class="hero-stat-label">Pilot to live system</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">~0</div>
+            <div class="hero-stat-label">Disruption to existing stack</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">3×</div>
+            <div class="hero-stat-label">Faster planning cycles</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: 3-Layer Architecture Diagram -->
+      <div class="arch-diagram reveal d2" id="architecture">
+
+        <!-- Layer 1: Data Sources -->
+        <div class="arch-layer">
+          <div class="arch-layer-header">
+            <span class="arch-layer-num">LAYER 01</span>
+            <span class="arch-layer-title">Data Sources</span>
+          </div>
+          <div class="arch-layer-chips">
+            <span class="arch-chip">ERP</span>
+            <span class="arch-chip">CRM</span>
+            <span class="arch-chip">POS</span>
+            <span class="arch-chip">WMS</span>
+            <span class="arch-chip">Spreadsheets</span>
+            <span class="arch-chip">IoT</span>
+          </div>
+        </div>
+
+        <div class="arch-connector">
+          <div class="arch-conn-line"></div>
+          <div class="arch-conn-dot"></div>
+        </div>
+
+        <!-- Layer 2: E³ Core -->
+        <div class="arch-layer core">
+          <div class="arch-layer-header">
+            <span class="arch-layer-num" style="color:var(--g-glow);">LAYER 02</span>
+            <span class="arch-layer-title" style="color:var(--white);">Retalp E³ Core</span>
+          </div>
+          <div class="arch-layer-chips">
+            <span class="arch-chip green">Data Structuring</span>
+            <span class="arch-chip green">AI Models</span>
+            <span class="arch-chip green">Signal Detection</span>
+            <span class="arch-chip green">Workflow Engine</span>
+          </div>
+        </div>
+
+        <div class="arch-connector">
+          <div class="arch-conn-line"></div>
+          <div class="arch-conn-dot" style="animation-delay:.6s;"></div>
+        </div>
+
+        <!-- Layer 3: Operational Actions -->
+        <div class="arch-layer">
+          <div class="arch-layer-header">
+            <span class="arch-layer-num">LAYER 03</span>
+            <span class="arch-layer-title">Operational Actions</span>
+          </div>
+          <div class="arch-layer-chips">
+            <span class="arch-chip">🚚 Replenishment</span>
+            <span class="arch-chip">🏭 Production Plan</span>
+            <span class="arch-chip">📦 Inventory Alerts</span>
+            <span class="arch-chip">⚡ Dispatch Orders</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ S2: THE MISSING LAYER ══════════════ -->
+<section class="missing-section section">
+  <div class="wrap">
+
+    <div class="reveal" style="text-align:center;max-width:700px;margin:0 auto 0;">
+      <div class="sec-kicker" style="justify-content:center;">The Problem</div>
+      <h2 class="t-h2" style="margin-bottom:16px;">The Layer Enterprise<br/>Systems <span class="accent">Never Built</span></h2>
+      <p class="t-body" style="max-width:560px;margin:0 auto;">Your enterprise stack stores, reports, and visualizes data. But none of it executes. The gap between insight and action is where operations fail.</p>
+    </div>
+
+    <div class="missing-grid">
+
+      <div class="missing-card reveal">
+        <div class="missing-sys-icon">🏢</div>
+        <div class="missing-sys-name">ERP Systems</div>
+        <div class="missing-sys-tag">Stores data, doesn't execute</div>
+        <div class="missing-sys-desc">SAP, Oracle, and Tally record transactions and maintain master data. They don't detect when SKU-442 is 3 days from stockout and trigger a replenishment automatically.</div>
+      </div>
+
+      <div class="missing-card reveal d1">
+        <div class="missing-sys-icon">🤝</div>
+        <div class="missing-sys-name">CRM Platforms</div>
+        <div class="missing-sys-tag">Stores data, doesn't execute</div>
+        <div class="missing-sys-desc">Salesforce and HubSpot track orders and relationships. They don't convert distributor demand signals into production planning inputs without manual extraction.</div>
+      </div>
+
+      <div class="missing-card reveal d2">
+        <div class="missing-sys-icon">📊</div>
+        <div class="missing-sys-name">BI & Dashboards</div>
+        <div class="missing-sys-tag">Reports data, doesn't execute</div>
+        <div class="missing-sys-desc">Tableau and Power BI produce 12 dashboards weekly. Planning teams ignore them. WhatsApp groups still decide allocation on Thursday nights.</div>
+      </div>
+
+      <div class="missing-card reveal d3">
+        <div class="missing-sys-icon">📋</div>
+        <div class="missing-sys-name">Spreadsheets</div>
+        <div class="missing-sys-tag">Manual, doesn't execute</div>
+        <div class="missing-sys-desc">Every Monday: 2h ERP export, 1h POS dump, 1h CRM report. Numbers don't match. Planners pick the version they trust most and proceed manually.</div>
+      </div>
+
+    </div>
+
+    <div class="missing-center-cta reveal d2">
+      <div class="missing-callout">
+        <span class="missing-callout-tag">E³ fills this gap</span>
+        <span class="missing-callout-text">E³ connects all four layers and transforms their combined data into triggered operational workflows — automatically, continuously.</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ S3: LAYER WORKFLOW ══════════════ -->
+<section class="workflow-section section" id="workflow">
+  <div class="wrap">
+
+    <div class="reveal" style="text-align:center;margin-bottom:0;">
+      <div class="sec-kicker" style="justify-content:center;">How E³ Works</div>
+      <h2 class="t-h2" style="margin-bottom:14px;">Three steps from data<br/>to <span class="accent">operational action</span></h2>
+      <p class="t-body" style="max-width:520px;margin:0 auto;">E³ runs as a parallel layer — it doesn't replace your ERP. It reads it, understands it, and acts on it.</p>
+    </div>
+
+    <div class="workflow-flow">
+
+      <!-- Step 1 -->
+      <div class="workflow-step reveal d1">
+        <div class="ws-num">Step 01 / Enterprise Data Integration</div>
+        <div class="ws-icon-row">
+          <div class="ws-icon">🏢</div>
+          <div class="ws-icon">🤝</div>
+          <div class="ws-icon">🗄️</div>
+          <div class="ws-icon">📋</div>
+        </div>
+        <div class="ws-title">Enterprise Data Integration</div>
+        <div class="ws-desc">E³ connects directly to your ERP, CRM, WMS, and spreadsheets. No manual exports. No version conflicts. One structured data layer from all sources.</div>
+        <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:6px;">
+          <span style="padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;font-family:var(--mono);font-size:.65rem;color:rgba(255,255,255,.4);">SAP ERP</span>
+          <span style="padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;font-family:var(--mono);font-size:.65rem;color:rgba(255,255,255,.4);">Salesforce</span>
+          <span style="padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;font-family:var(--mono);font-size:.65rem;color:rgba(255,255,255,.4);">Google Sheets</span>
+          <span style="padding:4px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;font-family:var(--mono);font-size:.65rem;color:rgba(255,255,255,.4);">WMS/POS</span>
+        </div>
+      </div>
+
+      <!-- Connector -->
+      <div class="flow-connector" style="align-self:center;margin-top:0;"></div>
+
+      <!-- Step 2 -->
+      <div class="workflow-step reveal d2">
+        <div class="ws-num">Step 02 / Embedded Intelligence</div>
+        <div class="ws-icon-row">
+          <div class="ws-icon">🧠</div>
+          <div class="ws-icon">⚡</div>
+          <div class="ws-icon">📡</div>
+        </div>
+        <div class="ws-title">Embedded Intelligence</div>
+        <div class="ws-desc">E³ runs continuous AI models on unified data — demand forecasting, stockout detection, production constraint analysis, and supply chain risk signals.</div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:.8rem;color:rgba(255,255,255,.45);">
+            <span style="width:6px;height:6px;background:var(--g-vivid);border-radius:50%;flex-shrink:0;"></span>Signal detection running continuously
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:.8rem;color:rgba(255,255,255,.45);">
+            <span style="width:6px;height:6px;background:var(--g-vivid);border-radius:50%;flex-shrink:0;"></span>Forecasting from actual sales velocity
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:.8rem;color:rgba(255,255,255,.45);">
+            <span style="width:6px;height:6px;background:var(--g-vivid);border-radius:50%;flex-shrink:0;"></span>Constraint modelling (MOQ, capacity)
+          </div>
+        </div>
+      </div>
+
+      <!-- Connector -->
+      <div class="flow-connector d2" style="align-self:center;margin-top:0;"></div>
+
+      <!-- Step 3 -->
+      <div class="workflow-step reveal d3">
+        <div class="ws-num">Step 03 / Execution Workflows</div>
+        <div class="ws-icon-row">
+          <div class="ws-icon">🚚</div>
+          <div class="ws-icon">🏭</div>
+          <div class="ws-icon">📦</div>
+          <div class="ws-icon">↔️</div>
+        </div>
+        <div class="ws-title">Execution Workflows</div>
+        <div class="ws-desc">Intelligence becomes action. Replenishment lists. Production plans locked to machine constraints. Transfer orders. Stockout alerts. All triggered automatically — daily before 9 AM.</div>
+        <div style="margin-top:16px;padding:12px 16px;background:rgba(61,184,112,.08);border:1px solid rgba(61,184,112,.2);border-radius:10px;">
+          <div style="font-family:var(--mono);font-size:.65rem;color:var(--g-vivid);margin-bottom:4px;">OUTPUT EXAMPLE</div>
+          <div style="font-family:var(--mono);font-size:.72rem;color:rgba(255,255,255,.6);">SKU-442 Delhi WH → +120 units<br/>Machine A Week 3 → 820 units<br/>Transfer: Mumbai→Delhi 200 shirts</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ S4: SYSTEMS MATRIX (Split Screen) ══════════════ -->
+<section class="matrix-section section">
+  <div class="wrap">
+
+    <div class="reveal" style="text-align:center;margin-bottom:0;">
+      <div class="sec-kicker" style="justify-content:center;">Manual vs E³</div>
+      <h2 class="t-h2" style="margin-bottom:14px;">The same operation.<br/><span class="accent">Two completely different outcomes.</span></h2>
+    </div>
+
+    <div class="matrix-grid reveal d1">
+
+      <!-- Problem panel -->
+      <div class="case-panel problem">
+        <div class="case-tag problem-tag">⚠ Manual Coordination</div>
+        <span class="case-icon-lg">📧</span>
+        <div class="case-title">The Thursday Night<br/>WhatsApp Call</div>
+        <div class="case-desc">Every week, 4 warehouses receive emails. 2 don't reply. Planning lead calls the DC manager Friday morning. Allocation is decided on gut feel by end of day.</div>
+
+        <div class="chaos-icon-row">
+          <span class="chaos-icon">📧 email</span>
+          <span class="chaos-icon">💬 WhatsApp</span>
+          <span class="chaos-icon">📞 call</span>
+        </div>
+
+        <div class="chaos-lines">
+          <div class="chaos-line"></div>
+          <div class="chaos-line"></div>
+          <div class="chaos-line"></div>
+        </div>
+
+        <div class="case-metric bad">
+          <div>
+            <div class="metric-num red">2–3 days</div>
+            <div class="metric-label">Delay from need to action<br/>every planning cycle</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Solution panel -->
+      <div class="case-panel solution">
+        <div class="case-tag solution-tag">✓ E³ Execution</div>
+        <span class="case-icon-lg">⚡</span>
+        <div class="case-title">Automated Before<br/>Anyone Wakes Up</div>
+        <div class="case-desc">E³ processes live sales velocity overnight. By 8 AM: ranked replenishment list, transfer orders proposed, machine allocation locked. Planners review and approve — no coordination calls needed.</div>
+
+        <div class="exec-line"></div>
+        <div class="exec-line"></div>
+        <div class="exec-line"></div>
+
+        <div class="exec-action-row">
+          <span class="exec-action"><div class="exec-dot"></div>Replenish SKU-442</span>
+          <span class="exec-action"><div class="exec-dot"></div>Transfer 200 units</span>
+          <span class="exec-action"><div class="exec-dot"></div>Lock production plan</span>
+        </div>
+
+        <div class="case-metric good" style="margin-top:16px;">
+          <div>
+            <div class="metric-num green">8:00 AM</div>
+            <div class="metric-label">Actions ready for review<br/>before the team logs in</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ S5: INTEGRATIONS ══════════════ -->
+<section class="integrations-section section" id="integrations">
+  <div class="wrap">
+
+    <div class="reveal" style="text-align:center;">
+      <div class="sec-kicker" style="justify-content:center;">Integrations</div>
+      <h2 class="t-h2" style="margin-bottom:14px;">Built to work alongside<br/>your <span class="accent">existing stack</span></h2>
+      <p class="t-body" style="max-width:500px;margin:0 auto;">E³ doesn't replace your systems. It reads them, runs on top of them, and makes them execute — without changing a single workflow.</p>
+    </div>
+
+    <div class="integrations-grid">
+
+      <div class="integration-card reveal">
+        <div class="int-logo" style="background:rgba(0,112,192,.1);border-color:rgba(0,112,192,.25);">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="3" y="3" width="10" height="10" rx="2" fill="rgba(0,112,192,.8)"/>
+            <rect x="15" y="3" width="10" height="10" rx="2" fill="rgba(0,112,192,.6)"/>
+            <rect x="3" y="15" width="10" height="10" rx="2" fill="rgba(0,112,192,.6)"/>
+            <rect x="15" y="15" width="10" height="10" rx="2" fill="rgba(0,112,192,.4)"/>
+          </svg>
+        </div>
+        <div class="int-name">SAP</div>
+        <div class="int-type">ERP · Master Data</div>
+      </div>
+
+      <div class="integration-card reveal d1">
+        <div class="int-logo" style="background:rgba(250,50,50,.08);border-color:rgba(250,50,50,.2);">
+          <svg width="28" height="22" viewBox="0 0 28 22" fill="none">
+            <ellipse cx="8" cy="11" rx="6" ry="9" fill="rgba(250,50,50,.7)"/>
+            <ellipse cx="14" cy="11" rx="6" ry="9" fill="rgba(250,100,50,.7)"/>
+            <ellipse cx="20" cy="11" rx="6" ry="9" fill="rgba(250,150,50,.7)"/>
+          </svg>
+        </div>
+        <div class="int-name">Oracle</div>
+        <div class="int-type">ERP · Finance</div>
+      </div>
+
+      <div class="integration-card reveal d2">
+        <div class="int-logo" style="background:rgba(0,162,232,.08);border-color:rgba(0,162,232,.2);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="rgba(0,162,232,.8)"/>
+            <path d="M8 12h8M12 8v8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="int-name">Salesforce</div>
+        <div class="int-type">CRM · Orders</div>
+      </div>
+
+      <div class="integration-card reveal d3">
+        <div class="int-logo" style="background:rgba(232,76,61,.08);border-color:rgba(232,76,61,.2);">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="2" y="2" width="22" height="16" rx="3" fill="none" stroke="rgba(232,76,61,.8)" stroke-width="1.8"/>
+            <path d="M2 8h22" stroke="rgba(232,76,61,.6)" stroke-width="1.5"/>
+            <rect x="6" y="12" width="4" height="3" fill="rgba(232,76,61,.7)"/>
+            <rect x="11" y="10" width="4" height="5" fill="rgba(232,76,61,.5)"/>
+            <rect x="16" y="9" width="4" height="6" fill="rgba(232,76,61,.3)"/>
+          </svg>
+        </div>
+        <div class="int-name">Tableau</div>
+        <div class="int-type">BI · Analytics</div>
+      </div>
+
+      <div class="integration-card reveal">
+        <div class="int-logo" style="background:rgba(15,157,88,.08);border-color:rgba(15,157,88,.2);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="3" fill="rgba(15,157,88,.15)"/>
+            <path d="M6 8h12M6 12h12M6 16h8" stroke="rgba(15,157,88,.9)" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="int-name">Google Sheets</div>
+        <div class="int-type">Spreadsheets · Planning</div>
+      </div>
+
+      <div class="integration-card reveal d1">
+        <div class="int-logo" style="background:rgba(61,184,112,.08);border-color:rgba(61,184,112,.25);">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="3" y="8" width="20" height="14" rx="2.5" fill="none" stroke="rgba(61,184,112,.7)" stroke-width="1.8"/>
+            <path d="M7 8V6a6 6 0 0112 0v2" stroke="rgba(61,184,112,.5)" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="13" cy="15" r="2.5" fill="rgba(61,184,112,.8)"/>
+          </svg>
+        </div>
+        <div class="int-name">Custom WMS</div>
+        <div class="int-type">Warehouse · Fulfilment</div>
+      </div>
+
+      <div class="integration-card reveal d2">
+        <div class="int-logo" style="background:rgba(90,168,152,.08);border-color:rgba(90,168,152,.2);">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M4 20L13 6l9 14H4z" fill="none" stroke="rgba(90,168,152,.7)" stroke-width="1.8" stroke-linejoin="round"/>
+            <circle cx="13" cy="15" r="2" fill="rgba(90,168,152,.8)"/>
+          </svg>
+        </div>
+        <div class="int-name">POS Systems</div>
+        <div class="int-type">Retail · Live Sales</div>
+      </div>
+
+      <div class="integration-card reveal d3">
+        <div class="int-logo" style="background:rgba(180,180,60,.08);border-color:rgba(180,180,60,.2);">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="3" y="3" width="20" height="20" rx="3" fill="none" stroke="rgba(180,180,60,.6)" stroke-width="1.8"/>
+            <path d="M8 13h10M13 8v10" stroke="rgba(180,180,60,.8)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="int-name">IoT / OT Data</div>
+        <div class="int-type">Machines · Production</div>
+      </div>
+
+    </div>
+
+    <div class="integrations-tagline reveal">
+      Built to work alongside your stack · No rip-and-replace · 4–6 week pilot
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ S6: RESULTS COMPARISON ══════════════ -->
+<section class="results-section section" id="results">
+  <div class="wrap">
+
+    <div class="reveal" style="text-align:center;margin-bottom:0;">
+      <div class="sec-kicker" style="justify-content:center;">Impact</div>
+      <h2 class="t-h2" style="margin-bottom:14px;">What changes when<br/>E³ is <span class="accent">running</span></h2>
+    </div>
+
+    <div class="results-grid">
+
+      <div class="results-card bad reveal">
+        <div class="results-card-header">
+          <span class="results-icon">⚠️</span>
+          <div class="results-card-title" style="color:rgba(248,113,113,.8);">Without E³</div>
+        </div>
+        <div class="results-metrics">
+          <div class="result-row bad-row">
+            <span class="result-label">Planning cycle time</span>
+            <span class="result-val red">2–3 days</span>
+          </div>
+          <div class="result-row bad-row">
+            <span class="result-label">Stockout incidents/month</span>
+            <span class="result-val red">12–18 SKUs</span>
+          </div>
+          <div class="result-row bad-row">
+            <span class="result-label">Data freshness</span>
+            <span class="result-val red">Last Monday</span>
+          </div>
+          <div class="result-row bad-row">
+            <span class="result-label">Coordination method</span>
+            <span class="result-val red" style="font-size:.95rem;">WhatsApp + calls</span>
+          </div>
+          <div class="result-row bad-row">
+            <span class="result-label">Inventory at full price</span>
+            <span class="result-val red">~68%</span>
+          </div>
+          <div class="result-row bad-row">
+            <span class="result-label">Production accuracy</span>
+            <span class="result-val red">±22% variance</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-card good reveal d1">
+        <div class="results-card-header">
+          <span class="results-icon">✅</span>
+          <div class="results-card-title" style="color:var(--g-vivid);">With Retalp E³</div>
+        </div>
+        <div class="results-metrics">
+          <div class="result-row good-row">
+            <span class="result-label">Planning cycle time</span>
+            <span class="result-val green">8:00 AM daily <span class="result-arrow">↑</span></span>
+          </div>
+          <div class="result-row good-row">
+            <span class="result-label">Stockout incidents/month</span>
+            <span class="result-val green">↓ 15–25% <span class="result-arrow">↑</span></span>
+          </div>
+          <div class="result-row good-row">
+            <span class="result-label">Data freshness</span>
+            <span class="result-val green">Live <span class="result-arrow">↑</span></span>
+          </div>
+          <div class="result-row good-row">
+            <span class="result-label">Coordination method</span>
+            <span class="result-val green" style="font-size:.95rem;">Automated workflows</span>
+          </div>
+          <div class="result-row good-row">
+            <span class="result-label">Inventory at full price</span>
+            <span class="result-val green">↑ 10–20% <span class="result-arrow">↑</span></span>
+          </div>
+          <div class="result-row good-row">
+            <span class="result-label">Production accuracy</span>
+            <span class="result-val green">MOQ-constrained <span class="result-arrow">↑</span></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Quote callout -->
+    <div class="reveal d2" style="margin-top:28px;padding:28px 36px;background:rgba(61,184,112,.06);border:1px solid rgba(61,184,112,.18);border-radius:20px;text-align:center;">
+      <div style="font-family:var(--mono);font-size:.7rem;color:var(--g-vivid);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">KEY INSIGHT</div>
+      <div style="font-family:var(--sans);font-size:1.1rem;font-weight:600;color:rgba(255,255,255,.8);max-width:640px;margin:0 auto;line-height:1.5;">"Operational AI cannot be evaluated through presentations. You need to run it on your data, against your constraints, inside your workflows."</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ S7: PILOT CTA ══════════════ -->
+<section class="pilot-section section" id="pilot">
+  <div class="wrap">
+
+    <div class="reveal">
+      <div class="sec-kicker" style="justify-content:center;">Pilot Programs</div>
+      <h2 class="t-h2" style="margin-bottom:14px;">Pilot systems ready<br/>in <span class="accent">4 weeks</span></h2>
+      <p class="t-body" style="max-width:500px;margin:0 auto 0;">Pick one operational system. See measurable impact in 4–6 weeks. Then expand.</p>
+    </div>
+
+    <div class="pilot-cards-grid">
+      <div class="pilot-card reveal">
+        <span class="pilot-emoji">📦</span>
+        <div class="pilot-title">Inventory Forecasting</div>
+        <div class="pilot-desc">Daily replenishment list by SKU/location. Cut stockouts 15–25% in the first month.</div>
+      </div>
+      <div class="pilot-card reveal d1">
+        <span class="pilot-emoji">🏭</span>
+        <div class="pilot-title">Production Planning</div>
+        <div class="pilot-desc">Weekly production plan locked to machine MOQs and capacity. Zero manual juggling.</div>
+      </div>
+      <div class="pilot-card reveal d2">
+        <span class="pilot-emoji">🚚</span>
+        <div class="pilot-title">Supply Chain Coordination</div>
+        <div class="pilot-desc">Logistics optimization, supplier risk signals, and transfer order generation — automated.</div>
+      </div>
+      <div class="pilot-card reveal d3">
+        <span class="pilot-emoji">🤝</span>
+        <div class="pilot-title">Distributor Intelligence</div>
+        <div class="pilot-desc">Convert fragmented field sales and distributor signals into structured demand data.</div>
+      </div>
+    </div>
+
+    <div class="cta-glass reveal d2">
+      <div class="cta-eyebrow">Ready to begin?</div>
+      <div class="weeks-badge">
+        <span class="weeks-badge-dot"></span>
+        Most pilots take 4–6 weeks from kickoff to live system
+      </div>
+      <h2 class="t-h2">See E³ running on<br/>your actual data.</h2>
+      <p class="t-body">Book a 20-minute session. We map your operational gap, identify the right pilot system, and show you what E³ looks like inside your workflows.</p>
+      <div class="cta-actions-center">
+        <a href="#" class="btn-primary-lg">
+          Start a Pilot Engagement
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8 3m5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="retalp_v2.html" class="btn-ghost-lg">← Back to Overview</a>
+      </div>
+      <p class="cta-note">No commitment · 20-minute session · No slides, just your data</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="retalp_v2.html" class="footer-brand-logo">
+          <div class="nav-logo-mark" style="width:28px;height:28px;border-radius:8px;">
+            <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="5.5" stroke="white" stroke-width="2"/><circle cx="13" cy="13" r="2.5" fill="white"/></svg>
+          </div>
+          <span style="font-family:var(--sans);font-weight:700;font-size:1rem;color:var(--white);letter-spacing:-0.02em;">Retal<span style="color:var(--g-vivid);">p</span></span>
+        </a>
+        <p class="footer-tagline">The AI Execution Layer for Enterprise Operations. Retalp E³ connects data to real operational decisions.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">E³ Platform</div>
+        <ul class="footer-links">
+          <li><a href="#architecture">Architecture</a></li>
+          <li><a href="#workflow">How It Works</a></li>
+          <li><a href="#integrations">Integrations</a></li>
+          <li><a href="#results">Results</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Pilot Systems</div>
+        <ul class="footer-links">
+          <li><a href="#pilot">Inventory Forecasting</a></li>
+          <li><a href="#pilot">Production Planning</a></li>
+          <li><a href="#pilot">Supply Chain</a></li>
+          <li><a href="#pilot">Distributor Intel</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="retalp_v2.html">← Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Retalp. All rights reserved.</div>
+      <div class="footer-status">
+        <span class="footer-status-dot"></span>
+        E³ System Online
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════ JAVASCRIPT ══════════════ -->
+<script>
+/* ── Circuit Board + Shooting Stars Background Animation ── */
+(function () {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  /* ── grid settings ── */
+  const CELL = 80;
+  const NODE_PROB = 0.55;
+  const TRACE_ALPHA = 0.09;
+  const DOT_ALPHA   = 0.22;
+  const PULSE_SPEED = 1.6;
+
+  let nodes = [], traces = [], pulses = [];
+
+  /* ── shooting stars ── */
+  const stars = [];
+  const STAR_COUNT = 6;   // max simultaneous shooting stars
+
+  function spawnStar() {
+    const goRight = Math.random() > 0.5;          // random L→R or R→L
+    const baseAngle = 20 + Math.random() * 20;    // 20–40° downward tilt
+    const angle = goRight
+      ? baseAngle * Math.PI / 180                  // left-to-right
+      : (180 - baseAngle) * Math.PI / 180;         // right-to-left
+
+    const speed  = 5 + Math.random() * 4;
+    const length = 45 + Math.random() * 50;        // short: 45–95 px
+
+    /* spawn from top edge, spread across full width */
+    const x = goRight
+      ? Math.random() * W * 0.6                    // start left portion
+      : W * 0.4 + Math.random() * W * 0.6;         // start right portion
+    const y = -(Math.random() * 60);               // just above viewport
+
+    stars.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      length,
+      alpha: 0.65 + Math.random() * 0.3,
+      width: 0.8 + Math.random() * 0.9,
+      dead: false,
+    });
+  }
+
+  for (let i = 0; i < STAR_COUNT; i++) {
+    /* stagger initial positions so they don't all spawn at once */
+    setTimeout(() => spawnStar(), i * 800 + Math.random() * 1200);
+  }
+  setInterval(() => {
+    if (stars.filter(s => !s.dead).length < STAR_COUNT) spawnStar();
+  }, 600);
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    build();
+  }
+
+  function build() {
+    nodes = []; traces = []; pulses = [];
+    const cols = Math.ceil(W / CELL) + 1;
+    const rows = Math.ceil(H / CELL) + 1;
+
+    /* build grid nodes with slight random offset */
+    const grid = [];
+    for (let r = 0; r < rows; r++) {
+      grid[r] = [];
+      for (let c = 0; c < cols; c++) {
+        if (Math.random() < NODE_PROB) {
+          const node = {
+            x: c * CELL + (Math.random() - .5) * 18,
+            y: r * CELL + (Math.random() - .5) * 18,
+            r: c, c_: r,
+          };
+          grid[r][c] = node;
+          nodes.push(node);
+        } else {
+          grid[r][c] = null;
+        }
+      }
+    }
+
+    /* connect neighbours (right + down only, to avoid duplicates) */
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const n = grid[r][c];
+        if (!n) continue;
+        /* right */
+        if (c + 1 < cols && grid[r][c + 1] && Math.random() > 0.25)
+          traces.push({ a: n, b: grid[r][c + 1] });
+        /* down */
+        if (r + 1 < rows && grid[r + 1] && grid[r + 1][c] && Math.random() > 0.25)
+          traces.push({ a: n, b: grid[r + 1][c] });
+        /* occasional diagonal-ish: right+down (makes it feel organic) */
+        if (c + 1 < cols && r + 1 < rows && grid[r + 1] && grid[r + 1][c + 1] && Math.random() > 0.88)
+          traces.push({ a: n, b: grid[r + 1][c + 1] });
+      }
+    }
+
+    /* seed initial pulses */
+    for (let i = 0; i < 10; i++) spawnPulse();
+  }
+
+  function spawnPulse() {
+    if (traces.length === 0) return;
+    const tr = traces[Math.floor(Math.random() * traces.length)];
+    const fwd = Math.random() > .5;
+    pulses.push({ trace: tr, t: 0, fwd, speed: PULSE_SPEED / Math.hypot(tr.b.x - tr.a.x, tr.b.y - tr.a.y) });
+  }
+
+  /* spawn new pulses continuously */
+  setInterval(spawnPulse, 300);
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    /* ── draw traces ── */
+    traces.forEach(tr => {
+      ctx.beginPath();
+      ctx.moveTo(tr.a.x, tr.a.y);
+      /* L-shaped (orthogonal) trace: go horizontal then vertical */
+      ctx.lineTo(tr.b.x, tr.a.y);
+      ctx.lineTo(tr.b.x, tr.b.y);
+      ctx.strokeStyle = `rgba(61,184,112,${TRACE_ALPHA})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    /* ── draw nodes ── */
+    nodes.forEach(n => {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, 2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(61,184,112,${DOT_ALPHA})`;
+      ctx.fill();
+    });
+
+    /* ── draw pulses ── */
+    for (let i = pulses.length - 1; i >= 0; i--) {
+      const p = pulses[i];
+      p.t += p.speed;
+      if (p.t >= 1) { pulses.splice(i, 1); continue; }
+
+      const a = p.fwd ? p.trace.a : p.trace.b;
+      const b = p.fwd ? p.trace.b : p.trace.a;
+
+      /* follow the same L-shape path */
+      const totalDx = b.x - a.x, totalDy = b.y - a.y;
+      const mid = { x: b.x, y: a.y };   // corner of the L
+      const segLen1 = Math.abs(totalDx);
+      const segLen2 = Math.abs(totalDy);
+      const totalLen = segLen1 + segLen2 || 1;
+      const traveled = p.t * totalLen;
+
+      let px, py;
+      if (traveled <= segLen1) {
+        px = a.x + (b.x - a.x) * (traveled / (segLen1 || 1));
+        py = a.y;
+      } else {
+        px = b.x;
+        py = a.y + (b.y - a.y) * ((traveled - segLen1) / (segLen2 || 1));
+      }
+
+      /* tail */
+      const tailT = Math.max(0, p.t - 0.18);
+      const tailLen = tailT * totalLen;
+      let tx, ty;
+      if (tailLen <= segLen1) {
+        tx = a.x + (b.x - a.x) * (tailLen / (segLen1 || 1));
+        ty = a.y;
+      } else {
+        tx = b.x;
+        ty = a.y + (b.y - a.y) * ((tailLen - segLen1) / (segLen2 || 1));
+      }
+
+      const grad = ctx.createLinearGradient(tx, ty, px, py);
+      grad.addColorStop(0, 'rgba(61,184,112,0)');
+      grad.addColorStop(1, 'rgba(93,232,154,0.85)');
+      ctx.beginPath();
+      ctx.moveTo(tx, ty);
+      /* pulse always travels as straight segments matching the trace shape */
+      if (tailLen <= segLen1 && traveled <= segLen1) {
+        ctx.lineTo(px, py);
+      } else if (tailLen > segLen1) {
+        ctx.lineTo(px, py);
+      } else {
+        ctx.lineTo(mid.x, mid.y);
+        ctx.lineTo(px, py);
+      }
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+
+      /* glowing head dot */
+      ctx.beginPath();
+      ctx.arc(px, py, 2.8, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(93,232,154,0.95)';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(px, py, 5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(93,232,154,0.15)';
+      ctx.fill();
+    }
+
+    /* ── draw shooting stars ── */
+    for (let i = stars.length - 1; i >= 0; i--) {
+      const s = stars[i];
+      if (s.dead) { stars.splice(i, 1); continue; }
+
+      /* move */
+      s.x += s.vx;
+      s.y += s.vy;
+
+      /* kill when fully off-screen (any direction) */
+      if (s.y > H + s.length || s.x > W + s.length || s.x < -s.length) {
+        s.dead = true;
+        continue;
+      }
+
+      /* tail start (behind the head by `length` pixels) */
+      const tx = s.x - Math.cos(Math.atan2(s.vy, s.vx)) * s.length;
+      const ty = s.y - Math.sin(Math.atan2(s.vy, s.vx)) * s.length;
+
+      /* gradient: transparent tail → dark green head — visible on both white & dark bg */
+      const grad = ctx.createLinearGradient(tx, ty, s.x, s.y);
+      grad.addColorStop(0,   'rgba(4,120,87,0)');
+      grad.addColorStop(0.5, `rgba(5,150,105,${s.alpha * 0.45})`);
+      grad.addColorStop(1,   `rgba(4,120,87,${s.alpha})`);
+
+      ctx.beginPath();
+      ctx.moveTo(tx, ty);
+      ctx.lineTo(s.x, s.y);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = s.width + 0.5;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      /* dark green glowing head */
+      const hg = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 7);
+      hg.addColorStop(0,   `rgba(6,178,120,${s.alpha})`);
+      hg.addColorStop(0.4, `rgba(4,120,87,${s.alpha * 0.55})`);
+      hg.addColorStop(1,   'rgba(4,120,87,0)');
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, 7, 0, Math.PI * 2);
+      ctx.fillStyle = hg;
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', () => { resize(); });
+  draw();
+})();
+
+/* ── Scroll Reveal ── */
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(e => {
+  e.forEach(el => { if (el.isIntersecting) el.target.classList.add('in'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+reveals.forEach(el => obs.observe(el));
+
+setTimeout(() => {
+  document.querySelectorAll('.hero-section .reveal').forEach(el => el.classList.add('in'));
+}, 120);
+
+
+/* ── Smooth anchors ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,2733 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retalp — AI Execution Layer for Enterprise Operations</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&amp;family=Instrument+Sans:ital,wdth,wght@0,75..100,400..700;1,75..100,400..500&amp;display=swap" rel="stylesheet">
+
+<style>
+@charset "utf-8";
+
+:root { --g-deep: #047857; --g-mid: #059669; --g-vivid: #10b981; --g-glow: #34d399; --g-pale: #d1fae5; --g-glass: rgba(16,185,129,.12); --ink: #0f172a; --ink-80: #1e293b; --ink-60: #334155; --muted: rgba(255,255,255,0.55); --line: rgba(255,255,255,.1); --surface: #1e293b; --white: #ffffff; --dark-bg: #0f172a; --dark-green: #1e293b; --dark-surface: rgba(15,23,42,0.95); --mono: 'DM Mono', monospace; --sans: 'Instrument Sans', sans-serif; --ease-smooth: cubic-bezier(.4,0,.2,1); --ease-spring: cubic-bezier(.34,1.56,.64,1); }
+
+*, ::before, ::after { box-sizing: border-box; margin: 0px; padding: 0px; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body { font-family: var(--sans); background: #ffffff; color: #0a0a0a; line-height: 1.6; overflow-x: hidden; }
+
+::-webkit-scrollbar { width: 4px; }
+
+::-webkit-scrollbar-track { background: #0f172a; }
+
+::-webkit-scrollbar-thumb { background: var(--g-mid); border-radius: 2px; }
+
+.t-hero { font-family: var(--sans); font-size: clamp(2.8rem, 6vw, 5.2rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.035em; }
+
+.t-h2 { font-family: var(--sans); font-size: clamp(2rem, 3.5vw, 3.2rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; }
+
+.t-h3 { font-family: var(--sans); font-size: clamp(1.2rem, 2vw, 1.6rem); font-weight: 600; letter-spacing: -0.02em; }
+
+.t-mono { font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.05em; color: var(--g-vivid); }
+
+.t-body { font-size: 1.05rem; line-height: 1.75; color: rgba(255,255,255,0.6); }
+
+.t-small { font-size: 0.875rem; color: rgba(255,255,255,0.45); }
+
+.wrap { max-width: 1280px; margin: 0px auto; padding: 0px 40px; position: relative; z-index: 2; }
+
+.section { padding: 120px 0px; position: relative; }
+
+.section-sm { padding: 80px 0px; }
+
+.section-light { background: #0f172a; color: #ffffff; }
+
+.section-grey { background: #1e293b; color: #ffffff; }
+
+.section-dark { background: linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-green) 50%, var(--dark-bg) 100%); color: var(--white); position: relative; overflow: hidden; }
+
+.section-dark::before { content: ""; position: absolute; inset: 0px; background: radial-gradient(60% 40% at 20% 30%, rgba(45, 122, 79, 0.08) 0%, transparent 60%), radial-gradient(50% 50% at 80% 70%, rgba(45, 122, 79, 0.06) 0%, transparent 50%); pointer-events: none; }
+
+
+.hero-section { background: var(--white); padding-top: 140px; min-height: 100vh; position: relative; overflow: hidden; }
+
+.hero-section::before { content: ""; position: absolute; top: 0px; right: 0px; width: 60%; height: 100%; background: radial-gradient(80% 60% at 70% 40%, rgba(61, 184, 112, 0.04) 0%, transparent 60%); pointer-events: none; }
+
+.hero { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 60px; min-height: calc(-140px + 100vh); }
+
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 5px 14px; background: rgba(61, 184, 112, 0.08); border: 1px solid rgba(61, 184, 112, 0.2); border-radius: 100px; margin-bottom: 28px; }
+
+.hero-eyebrow-dot { width: 7px; height: 7px; background: var(--g-glow); border-radius: 50%; box-shadow: 0 0 8px var(--g-glow); animation: 2.4s ease-in-out 0s infinite normal none running breathe; }
+
+@keyframes breathe { 
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--g-glow); }
+  50% { opacity: 0.5; box-shadow: 0 0 3px var(--g-vivid); }
+}
+
+.hero-headline { margin-bottom: 22px; color: #ffffff; }
+
+.hero-headline .accent { color: var(--g-vivid); }
+
+.hero-sub { margin-bottom: 44px; max-width: 520px; color: var(--muted); }
+
+.hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+.btn-primary-lg { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; background: var(--g-mid); color: var(--white); font-size: 0.95rem; font-weight: 600; border-radius: 14px; border: none; cursor: pointer; text-decoration: none; transition: all .25s var(--ease-smooth); box-shadow: rgba(61, 184, 112, 0) 0px 0px 0px 0px; position: relative; }
+
+.btn-primary-lg::before { content: ""; position: absolute; inset: -3px; border-radius: 17px; background: var(--g-vivid); opacity: 0; animation: 2.5s ease-in-out 0s infinite normal none running pulse-ring; z-index: -1; }
+
+@keyframes pulse-ring { 
+  0%, 100% { opacity: 0; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.05); }
+}
+
+.btn-primary-lg:hover { background: var(--g-vivid); box-shadow: rgba(61, 184, 112, 0.3) 0px 0px 36px 6px; transform: translateY(-2px); }
+
+.btn-primary-lg:hover::before { animation: auto ease 0s 1 normal none running none; opacity: 0; }
+
+.btn-ghost-lg { display: inline-flex; align-items: center; gap: 8px; padding: 16px 28px; background: transparent; color: rgba(255,255,255,0.7); font-size: 0.95rem; font-weight: 500; border-radius: 14px; border: 1px solid rgba(255,255,255,0.15); cursor: pointer; text-decoration: none; transition: 0.25s; }
+
+.btn-ghost-lg:hover { color: #ffffff; border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.05); }
+
+.hero-visual { position: relative; height: 520px; display: flex; align-items: center; justify-content: center; }
+
+.hero-svg-wrap { width: 100%; height: 100%; position: relative; }
+
+.flow-chip { padding: 7px 12px; border-radius: 8px; font-family: var(--mono); font-size: 0.72rem; white-space: nowrap; animation: 3s ease-in-out 0s infinite normal none running float-data; }
+
+.flow-chip.messy { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.35); filter: blur(0.3px); }
+
+.flow-chip.clean { background: rgba(61, 184, 112, 0.1); border: 1px solid rgba(61, 184, 112, 0.25); color: var(--g-vivid); }
+
+@keyframes float-data { 
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+.flow-chip:nth-child(1) { animation-delay: 0s; }
+
+.flow-chip:nth-child(2) { animation-delay: 0.3s; }
+
+.flow-chip:nth-child(3) { animation-delay: 0.6s; }
+
+.flow-chip:nth-child(4) { animation-delay: 0.9s; }
+
+.flow-chip:nth-child(5) { animation-delay: 1.2s; }
+
+.e3-diamond { width: 120px; height: 120px; background: linear-gradient(135deg, var(--g-deep), var(--g-mid)); transform: rotate(45deg); border-radius: 18px; display: flex; align-items: center; justify-content: center; box-shadow: rgba(45, 122, 79, 0.5) 0px 0px 60px, rgba(45, 122, 79, 0.15) 0px 0px 120px; position: relative; flex-shrink: 0; animation: 3s ease-in-out 0s infinite normal none running pulse-diamond; }
+
+@keyframes pulse-diamond { 
+  0%, 100% { box-shadow: rgba(45, 122, 79, 0.5) 0px 0px 60px, rgba(45, 122, 79, 0.15) 0px 0px 120px; }
+  50% { box-shadow: rgba(61, 184, 112, 0.6) 0px 0px 80px, rgba(61, 184, 112, 0.2) 0px 0px 160px; }
+}
+
+.e3-label { transform: rotate(-45deg); font-family: var(--sans); font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; color: var(--white); text-align: center; line-height: 1.2; }
+
+.e3-label sub { font-size: 0.7em; vertical-align: sub; color: var(--g-glow); }
+
+.hero-flow-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; }
+
+.flow-connector { flex: 1 1 0%; height: 2px; background: linear-gradient(90deg, transparent, rgba(61, 184, 112, 0.4), transparent); position: relative; overflow: visible; }
+
+.flow-connector::after { content: ""; position: absolute; top: 50%; left: -20%; width: 40%; height: 100%; background: linear-gradient(90deg, transparent, var(--g-glow)); animation: 2s ease-in-out 0s infinite normal none running flow-pulse; border-radius: 2px; }
+
+@keyframes flow-pulse { 
+  0% { left: -40%; opacity: 0; }
+  30% { opacity: 1; }
+  100% { left: 120%; opacity: 0; }
+}
+
+.flow-connector.right::after { animation-delay: 0.5s; }
+
+.action-pulse { display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: rgba(61, 184, 112, 0.08); border: 1px solid rgba(61, 184, 112, 0.2); border-radius: 10px; font-size: 0.78rem; font-weight: 500; color: var(--g-mid); animation: 3s ease-in-out 0s infinite normal none running action-appear; white-space: nowrap; }
+
+.action-pulse:nth-child(1) { animation-delay: 0s; }
+
+.action-pulse:nth-child(2) { animation-delay: 0.6s; }
+
+.action-pulse:nth-child(3) { animation-delay: 1.2s; }
+
+.action-pulse:nth-child(4) { animation-delay: 1.8s; }
+
+@keyframes action-appear { 
+  0%, 100% { opacity: 0.4; transform: translateX(0px); }
+  50% { opacity: 1; transform: translateX(4px); }
+}
+
+.action-dot { width: 7px; height: 7px; background: var(--g-glow); border-radius: 50%; box-shadow: 0 0 8px var(--g-glow); animation: 1.5s ease-in-out 0s infinite normal none running breathe; }
+
+.automate-section { background: var(--surface); padding: 100px 0px; }
+
+.automate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 50px; }
+
+.automate-card { background: var(--white); border: 1px solid rgba(0, 0, 0, 0.06); border-radius: 20px; padding: 32px 28px; position: relative; overflow: hidden; transition: all .35s var(--ease-smooth); }
+
+.automate-card::before { content: ""; position: absolute; top: 0px; left: 0px; right: 0px; height: 3px; background: linear-gradient(90deg, var(--g-mid), var(--g-vivid)); transform: scaleX(0); transform-origin: left center; transition: transform .35s var(--ease-smooth); }
+
+.automate-card:hover { border-color: rgba(61, 184, 112, 0.2); box-shadow: rgba(0, 0, 0, 0.08) 0px 20px 60px; transform: translateY(-4px); }
+
+.automate-card:hover::before { transform: scaleX(1); }
+
+.automate-before { padding: 12px 16px; background: rgba(220, 60, 60, 0.05); border: 1px solid rgba(220, 60, 60, 0.12); border-radius: 10px; font-family: var(--mono); font-size: 0.75rem; color: rgb(181, 69, 69); margin-bottom: 16px; line-height: 1.6; }
+
+.automate-after { padding: 12px 16px; background: rgba(61, 184, 112, 0.06); border: 1px solid rgba(61, 184, 112, 0.15); border-radius: 10px; font-family: var(--mono); font-size: 0.75rem; color: var(--g-mid); line-height: 1.6; }
+
+.automate-arrow { display: flex; align-items: center; justify-content: center; padding: 8px 0px; color: var(--g-vivid); font-size: 1.2rem; }
+
+.e3-section { background: linear-gradient(rgb(4, 7, 6) 0%, rgb(8, 20, 16) 30%, rgb(10, 24, 18) 50%, rgb(8, 20, 16) 70%, rgb(4, 7, 6) 100%); padding: 120px 0px; position: relative; overflow: hidden; }
+
+.e3-section::before { content: ""; position: absolute; inset: 0px; background: radial-gradient(80% 50% at 30% 20%, rgba(45, 122, 79, 0.1) 0%, transparent 50%), radial-gradient(60% 60% at 70% 80%, rgba(45, 122, 79, 0.08) 0%, transparent 50%); pointer-events: none; }
+
+.e3-section::after { content: ""; position: absolute; inset: 0px; background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); opacity: 0.03; pointer-events: none; }
+
+.e3-header { text-align: center; margin-bottom: 60px; }
+
+.e3-header .sec-kicker { color: var(--g-vivid); justify-content: center; }
+
+.e3-header .t-h2 { color: var(--white); }
+
+.e3-subtitle { font-size: 1.1rem; color: rgba(255, 255, 255, 0.6); max-width: 600px; margin: 18px auto 0px; line-height: 1.7; }
+
+.split-track-container { display: grid; grid-template-columns: 1fr 400px; gap: 60px; align-items: center; margin-top: 50px; }
+
+.track-visual { position: relative; height: 280px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 20px; overflow: hidden; }
+
+.action-log { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(61, 184, 112, 0.2); border-radius: 16px; overflow: hidden; }
+
+.action-log-header { padding: 14px 20px; background: rgba(61, 184, 112, 0.08); border-bottom: 1px solid rgba(61, 184, 112, 0.15); display: flex; align-items: center; gap: 10px; }
+
+.action-log-dot { width: 8px; height: 8px; background: var(--g-glow); border-radius: 50%; animation: 1.5s ease-in-out 0s infinite normal none running breathe; }
+
+.action-log-title { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--g-vivid); text-transform: uppercase; }
+
+.action-log-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+
+.log-entry { font-family: var(--mono); font-size: 0.75rem; line-height: 1.6; color: rgba(255, 255, 255, 0.7); animation: 0.5s ease-out 0s 1 normal forwards running log-fade-in; }
+
+.log-entry .time { color: rgba(255, 255, 255, 0.35); }
+
+.log-entry .label { color: rgba(255, 255, 255, 0.5); }
+
+.log-entry .action { color: var(--g-vivid); }
+
+.log-entry .warning { color: rgb(251, 191, 36); }
+
+@keyframes log-fade-in { 
+  0% { opacity: 0; transform: translateY(-8px); }
+  100% { opacity: 1; transform: translateY(0px); }
+}
+
+.mcp-badge { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: rgba(61, 184, 112, 0.08); border: 1px solid rgba(61, 184, 112, 0.2); border-radius: 100px; margin-top: 24px; }
+
+.mcp-badge-dot { width: 6px; height: 6px; background: var(--g-glow); border-radius: 50%; }
+
+.mcp-badge-text { font-family: var(--mono); font-size: 0.7rem; color: rgba(255, 255, 255, 0.7); letter-spacing: 0.04em; }
+
+.cap-section { background: var(--white); overflow: hidden; }
+
+.cap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 50px; }
+
+.cap-card { background: var(--surface); border: 1px solid rgba(0, 0, 0, 0.06); border-radius: 20px; padding: 28px 24px; transition: all .35s var(--ease-smooth); position: relative; overflow: hidden; }
+
+.cap-card::after { content: ""; position: absolute; inset: 0px; background: linear-gradient(135deg, rgba(61, 184, 112, 0.08) 0%, transparent 50%); opacity: 0; transition: opacity 0.35s; border-radius: 20px; }
+
+.cap-card:hover { border-color: rgba(61, 184, 112, 0.25); transform: translateY(-4px); box-shadow: rgba(0, 0, 0, 0.08) 0px 20px 60px; }
+
+.cap-card:hover::after { opacity: 1; }
+
+.cap-icon-wrap { width: 44px; height: 44px; border: 1.5px solid rgba(61, 184, 112, 0.25); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; position: relative; z-index: 1; transition: 0.35s; }
+
+.cap-card:hover .cap-icon-wrap { background: rgba(61, 184, 112, 0.1); border-color: var(--g-vivid); }
+
+.cap-icon-svg { width: 24px; height: 24px; stroke: var(--g-mid); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.cap-tag { font-family: var(--mono); font-size: 0.65rem; color: var(--g-vivid); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; position: relative; z-index: 1; }
+
+.cap-title { font-family: var(--sans); font-size: 1rem; font-weight: 700; color: #ffffff; margin-bottom: 12px; position: relative; z-index: 1; }
+
+.synthetic-chip { padding: 10px 14px; background: var(--white); border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 10px; font-family: var(--mono); font-size: 0.7rem; color: var(--muted); position: relative; z-index: 1; }
+
+.synthetic-chip-graph { display: flex; align-items: flex-end; gap: 3px; height: 24px; margin-bottom: 6px; }
+
+.synthetic-chip-graph .bar { width: 4px; background: var(--g-mid); border-radius: 2px; opacity: 0.3; }
+
+.synthetic-chip-graph .bar.active { background: var(--g-vivid); opacity: 1; }
+
+.synthetic-chip-status { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+
+.synthetic-chip-status .progress-bar { flex: 1 1 0%; height: 6px; background: rgba(0, 0, 0, 0.08); border-radius: 3px; overflow: hidden; }
+
+.synthetic-chip-status .progress-fill { height: 100%; background: linear-gradient(90deg, var(--g-mid), var(--g-vivid)); border-radius: 3px; }
+
+.synthetic-chip-label { font-size: 0.65rem; color: var(--g-mid); }
+
+.impact-section { background: linear-gradient(rgb(4, 7, 6) 0%, rgb(8, 20, 16) 30%, rgb(10, 24, 18) 50%, rgb(8, 20, 16) 70%, rgb(4, 7, 6) 100%); padding: 120px 0px; position: relative; overflow: hidden; }
+
+.impact-section::before { content: ""; position: absolute; inset: 0px; background: radial-gradient(60% 50% at 20% 30%, rgba(45, 122, 79, 0.08) 0%, transparent 50%), radial-gradient(70% 40% at 80% 70%, rgba(45, 122, 79, 0.06) 0%, transparent 50%); pointer-events: none; }
+
+.case-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; margin-top: 60px; border-radius: 24px; overflow: hidden; }
+
+.case-panel { padding: 52px 48px; position: relative; overflow: hidden; }
+
+.case-panel.problem { background: linear-gradient(135deg, rgba(220, 50, 50, 0.08), rgba(220, 50, 50, 0.03)); border: 1px solid rgba(220, 50, 50, 0.15); border-radius: 22px 4px 4px 22px; }
+
+.case-panel.solution { background: linear-gradient(135deg, rgba(61, 184, 112, 0.08), rgba(61, 184, 112, 0.03)); border: 1px solid rgba(61, 184, 112, 0.2); border-radius: 4px 22px 22px 4px; }
+
+.case-tag { display: inline-flex; align-items: center; gap: 7px; padding: 4px 14px; border-radius: 100px; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 28px; }
+
+.case-tag.problem-tag { background: rgba(220, 50, 50, 0.12); border: 1px solid rgba(220, 50, 50, 0.25); color: rgb(248, 113, 113); }
+
+.case-tag.solution-tag { background: rgba(61, 184, 112, 0.12); border: 1px solid rgba(61, 184, 112, 0.3); color: var(--g-vivid); }
+
+.case-icon { font-size: 3rem; margin-bottom: 20px; display: block; }
+
+.case-title { font-family: var(--sans); font-size: 1.35rem; font-weight: 700; margin-bottom: 14px; color: var(--white); }
+
+.case-desc { font-size: 0.92rem; color: rgba(255, 255, 255, 0.55); line-height: 1.7; margin-bottom: 24px; }
+
+.case-metric { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-radius: 12px; }
+
+.case-metric.bad { background: rgba(220, 50, 50, 0.08); border: 1px solid rgba(220, 50, 50, 0.15); }
+
+.case-metric.good { background: rgba(61, 184, 112, 0.08); border: 1px solid rgba(61, 184, 112, 0.2); }
+
+.metric-num { font-family: var(--sans); font-size: 1.8rem; font-weight: 700; line-height: 1; }
+
+.metric-num.red { color: rgb(248, 113, 113); }
+
+.metric-num.green { color: var(--g-vivid); }
+
+.metric-label { font-size: 0.85rem; color: rgba(255, 255, 255, 0.5); line-height: 1.4; }
+
+.mini-graph { display: flex; align-items: flex-end; gap: 4px; height: 40px; margin-top: 16px; }
+
+.mg-bar { flex: 1 1 0%; border-radius: 3px 3px 0px 0px; background: var(--g-mid); opacity: 0.5; transition: 0.3s; }
+
+.mg-bar.active { opacity: 1; background: var(--g-vivid); box-shadow: rgba(61, 184, 112, 0.4) 0px 0px 10px; }
+
+.howwework-section { background: var(--surface); padding: 100px 0px; }
+
+.tech-proof-box { max-width: 720px; margin: 40px auto 0px; padding: 24px 32px; background: var(--white); border: 1px solid rgba(61, 184, 112, 0.15); border-radius: 16px; text-align: center; }
+
+.tech-proof-box p { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+.tech-proof-box strong { color: var(--g-mid); }
+
+.roadmap-section { background: var(--white); padding: 120px 0px; }
+
+.roadmap-container { max-width: 760px; margin: 60px auto 0px; }
+
+.roadmap-hero-text { text-align: center; margin-bottom: 60px; font-family: var(--mono); font-size: 1.3rem; font-weight: 500; color: var(--muted); padding: 24px 36px; background: rgba(61, 184, 112, 0.05); border: 1px solid rgba(61, 184, 112, 0.15); border-radius: 16px; }
+
+.roadmap-hero-text span { color: var(--g-vivid); font-weight: 600; }
+
+.pipeline { position: relative; padding-left: 48px; }
+
+.pipeline-line { position: absolute; left: 11px; top: 20px; bottom: 20px; width: 2px; background: rgba(0, 0, 0, 0.08); border-radius: 2px; }
+
+.pipeline-progress { position: absolute; left: 0px; top: 0px; width: 100%; height: 0%; background: linear-gradient(180deg, var(--g-vivid), var(--g-mid)); border-radius: 2px; transition: height 0.1s linear; box-shadow: 0 0 10px var(--g-vivid); }
+
+.pipeline-step { display: flex; align-items: flex-start; gap: 0px; margin-bottom: 36px; position: relative; }
+
+.pipeline-step:last-child { margin-bottom: 0px; }
+
+.step-dot-col { position: absolute; left: -48px; display: flex; flex-direction: column; align-items: center; }
+
+.step-dot { width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(0, 0, 0, 0.1); background: var(--white); display: flex; align-items: center; justify-content: center; transition: all .4s var(--ease-smooth); position: relative; z-index: 2; }
+
+.step-dot.active { border-color: var(--g-vivid); background: rgba(61, 184, 112, 0.1); box-shadow: rgba(61, 184, 112, 0.4) 0px 0px 16px; }
+
+.step-dot.active::after { content: ""; position: absolute; width: 10px; height: 10px; background: var(--g-vivid); border-radius: 50%; }
+
+.step-dot.done { border-color: var(--g-mid); background: var(--g-mid); }
+
+.step-dot.done::after { content: "✓"; font-size: 0.7rem; color: var(--white); font-weight: 700; }
+
+.step-content { background: var(--surface); border: 1px solid rgba(0, 0, 0, 0.06); border-radius: 16px; padding: 24px 28px; flex: 1 1 0%; transition: 0.35s; }
+
+.step-content:hover { border-color: rgba(61, 184, 112, 0.2); background: var(--white); }
+
+.step-week { font-family: var(--mono); font-size: 0.68rem; color: var(--g-vivid); letter-spacing: 0.08em; margin-bottom: 8px; }
+
+.step-name { font-family: var(--sans); font-size: 1.05rem; font-weight: 700; color: #ffffff; margin-bottom: 8px; }
+
+.step-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.6; }
+
+.final-cta-section { background: var(--white); padding: 100px 0px 120px; text-align: center; }
+
+.final-cta-headline { font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 600; color: var(--muted); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+.btn-primary-xl { display: inline-flex; align-items: center; gap: 12px; padding: 20px 48px; background: var(--g-mid); color: var(--white); font-size: 1.1rem; font-weight: 600; border-radius: 16px; border: none; cursor: pointer; text-decoration: none; transition: all .3s var(--ease-smooth); position: relative; box-shadow: rgba(61, 184, 112, 0.25) 0px 4px 20px; }
+
+.btn-primary-xl::before { content: ""; position: absolute; inset: -4px; border-radius: 20px; background: var(--g-vivid); opacity: 0; z-index: -1; transition: opacity 0.3s; }
+
+.btn-primary-xl:hover { background: var(--g-vivid); transform: translateY(-3px); box-shadow: rgba(61, 184, 112, 0.4) 0px 8px 40px; }
+
+.btn-primary-xl:hover::before { opacity: 0.15; }
+
+.footer { background: var(--ink); padding: 60px 0px 32px; color: var(--white); }
+
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+
+.footer-brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-bottom: 14px; }
+
+.footer .nav-logo-text { color: var(--white); }
+
+.footer-tagline { font-size: 0.875rem; color: rgba(255, 255, 255, 0.4); line-height: 1.65; max-width: 280px; margin-bottom: 16px; }
+
+.footer-tagline-highlight { display: block; font-family: var(--mono); font-size: 0.75rem; color: var(--g-vivid); letter-spacing: 0.04em; margin-top: 12px; }
+
+.footer-col-title { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.3); margin-bottom: 16px; }
+
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+.footer-links a { font-size: 0.875rem; color: rgba(255, 255, 255, 0.45); text-decoration: none; transition: color 0.2s; }
+
+.footer-links a:hover { color: var(--g-vivid); }
+
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 28px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+
+.footer-copy { font-family: var(--mono); font-size: 0.72rem; color: rgba(255, 255, 255, 0.25); }
+
+.footer-status { display: inline-flex; align-items: center; gap: 7px; padding: 5px 14px; background: rgba(61, 184, 112, 0.08); border: 1px solid rgba(61, 184, 112, 0.2); border-radius: 100px; font-family: var(--mono); font-size: 0.68rem; color: var(--g-vivid); }
+
+.footer-status-dot { width: 6px; height: 6px; background: var(--g-vivid); border-radius: 50%; box-shadow: 0 0 6px var(--g-glow); animation: 2s ease-in-out 0s infinite normal none running breathe; }
+
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity .7s var(--ease-smooth), transform .7s var(--ease-smooth); }
+
+.reveal.in { opacity: 1; transform: translateY(0px); }
+
+.d1 { transition-delay: 0.1s; }
+
+.d2 { transition-delay: 0.2s; }
+
+.d3 { transition-delay: 0.3s; }
+
+.d4 { transition-delay: 0.4s; }
+
+.section-header { margin-bottom: 40px; }
+
+.section-header.center { text-align: center; }
+
+.sec-kicker { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g-vivid); margin-bottom: 16px; }
+
+.sec-kicker::before { content: ""; width: 20px; height: 1.5px; background: var(--g-vivid); }
+
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .automate-grid { grid-template-columns: 1fr; }
+  .split-track-container { grid-template-columns: 1fr; }
+  .cap-grid { grid-template-columns: repeat(2, 1fr); }
+  .case-grid { grid-template-columns: 1fr; }
+  .case-panel.problem { border-radius: 22px 22px 4px 4px; }
+  .case-panel.solution { border-radius: 4px 4px 22px 22px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .wrap { padding: 0px 20px; }
+  .nav-island { left: 20px; right: 20px; transform: none; top: 16px; }
+  .nav-link:not(:last-child) { display: none; }
+  .cap-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
+.flow-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-top: 60px;
+}
+.bento-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 24px;
+  padding: 36px 32px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .35s var(--ease-smooth);
+}
+.bento-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(61,184,112,.08) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity .35s;
+}
+.bento-card:hover { border-color: rgba(61,184,112,.35); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+.bento-card:hover::before { opacity: 1; }
+.bento-icon-area {
+  height: 120px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+  position: relative;
+}
+.bento-label { font-family: var(--mono); font-size: 0.7rem; color: var(--g-vivid); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; }
+.bento-title { font-family: var(--sans); font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+.bento-desc { font-size: 0.88rem; color: rgba(255,255,255,.5); line-height: 1.65; }
+.frag-icons {
+  position: relative; width: 160px; height: 100px;
+}
+.frag-icon {
+  position: absolute;
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  transition: all .6s var(--ease-smooth);
+}
+.bento-card:hover .frag-icon { transform: translate(var(--tx), var(--ty)); background: rgba(61,184,112,.12); border-color: rgba(61,184,112,.3); }
+.merge-center {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 36px; height: 36px;
+  background: var(--g-mid);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 0 20px rgba(45,122,79,.5);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity .4s .2s;
+}
+.bento-card:hover .merge-center { opacity: 1; }
+.dashboard-switch {
+  display: flex; gap: 24px; align-items: center; justify-content: center;
+  width: 100%;
+}
+.dash-dead {
+  width: 70px; height: 52px;
+  background: rgba(255,80,80,.08);
+  border: 1px solid rgba(255,80,80,.2);
+  border-radius: 10px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px;
+  position: relative;
+}
+.dash-dead::after {
+  content: '';
+  position: absolute; inset: -2px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, rgba(255,80,80,.15), transparent);
+}
+.dash-bars { display: flex; align-items: flex-end; gap: 3px; }
+.dash-bar { width: 8px; background: rgba(255,255,255,.15); border-radius: 2px; }
+.cross-line {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; color: rgba(255,80,80,.6);
+  z-index: 3;
+}
+.arrow-switch { font-size: 1.2rem; color: rgba(255,255,255,.2); transition: color .3s; }
+.bento-card:hover .arrow-switch { color: var(--g-vivid); }
+.dash-live {
+  width: 70px; height: 52px;
+  background: rgba(61,184,112,.08);
+  border: 1px solid rgba(61,184,112,.3);
+  border-radius: 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+}
+.live-dot-row { display: flex; gap: 4px; }
+.live-dot { width: 7px; height: 7px; background: var(--g-vivid); border-radius: 50%; animation: breathe 1.5s ease-in-out infinite; }
+.live-dot:nth-child(2) { animation-delay: .3s; }
+.live-dot:nth-child(3) { animation-delay: .6s; }
+.chaos-lines {
+  width: 160px; height: 80px; position: relative;
+}
+.chaos-path {
+  position: absolute; top: 0; left: 0;
+  transition: d .5s;
+}
+svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
+.cap-track-wrap {
+  overflow: hidden;
+  margin: 60px -40px 0;
+  padding: 0 40px;
+  position: relative;
+}
+.cap-track-wrap::before, .cap-track-wrap::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; width: 120px; z-index: 10;
+  pointer-events: none;
+}
+.cap-track-wrap::before { left: 0; background: linear-gradient(90deg, var(--ink), transparent); }
+.cap-track-wrap::after { right: 0; background: linear-gradient(-90deg, var(--ink), transparent); }
+.cap-track {
+  display: flex; gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 20px 0 30px;
+  cursor: grab;
+}
+.cap-track::-webkit-scrollbar { display: none; }
+.cap-track.grabbing { cursor: grabbing; }
+.cap-bullets { list-style: none; display: flex; flex-direction: column; gap: 7px; position: relative; z-index: 1; }
+.cap-bullets li { font-size: 0.83rem; color: rgba(255,255,255,.5); padding-left: 0; position: relative; display: flex; align-items: center; gap: 8px; }
+.cap-bullets li::before { content: none; }
+.case-section { background: rgba(255,255,255,.01); }
+.pilot-section { text-align: center; }
+.pilot-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 52px 0 52px;
+}
+.pilot-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: 28px 20px;
+  text-align: left;
+  cursor: pointer;
+  transition: all .3s var(--ease-smooth);
+  position: relative; overflow: hidden;
+}
+.pilot-card::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--g-vivid), transparent);
+  transform: scaleX(0);
+  transition: transform .3s var(--ease-smooth);
+}
+.pilot-card:hover { border-color: rgba(61,184,112,.3); transform: translateY(-4px); }
+.pilot-card:hover::before { transform: scaleX(1); }
+.pilot-emoji { font-size: 1.6rem; margin-bottom: 14px; display: block; }
+.pilot-title { font-family: var(--sans); font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+.pilot-desc { font-size: 0.8rem; color: rgba(255,255,255,.45); line-height: 1.55; }
+.cta-glass {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 52px 56px;
+  background: rgba(255,255,255,.05);
+  backdrop-filter: blur(32px) saturate(150%);
+  -webkit-backdrop-filter: blur(32px) saturate(150%);
+  border: 1px solid rgba(61,184,112,.25);
+  border-radius: 28px;
+  box-shadow: 0 0 80px rgba(45,122,79,.15), 0 40px 80px rgba(0,0,0,.3);
+  position: relative; overflow: hidden;
+}
+.cta-glass::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at 40% 40%, rgba(61,184,112,.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+.cta-glass .t-h2 { margin-bottom: 14px; }
+.cta-glass .t-body { margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
+.cta-actions-center { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+.cta-note { margin-top: 18px; font-family: var(--mono); font-size: 0.72rem; color: rgba(255,255,255,.3); letter-spacing: .04em; }
+.rail-section {
+  padding: 100px 0 120px;
+  position: relative;
+  overflow: hidden;
+}
+.rail-section::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px; height: 400px;
+  background: radial-gradient(ellipse at center, rgba(45,122,79,.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.rail-header {
+  text-align: center;
+  margin-bottom: 72px;
+}
+.rail-header .sec-kicker {
+  justify-content: center;
+}
+.rail-subtitle {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,.5);
+  max-width: 560px;
+  margin: 14px auto 0;
+  line-height: 1.7;
+}
+.rail-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 720px;
+  margin: 64px auto 0;
+}
+.rail-stat {
+  text-align: center;
+  padding: 28px 20px;
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 16px;
+  transition: all .35s var(--ease-smooth);
+}
+.rail-stat:hover {
+  border-color: rgba(61,184,112,.25);
+  background: rgba(61,184,112,.04);
+  transform: translateY(-3px);
+}
+.rail-stat-num {
+  font-family: var(--sans);
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 8px;
+  color: var(--g-vivid);
+}
+.rail-stat-label {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,.4);
+  line-height: 1.5;
+}
+.rail-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+.rail-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: .06em;
+  color: rgba(255,255,255,.5);
+}
+.legend-line {
+  width: 32px;
+  height: 3px;
+  border-radius: 2px;
+  position: relative;
+  overflow: visible;
+}
+.legend-line.legacy {
+  background: rgba(120,120,120,.5);
+  border-top: 2px dashed rgba(120,120,120,.5);
+  background: none;
+}
+.legend-line.retalp {
+  background: linear-gradient(90deg, var(--g-mid), var(--g-glow));
+  box-shadow: 0 0 8px rgba(61,184,112,.5);
+}
+.rail-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.rail-roadblock-labels {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 80px;
+  margin-top: 12px;
+}
+.rl-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: .05em;
+  color: rgba(200,80,80,.6);
+  text-transform: uppercase;
+}
+.rl-dot {
+  width: 8px; height: 8px;
+  background: rgba(200,80,80,.5);
+  border-radius: 50%;
+}
+.rail-finish-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 28px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: .08em;
+  color: var(--g-vivid);
+  text-transform: uppercase;
+}
+.rail-finish-icon {
+  width: 48px; height: 48px;
+  background: rgba(61,184,112,.12);
+  border: 1.5px solid rgba(61,184,112,.4);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 0 20px rgba(61,184,112,.2);
+  animation: breathe 2.4s ease-in-out infinite;
+}
+
+/* ====== DARK-THEME OVERRIDES ====== */
+#bg-canvas { display: none !important; }
+
+/* Hero section */
+.hero-section { background: #0f172a; }
+.hero-headline { color: #ffffff; }
+.hero-sub { color: rgba(255,255,255,0.6); }
+.flow-chip.messy { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.35); }
+
+/* Bento cards */
+.bento-card { background: #1e293b; border: 1px solid rgba(255,255,255,.08); }
+.bento-card:hover { border-color: rgba(61,184,112,.35); box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+.bento-desc { color: rgba(255,255,255,0.55); }
+.bento-title { color: #ffffff; }
+.bento-label { color: var(--g-vivid); }
+.frag-icon { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
+
+/* Rail section */
+.rail-section { background: #1e293b; }
+.rail-subtitle { color: rgba(255,255,255,0.55); }
+.rail-legend-item { color: rgba(255,255,255,0.55); }
+.legend-line.legacy { background: none; border-top: 2px dashed rgba(255,255,255,.2); }
+.rail-stat { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); color: #ffffff; }
+.rail-stat:hover { border-color: rgba(61,184,112,.35); background: rgba(61,184,112,.08); }
+.rail-stat-label { color: rgba(255,255,255,0.55); }
+.cap-track-wrap::before { background: linear-gradient(90deg, #1e293b, transparent); }
+.cap-track-wrap::after { background: linear-gradient(-90deg, #1e293b, transparent); }
+
+/* Capability section & cards */
+.cap-section { background: #0f172a; }
+.cap-card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); }
+.cap-card:hover { box-shadow: 0 24px 60px rgba(0,0,0,.4), 0 0 30px rgba(61,184,112,.12); border-color: rgba(61,184,112,.3); }
+.cap-bullets li { color: rgba(255,255,255,0.7); }
+.cap-icon-wrap { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); }
+
+/* 6-card grid layout */
+.cap-grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+@media (max-width: 1024px) { .cap-grid-6 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .cap-grid-6 { grid-template-columns: 1fr; } }
+
+/* Automate section */
+.automate-card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); }
+.automate-card:hover { border-color: rgba(61,184,112,.3); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+
+/* Synthetic chips */
+.synthetic-chip { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,0.5); }
+
+/* Tech proof box */
+.tech-proof-box { background: rgba(255,255,255,.06); border: 1px solid rgba(61,184,112,.2); }
+
+/* Case studies */
+.case-section { background: #0f172a; }
+.case-desc { color: rgba(255,255,255,0.55); }
+.case-title { color: #ffffff; }
+.metric-label { color: rgba(255,255,255,0.55); }
+
+/* Roadmap */
+.roadmap-section { background: #0f172a; }
+.roadmap-container .roadmap-hero-text { color: #ffffff; background: rgba(61,184,112,.08); border-color: rgba(61,184,112,.2); }
+.pipeline-line { background: rgba(255,255,255,.12); }
+.step-dot { background: #1e293b; border-color: rgba(255,255,255,.15); }
+.step-dot.active { background: rgba(61,184,112,.2); }
+.step-content { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); }
+.step-content:hover { border-color: rgba(61,184,112,.3); background: rgba(61,184,112,.05); }
+.step-desc { color: rgba(255,255,255,0.55); }
+
+/* Pilot section */
+.pilot-section { background: #1e293b; }
+.pilot-card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); }
+.pilot-card:hover { border-color: rgba(61,184,112,.3); box-shadow: 0 8px 32px rgba(0,0,0,.3); }
+.pilot-desc { color: rgba(255,255,255,0.55); }
+.pilot-title { color: #ffffff; }
+
+/* Final CTA section */
+.final-cta-section { background: #0f172a; }
+.cta-glass { background: rgba(255,255,255,.06); border: 1px solid rgba(61,184,112,.25); box-shadow: 0 0 60px rgba(16,185,129,.1), 0 20px 60px rgba(0,0,0,.3); backdrop-filter: blur(20px); }
+.cta-note { color: rgba(255,255,255,0.55); }
+
+/* Buttons */
+.btn-ghost-lg { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,.15); }
+.btn-ghost-lg:hover { color: #ffffff; border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.05); }
+
+/* Fix inline dark rgba backgrounds/borders in hero strips & bento demos */
+.hero-section [style*="rgba(0,0,0,.02)"],
+.hero-section [style*="rgba(0,0,0, .02)"],
+.hero-section [style*="rgba(0,0,0,.025)"],
+.hero-section [style*="rgba(0,0,0,.04)"] { background: rgba(255,255,255,0.05) !important; }
+.hero-section [style*="rgba(0,0,0,.06)"],
+.hero-section [style*="rgba(0,0,0, .06)"],
+.hero-section [style*="rgba(0,0,0,.07)"] { border-color: rgba(255,255,255,0.1) !important; }
+.hero-section [style*="color:rgba(0,0,0"],
+.hero-section [style*="color: rgba(0,0,0"] { color: rgba(255,255,255,0.45) !important; }
+.bento-icon-area [style*="rgba(0,0,0"] { background: rgba(255,255,255,0.04) !important; border-color: rgba(255,255,255,0.08) !important; }
+.bento-icon-area [style*="color:rgba(0,0,0"],
+.bento-icon-area [style*="color: rgba(0,0,0"] { color: rgba(255,255,255,0.45) !important; }
+
+
+/* Section headings consistent white */
+.t-h2, .t-h3 { color: #ffffff; }
+
+/* E3 engine section bg */
+.e3-section, .automate-section, .case-section, .rail-section { background: #0f172a; }
+
+/* Case panel borders on dark bg */
+.case-panel { border: 1px solid rgba(255,255,255,0.08); }
+.case-panel.solution { border-color: rgba(61,184,112,0.2); }
+
+/* Metric numbers stay bright */
+.metric-val { color: #ffffff; }
+
+/* Footer consistent */
+.footer { background: #0a0f1a; border-top: 1px solid rgba(255,255,255,0.06); }
+
+/* ====== VISIBILITY FIXES — dark navy bg ====== */
+/* Body text & small text — bump opacity for readability */
+.t-body  { color: rgba(255,255,255,0.72) !important; }
+.t-small { color: rgba(255,255,255,0.65) !important; }
+.t-mono  { color: var(--g-vivid); }
+
+/* Descriptions & secondary text across all cards */
+.bento-desc, .bento-title  { color: rgba(255,255,255,0.75) !important; }
+.bento-title               { color: #ffffff !important; }
+.rail-subtitle, .rail-legend-item, .rail-stat-label { color: rgba(255,255,255,0.65) !important; }
+.case-desc, .case-title    { color: rgba(255,255,255,0.72) !important; }
+.case-title                { color: #ffffff !important; }
+.metric-label              { color: rgba(255,255,255,0.65) !important; }
+.step-desc                 { color: rgba(255,255,255,0.68) !important; }
+.pilot-desc, .pilot-title  { color: rgba(255,255,255,0.72) !important; }
+.pilot-title               { color: #ffffff !important; }
+.cta-note                  { color: rgba(255,255,255,0.68) !important; }
+
+/* Log entries */
+.log-entry .time  { color: rgba(255,255,255,0.6) !important; }
+.log-entry .label { color: rgba(255,255,255,0.65) !important; }
+
+/* Flow chips - messy chips visible but still muted */
+.flow-chip.messy  { color: rgba(255,255,255,0.55) !important; }
+
+/* Rail stats */
+.rail-stat        { color: #ffffff !important; }
+.rail-stat-label  { color: rgba(255,255,255,0.65) !important; }
+
+/* Footer text */
+.footer-tagline     { color: rgba(255,255,255,0.6) !important; }
+.footer-col-title   { color: rgba(255,255,255,0.5) !important; }
+.footer-links a     { color: rgba(255,255,255,0.65) !important; }
+.footer-copy        { color: rgba(255,255,255,0.4) !important; }
+
+/* Hero role-strip inline spans (dark text override) */
+.hero-section [style*="color:rgba(0,0,0"],
+.hero-section [style*="color: rgba(0,0,0"]  { color: rgba(255,255,255,0.55) !important; }
+.hero-section [style*="rgba(0,0,0,.02)"],
+.hero-section [style*="rgba(0,0,0, .02)"]   { background: rgba(255,255,255,0.05) !important; }
+.hero-section [style*="rgba(0,0,0,.04)"],
+.hero-section [style*="rgba(0,0,0, .04)"]   { background: rgba(255,255,255,0.06) !important; }
+.hero-section [style*="rgba(0,0,0,.06)"],
+.hero-section [style*="rgba(0,0,0, .06)"]   { border-color: rgba(255,255,255,0.1) !important; }
+
+/* Bento demo widget inline spans */
+.bento-icon-area [style*="color:rgba(0,0,0"],
+.bento-icon-area [style*="color: rgba(0,0,0"]  { color: rgba(255,255,255,0.55) !important; }
+.bento-icon-area [style*="rgba(0,0,0,.02)"],
+.bento-icon-area [style*="rgba(0,0,0,.025)"],
+.bento-icon-area [style*="rgba(0,0,0,.04)"]    { background: rgba(255,255,255,0.05) !important; }
+.bento-icon-area [style*="rgba(0,0,0,.06)"],
+.bento-icon-area [style*="rgba(0,0,0,.07)"]    { border-color: rgba(255,255,255,0.1) !important; }
+
+</style>
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<script src="navbar.js"></script>
+<canvas id="bg-canvas"></canvas>
+
+<!-- ═══════════════════ HERO (Pure White) ═══════════════════ -->
+<section class="hero-section" id="home">
+  <div class="wrap">
+    <div class="hero">
+      <!-- Left: Copy -->
+      <div class="hero-left">
+        <!-- <div class="hero-eyebrow reveal in">
+          <div class="hero-eyebrow-dot"></div>
+          <span class="t-mono" style="font-size:.75rem;">AI Execution Layer · E³</span>
+        </div> -->
+
+        <h1 class="t-hero hero-headline reveal d1 in">
+          Your Enterprise<br> Already Has Data.<br>
+          <span class="accent">Retalp Turns It<br> Into Operations.</span>
+        </h1>
+
+        <p class="t-body hero-sub reveal d2 in">
+          Transform fragmented ERP, CRM, and spreadsheet data into autonomous operational execution.
+        </p>
+
+        <div class="hero-actions reveal d3 in">
+          <a href="index3.html#pilot" class="btn-primary-lg">
+            Start a Pilot
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8 3m5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </a>
+          <a href="index3.html#e3-engine" class="btn-ghost-lg">See the Platform</a>
+        </div>
+
+        <!-- Role-specific strip -->
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:36px;margin-bottom:28px;" class="reveal d4 in">
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:rgba(0,0,0,.02);border:1px solid rgba(0,0,0,.06);border-radius:12px;">
+            <span style="font-family:var(--mono);font-size:0.68rem;letter-spacing:.06em;color:rgba(0,0,0,.35);white-space:nowrap;padding-top:1px;">FOR SUPPLY CHAIN HEAD</span>
+            <span style="font-size:0.88rem;color:var(--muted);line-height:1.5;">Cut stockouts 15–25% while reducing dead inventory</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:rgba(0,0,0,.02);border:1px solid rgba(0,0,0,.06);border-radius:12px;">
+            <span style="font-family:var(--mono);font-size:0.68rem;letter-spacing:.06em;color:rgba(0,0,0,.35);white-space:nowrap;padding-top:1px;">FOR PLANT MANAGER</span>
+            <span style="font-size:0.88rem;color:var(--muted);line-height:1.5;">Lock weekly production plans respecting machine MOQs</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:rgba(0,0,0,.02);border:1px solid rgba(0,0,0,.06);border-radius:12px;">
+            <span style="font-family:var(--mono);font-size:0.68rem;letter-spacing:.06em;color:rgba(0,0,0,.35);white-space:nowrap;padding-top:1px;">FOR MERCH PLANNER</span>
+            <span style="font-size:0.88rem;color:var(--muted);line-height:1.5;">Move 10–20% more inventory at full price</span>
+          </div>
+        </div>
+
+        <!-- Tags row -->
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;" class="reveal d4 in">
+          <span class="t-small">Works with</span>
+          <span style="padding:5px 12px;border:1px solid rgba(0,0,0,.08);border-radius:100px;font-size:.78rem;color:var(--muted);">Fashion &amp; Apparel</span>
+          <span style="padding:5px 12px;border:1px solid rgba(0,0,0,.08);border-radius:100px;font-size:.78rem;color:var(--muted);">Manufacturing</span>
+          <span style="padding:5px 12px;border:1px solid rgba(0,0,0,.08);border-radius:100px;font-size:.78rem;color:var(--muted);">Consumer Brands</span>
+          <span style="padding:5px 12px;border:1px solid rgba(0,0,0,.08);border-radius:100px;font-size:.78rem;color:var(--muted);">Retail</span>
+        </div>
+      </div>
+
+      <!-- Right: Interactive SVG Animation -->
+      <div class="hero-visual reveal d2 in">
+        <div class="hero-svg-wrap">
+          <!-- Top: messy data labels -->
+          <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:28px;">
+            <div class="flow-chip messy">ERP_raw.csv</div>
+            <div class="flow-chip messy">pos_dump_q3.xls</div>
+            <div class="flow-chip messy">crm_export.json</div>
+            <div class="flow-chip messy">inventory_v7.xlsx</div>
+            <div class="flow-chip messy">iot_stream_raw</div>
+          </div>
+
+          <!-- Centre flow row -->
+          <div class="hero-flow-row">
+            <!-- Left input side -->
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:110px;">
+              <div class="flow-chip messy" style="animation-delay:.15s;">{ undefined }</div>
+              <div class="flow-chip messy" style="animation-delay:.45s;">NULL → ?</div>
+              <div class="flow-chip messy" style="animation-delay:.75s;">⚠ mismatch</div>
+            </div>
+
+            <!-- Connector left -->
+            <div class="flow-connector"></div>
+
+            <!-- E³ Diamond -->
+            <div class="e3-diamond">
+              <div class="e3-label">E<sub>3</sub></div>
+            </div>
+
+            <!-- Connector right -->
+            <div class="flow-connector right"></div>
+
+            <!-- Right output side -->
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:130px;">
+              <div class="action-pulse"><div class="action-dot"></div>🚚 Dispatch now</div>
+              <div class="action-pulse"><div class="action-dot"></div>📦 Restock SKU-42</div>
+              <div class="action-pulse"><div class="action-dot"></div>⚡ Alert: shortage</div>
+              <div class="action-pulse"><div class="action-dot"></div>✅ Plan optimized</div>
+            </div>
+          </div>
+
+          <!-- Bottom: clean outputs -->
+          <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:28px;">
+            <div class="flow-chip clean">inventory.forecast</div>
+            <div class="flow-chip clean">production.plan</div>
+            <div class="flow-chip clean">dispatch.order</div>
+            <div class="flow-chip clean">supply.alert</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="rail-section" id="parallel-rail">
+  <div class="wrap">
+
+    <div class="rail-header reveal">
+      <div class="sec-kicker" style="justify-content:center;">E³ – Enterprise Execution Engine</div>
+      <h2 class="t-h2">The Legacy Rail vs.<br/>The <span style="color:var(--g-vivid);">Retalp Layer</span></h2>
+      <p class="rail-subtitle">Your current process is fragmented, delayed, and interrupted at every step. Retalp E³ runs a parallel execution layer that picks up your data and bypasses every roadblock.</p>
+    </div>
+
+    <!-- Legend -->
+    <div class="rail-legend reveal d1">
+      <div class="rail-legend-item">
+        <div class="legend-line legacy"></div>
+        Track A — Legacy Manual Process
+      </div>
+      <div class="rail-legend-item">
+        <div class="legend-line retalp"></div>
+        Track B — Retalp E³ Execution Layer
+      </div>
+    </div>
+
+    <!-- Rail Canvas -->
+    <div class="rail-canvas-wrapper reveal d2">
+      <canvas id="rail-canvas" style="width:100%;display:block;"></canvas>
+
+      <!-- Roadblock labels below the canvas -->
+      <div class="rail-roadblock-labels">
+        <div class="rl-item"><div class="rl-dot"></div>Manual Entry</div>
+        <div class="rl-item"><div class="rl-dot"></div>Siloed Data</div>
+        <div class="rl-item"><div class="rl-dot"></div>Delayed Decisions</div>
+        <div class="rl-item"><div class="rl-dot"></div>No Visibility</div>
+      </div>
+
+      <!-- Finish -->
+      <div class="rail-finish-label reveal d3">
+        <div class="rail-finish-icon">✅</div>
+        Execution Reached
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="rail-stats">
+      <div class="rail-stat reveal">
+        <div class="rail-stat-num">3×</div>
+        <div class="rail-stat-label">Faster planning cycles with E³ vs. manual coordination</div>
+      </div>
+      <div class="rail-stat reveal d1">
+        <div class="rail-stat-num">4–6w</div>
+        <div class="rail-stat-label">From discovery to a live operational system</div>
+      </div>
+      <div class="rail-stat reveal d2">
+        <div class="rail-stat-num">~0</div>
+        <div class="rail-stat-label">Roadblocks reaching your Execution finish line</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ OPERATIONAL GAP BENTO ═══════════════════ -->
+
+<section class="section" id="what-is-e3">
+  <div class="wrap">
+    <div class="section-header reveal">
+      <div class="sec-kicker">Why ERP + Excel still miss stockouts</div>
+      <h2 class="t-h2" style="max-width:640px;">Three problems E³ was built to eliminate</h2>
+    </div>
+
+    <div class="bento-grid">
+      <!-- Card 1: Fragmented Data -->
+      <div class="bento-card reveal">
+        <div class="bento-icon-area">
+          <div class="frag-icons" id="fragIcons">
+            <!-- Will be populated by JS -->
+          </div>
+          <div class="merge-center" id="mergeCtr">⚡</div>
+        </div>
+        <div class="bento-label">Problem 01</div>
+        <div class="bento-title">Fragmented Data Sources</div>
+        <div class="bento-desc">Every Monday: Export ERP to Excel (2h), POS dump to Sheets (1h), CRM report (1h). Numbers don't match. Planners pick the version they trust most.</div>
+      </div>
+
+      <!-- Card 2: AI Outside Workflow -->
+      <div class="bento-card reveal d1">
+        <div class="bento-icon-area">
+          <div class="dashboard-switch">
+            <div class="dash-dead">
+              <div class="dash-bars">
+                <div class="dash-bar" style="height:18px;"></div>
+                <div class="dash-bar" style="height:28px;"></div>
+                <div class="dash-bar" style="height:14px;"></div>
+                <div class="dash-bar" style="height:22px;"></div>
+              </div>
+              <div class="cross-line">✕</div>
+            </div>
+            <div class="arrow-switch">→</div>
+            <div class="dash-live">
+              <div class="live-dot-row">
+                <div class="live-dot"></div>
+                <div class="live-dot"></div>
+                <div class="live-dot"></div>
+              </div>
+              <div style="font-size:.6rem;color:var(--g-vivid);margin-top:4px;font-family:var(--mono);">LIVE</div>
+            </div>
+          </div>
+        </div>
+        <div class="bento-label">Problem 02</div>
+        <div class="bento-title">AI Outside the Workflow</div>
+        <div class="bento-desc">BI sends 12 dashboards. Planning team ignores them. WhatsApp group decides allocation Thursday night.</div>
+      </div>
+
+      <!-- Card 3: Manual Coordination -->
+      <div class="bento-card reveal d2">
+        <div class="bento-icon-area">
+          <svg width="200" height="100" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg" id="chaosCard">
+            <!-- Chaotic lines (default) -->
+            <path id="chaos1" d="M10 30 Q50 10 80 50 Q110 80 140 20 Q160 5 190 40" stroke="rgba(0,0,0,.12)" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+            <path id="chaos2" d="M10 60 Q40 30 70 70 Q100 90 130 40 Q155 20 190 65" stroke="rgba(0,0,0,.09)" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+            <path id="chaos3" d="M10 45 Q60 70 90 30 Q120 5 150 55 Q170 75 190 50" stroke="rgba(0,0,0,.06)" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+            <!-- Straight E³ line (on hover, via JS) -->
+            <path id="straight1" d="M10 50 L190 50" stroke="rgba(61,184,112,0)" stroke-width="2.5" fill="none"/>
+            <circle id="pulse-dot" cx="-10" cy="50" r="4" fill="var(--g-glow)" style="filter:drop-shadow(0 0 6px var(--g-glow))"/>
+          </svg>
+        </div>
+        <div class="bento-label">Problem 03</div>
+        <div class="bento-title">Manual Coordination Chaos</div>
+        <div class="bento-desc">Transfer 500 SKUs? Send email to 4 warehouses. 2 don't reply. Call DC manager Friday morning.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CONCRETE OUTPUTS ═══════════════════ -->
+
+<section class="section" id="outputs" style="padding-bottom:0;">
+  <div class="wrap">
+    <div class="section-header reveal">
+      <div class="sec-kicker">Concrete Outputs</div>
+      <h2 class="t-h2" style="max-width:640px;">What you see every morning</h2>
+    </div>
+
+    <div class="bento-grid">
+
+      <!-- Output Card 1: Replenishment List -->
+      <div class="bento-card reveal">
+        <div class="bento-icon-area" style="height:100px;">
+          <div style="width:100%;display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:rgba(61,184,112,.1);border:1px solid rgba(61,184,112,.2);border-radius:8px;">
+              <span style="font-family:var(--mono);font-size:0.68rem;color:var(--g-vivid);">SKU-0442 / Delhi WH</span>
+              <span style="font-family:var(--mono);font-size:0.68rem;color:var(--ink);background:rgba(61,184,112,.25);padding:2px 8px;border-radius:4px;">+120 units</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.07);border-radius:8px;">
+              <span style="font-family:var(--mono);font-size:0.68rem;color:var(--muted);">SKU-0887 / Mumbai WH</span>
+              <span style="font-family:var(--mono);font-size:0.68rem;color:var(--muted);background:rgba(0,0,0,.04);padding:2px 8px;border-radius:4px;">+84 units</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.07);border-radius:8px;">
+              <span style="font-family:var(--mono);font-size:0.68rem;color:var(--muted);">SKU-1203 / Bengaluru</span>
+              <span style="font-family:var(--mono);font-size:0.68rem;color:var(--muted);background:rgba(0,0,0,.04);padding:2px 8px;border-radius:4px;">+55 units</span>
+            </div>
+          </div>
+        </div>
+        <div class="bento-label">Output 01</div>
+        <div class="bento-title">Daily replenishment list</div>
+        <div class="bento-desc">Top 50 replenishment actions ranked by stockout risk, by SKU and location. Ready to act on before 9 AM.</div>
+      </div>
+
+      <!-- Output Card 2: Production Plan -->
+      <div class="bento-card reveal d1">
+        <div class="bento-icon-area" style="height:100px;">
+          <div style="width:100%;display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+                <div style="font-family:var(--mono);font-size:0.62rem;color:rgba(0,0,0,.3);">Machine A — MOQ 500</div>
+                <div style="height:10px;background:rgba(0,0,0,.04);border-radius:3px;overflow:hidden;">
+                  <div style="height:100%;width:82%;background:linear-gradient(90deg,var(--g-mid),var(--g-vivid));border-radius:3px;"></div>
+                </div>
+              </div>
+              <span style="font-family:var(--mono);font-size:0.7rem;color:var(--g-vivid);">82%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+                <div style="font-family:var(--mono);font-size:0.62rem;color:rgba(0,0,0,.3);">Machine B — MOQ 200</div>
+                <div style="height:10px;background:rgba(0,0,0,.04);border-radius:3px;overflow:hidden;">
+                  <div style="height:100%;width:65%;background:linear-gradient(90deg,var(--g-mid),var(--g-vivid));border-radius:3px;opacity:.7;"></div>
+                </div>
+              </div>
+              <span style="font-family:var(--mono);font-size:0.7rem;color:var(--muted);">65%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+                <div style="font-family:var(--mono);font-size:0.62rem;color:rgba(0,0,0,.3);">Machine C — MOQ 1000</div>
+                <div style="height:10px;background:rgba(0,0,0,.04);border-radius:3px;overflow:hidden;">
+                  <div style="height:100%;width:94%;background:linear-gradient(90deg,var(--g-mid),var(--g-vivid));border-radius:3px;opacity:.9;"></div>
+                </div>
+              </div>
+              <span style="font-family:var(--mono);font-size:0.7rem;color:var(--g-vivid);">94%</span>
+            </div>
+          </div>
+        </div>
+        <div class="bento-label">Output 02</div>
+        <div class="bento-title">Production plan with constraints</div>
+        <div class="bento-desc">Weekly production schedule with machine MOQs, capacity and raw material availability already applied. No manual juggling.</div>
+      </div>
+
+      <!-- Output Card 3: Stockout Risk List -->
+      <div class="bento-card reveal d2">
+        <div class="bento-icon-area" style="height:100px;">
+          <div style="width:100%;display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:rgba(220,60,60,.08);border:1px solid rgba(220,60,60,.2);border-radius:8px;">
+              <span style="font-family:var(--mono);font-size:0.68rem;color:#f87171;">SKU-0309 — 3 days left</span>
+              <span style="font-family:var(--mono);font-size:0.62rem;color:rgba(248,113,113,.7);">CRITICAL</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:rgba(232,160,32,.06);border:1px solid rgba(232,160,32,.18);border-radius:8px;">
+              <span style="font-family:var(--mono);font-size:0.68rem;color:#fbbf24;">SKU-0771 — 5 days left</span>
+              <span style="font-family:var(--mono);font-size:0.62rem;color:rgba(251,191,36,.7);">WATCH</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.07);border-radius:8px;">
+              <span style="font-family:var(--mono);font-size:0.68rem;color:rgba(0,0,0,.38);">+10 more SKUs flagged</span>
+              <span style="font-family:var(--mono);font-size:0.62rem;color:rgba(0,0,0,.3);">VIEW ALL</span>
+            </div>
+          </div>
+        </div>
+        <div class="bento-label">Output 03</div>
+        <div class="bento-title">7-day stockout risk list</div>
+        <div class="bento-desc">12 SKUs need attention today. Ranked by severity, location, and days-to-stockout. Built from live sales velocity, not last week's report.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CAPABILITIES CAROUSEL ═══════════════════ -->
+
+
+
+<!-- ═══════════════════ AUTOMATE SECTION (Grey/White) ═══════════════════ -->
+<section class="automate-section" id="automate">
+  <div class="wrap">
+    <div class="section-header center reveal in">
+      <div class="sec-kicker" style="justify-content:center;">End-to-End Automation</div>
+      <h2 class="t-h2">Automate manual, cumbersome,<br> repetitive tasks.</h2>
+    </div>
+
+    <div class="automate-grid">
+      <!-- Card 1 -->
+      <div class="automate-card reveal in">
+        <div class="automate-before">
+          Export ERP (2h), POS dump (1h), CRM report (1h)
+        </div>
+        <div class="automate-arrow">↓</div>
+        <div class="automate-after">
+          E³ ingests everything automatically
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="automate-card reveal d1 in">
+        <div class="automate-before">
+          WhatsApp allocation decisions
+        </div>
+        <div class="automate-arrow">↓</div>
+        <div class="automate-after">
+          Model Context Protocol gives agents your full operational context
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="automate-card reveal d2 in">
+        <div class="automate-before">
+          7 emails for transfers
+        </div>
+        <div class="automate-arrow">↓</div>
+        <div class="automate-after">
+          Execution Engine triggers with one workflow
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ E³ ENGINE SECTION (Deep Cinematic Dark) ═══════════════════ -->
+<section class="e3-section" id="e3-engine">
+  <div class="wrap">
+    <div class="e3-header reveal in">
+      <div class="sec-kicker" style="justify-content:center;">E³ – Enterprise Execution Engine</div>
+      <h2 class="t-h2">Adaptable Data Ingestion +<br> Execution Engine</h2>
+      <p class="e3-subtitle">
+        Uses Model Context Protocol for LLM agents with deep contextual intelligence from YOUR data sources.
+      </p>
+    </div>
+
+    <div class="split-track-container">
+      <!-- Split Track Visual -->
+      <div class="track-visual reveal d1 in">
+        <canvas id="dataflow-canvas" style="width:100%;height:100%;display:block;border-radius:20px;"></canvas>
+      </div>
+
+      <!-- Live Action Log -->
+      <div class="action-log reveal d2 in">
+        <div class="action-log-header">
+          <div class="action-log-dot"></div>
+          <span class="action-log-title">Live Action Log</span>
+        </div>
+        <div class="action-log-body" id="actionLogBody">
+          
+          
+          
+          
+          
+        <div class="log-entry"><span class="time">[08:08]</span> <span class="label">E3-ACTION:</span> <span class="action">Transfer initiated Mumbai → Delhi</span></div><div class="log-entry"><span class="time">[08:09]</span> <span class="label">E3-ACTION:</span> <span class="action">Production schedule optimized</span></div><div class="log-entry"><span class="time">[08:10]</span> <span class="label">SYSTEM:</span> <span class="warning">Demand spike detected Region-North</span></div><div class="log-entry"><span class="time">[08:11]</span> <span class="label">E3-ACTION:</span> <span class="action">Auto-allocation adjusted</span></div><div class="log-entry"><span class="time">[08:12]</span> <span class="label">E3-ACTION:</span> <span class="action">Vendor notification sent</span></div></div>
+      </div>
+    </div>
+
+    <div style="text-align:center;" class="reveal d3 in">
+      <div class="mcp-badge">
+        <div class="mcp-badge-dot"></div>
+        <span class="mcp-badge-text">Powered by Model Context Protocol</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CAPABILITIES (Pure White) ═══════════════════ -->
+<section class="section cap-section" id="capabilities">
+  <div class="wrap">
+    <div class="section-header center reveal in">
+      <div class="sec-kicker" style="justify-content:center;">Operational Systems &amp; Capabilities</div>
+      <h2 class="t-h2">Systems E³ powers this quarter</h2>
+      <p class="t-body" style="max-width:540px;margin:14px auto 0;">Start with one system, see results in 4–6 weeks, then expand.</p>
+    </div>
+    <div class="cap-grid-6">
+      <div class="cap-card reveal in">
+        <div class="cap-icon-wrap">
+          <svg class="cap-icon-svg" viewBox="0 0 28 28"><rect x="3" y="3" width="10" height="10" rx="2"/><rect x="15" y="3" width="10" height="10" rx="2"/><rect x="3" y="15" width="10" height="10" rx="2"/><rect x="15" y="15" width="10" height="10" rx="2"/></svg>
+        </div>
+        <div class="cap-tag">01 / Inventory</div>
+        <div class="cap-title">Inventory Intelligence</div>
+        <div class="synthetic-chip">
+          <div class="synthetic-chip-graph">
+            <div class="bar" style="height:40%;"></div><div class="bar" style="height:60%;"></div>
+            <div class="bar" style="height:45%;"></div><div class="bar active" style="height:85%;"></div>
+            <div class="bar active" style="height:95%;"></div>
+          </div>
+          <div class="synthetic-chip-label">Optimized ↑</div>
+        </div>
+        <ul class="cap-bullets">
+          <li>📊 Demand Forecasting</li>
+          <li>📦 Stock Optimization</li>
+          <li>🔄 Replenishment Planning</li>
+          <li>🏷️ SKU-level Analytics</li>
+        </ul>
+      </div>
+      <div class="cap-card reveal d1 in">
+        <div class="cap-icon-wrap">
+          <svg class="cap-icon-svg" viewBox="0 0 28 28"><path d="M4 20V8l10-4 10 4v12l-10 4L4 20Z"/><path d="M14 4v20M4 8l10 4 10-4"/></svg>
+        </div>
+        <div class="cap-tag">02 / Production</div>
+        <div class="cap-title">Production Planning</div>
+        <div class="synthetic-chip">
+          <div class="synthetic-chip-status">
+            <div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div>
+            <span style="font-size:0.7rem;color:var(--g-vivid);">100%</span>
+          </div>
+          <div class="synthetic-chip-label">Component Validation</div>
+        </div>
+        <ul class="cap-bullets">
+          <li>🗺️ Demand-to-production mapping</li>
+          <li>⚙️ Machine Allocation</li>
+          <li>🧱 Raw Material Planning</li>
+          <li>📈 Capacity Optimization</li>
+        </ul>
+      </div>
+      <div class="cap-card reveal d2 in">
+        <div class="cap-icon-wrap">
+          <svg class="cap-icon-svg" viewBox="0 0 28 28"><path d="M4 14h20M4 14l5-5M4 14l5 5M24 14l-5-5M24 14l-5 5"/></svg>
+        </div>
+        <div class="cap-tag">03 / Supply Chain</div>
+        <div class="cap-title">Supply Chain Ops</div>
+        <div class="synthetic-chip">
+          <div class="synthetic-chip-status">
+            <div class="progress-bar"><div class="progress-fill" style="width:78%;"></div></div>
+            <span style="font-size:0.7rem;color:var(--g-vivid);">78%</span>
+          </div>
+          <div class="synthetic-chip-label">Efficiency Score</div>
+        </div>
+        <ul class="cap-bullets">
+          <li>🚚 Logistics Optimization</li>
+          <li>🤝 Distributor Intelligence</li>
+          <li>⚠️ Supplier Risk Monitoring</li>
+          <li>🏭 Warehouse Analytics</li>
+        </ul>
+      </div>
+      <div class="cap-card reveal d3 in">
+        <div class="cap-icon-wrap">
+          <svg class="cap-icon-svg" viewBox="0 0 28 28"><path d="M4 22V10l10-6 10 6v12"/><path d="M10 22v-8h8v8"/></svg>
+        </div>
+        <div class="cap-tag">04 / Sales</div>
+        <div class="cap-title">Sales &amp; Channel Intel</div>
+        <div class="synthetic-chip">
+          <div class="synthetic-chip-graph">
+            <div class="bar active" style="height:90%;"></div><div class="bar active" style="height:85%;"></div>
+            <div class="bar" style="height:70%;"></div><div class="bar" style="height:65%;"></div>
+          </div>
+          <div class="synthetic-chip-label">Routes Optimized</div>
+        </div>
+        <ul class="cap-bullets">
+          <li>🛒 Omnichannel Analytics</li>
+          <li>🏪 Store Performance</li>
+          <li>💰 Pricing Intelligence</li>
+          <li>📉 CAC, LTV, RTO</li>
+        </ul>
+      </div>
+      <div class="cap-card reveal d4 in">
+        <div class="cap-icon-wrap">
+          <svg class="cap-icon-svg" viewBox="0 0 28 28"><circle cx="14" cy="14" r="10"/><path d="M14 10v4l3 3"/></svg>
+        </div>
+        <div class="cap-tag">05 / Risk</div>
+        <div class="cap-title">Operational Risk &amp; Governance</div>
+        <div class="synthetic-chip">
+          <div class="synthetic-chip-graph">
+            <div class="bar" style="height:80%;"></div><div class="bar" style="height:70%;"></div>
+            <div class="bar" style="height:55%;"></div><div class="bar active" style="height:30%;"></div>
+            <div class="bar active" style="height:10%;"></div>
+          </div>
+          <div class="synthetic-chip-label">Risk Reduced ↓</div>
+        </div>
+        <ul class="cap-bullets">
+          <li>🔍 Traceability Systems</li>
+          <li>✅ Compliance Monitoring</li>
+          <li>🤖 Process Automation</li>
+          <li>🚨 Exception Detection</li>
+        </ul>
+      </div>
+      <div class="cap-card reveal d4 in">
+        <div class="cap-icon-wrap">
+          <svg class="cap-icon-svg" viewBox="0 0 28 28"><path d="M6 14h16M6 8h16M6 20h10"/><circle cx="22" cy="20" r="3"/></svg>
+        </div>
+        <div class="cap-tag">06 / Distribution</div>
+        <div class="cap-title">Distributor Intelligence</div>
+        <div class="synthetic-chip">
+          <div class="synthetic-chip-status">
+            <div class="progress-bar"><div class="progress-fill" style="width:91%;"></div></div>
+            <span style="font-size:0.7rem;color:var(--g-vivid);">91%</span>
+          </div>
+          <div class="synthetic-chip-label">Signal Coverage</div>
+        </div>
+        <ul class="cap-bullets">
+          <li>👤 Field Sales Structuring</li>
+          <li>📡 Order Signal Capture</li>
+          <li>🔗 CRM Workflow Automation</li>
+          <li>📥 Demand Input Aggregation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════ IMPACT SLIDER (Deep Cinematic Dark) ═══════════════════ -->
+<section class="section case-section" id="use-cases">
+  <div class="wrap">
+    <div class="section-header center reveal">
+      <div class="sec-kicker" style="justify-content:center;">Impact Slider</div>
+      <h2 class="t-h2">Before & after E³</h2>
+    </div>
+
+    <!-- Case 1 -->
+    <div class="case-grid reveal">
+      <div class="case-panel problem">
+        <div class="case-tag problem-tag">⚠ Before Retalp</div>
+        <span class="case-icon">🏭</span>
+        <div class="case-title">Manufacturing Assembly<br/>— Unvalidated</div>
+        <div class="case-desc">Manual verification gaps allowed machines with 200–300 components to leave assembly with missing parts. No traceability, no BOM validation.</div>
+        <div class="case-metric bad">
+          <div>
+            <div class="metric-num red">~12%</div>
+            <div class="metric-label">Field returns from<br/>missing component issues</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-panel solution">
+        <div class="case-tag solution-tag">✓ With Retalp E³</div>
+        <span class="case-icon">✅</span>
+        <div class="case-title">RFID-Based Assembly<br/>Traceability System</div>
+        <div class="case-desc">Real-time BOM validation at every assembly stage. RFID tracks every component. Exceptions are caught before they leave the line.</div>
+        <div class="case-desc" style="margin-top:14px;padding:14px 18px;background:rgba(61,184,112,.06);border:1px solid rgba(61,184,112,.15);border-radius:10px;font-family:var(--mono);font-size:0.8rem;color:var(--ink-60);line-height:1.6;">
+          Supervisor's screen: <span style="color:#f87171;">Red dot</span> = missing bolt on line 3. Fixed before machine leaves assembly. No field service call.
+        </div>
+        <div class="case-metric good">
+          <div>
+            <div class="metric-num green">Near Zero</div>
+            <div class="metric-label">Missing component<br/>incidents post-deployment</div>
+          </div>
+        </div>
+        <div class="mini-graph">
+          <div class="mg-bar" style="height:80%;"></div>
+          <div class="mg-bar" style="height:70%;"></div>
+          <div class="mg-bar" style="height:55%;"></div>
+          <div class="mg-bar" style="height:35%;"></div>
+          <div class="mg-bar" style="height:20%;"></div>
+          <div class="mg-bar active" style="height:8%;"></div>
+          <div class="mg-bar active" style="height:5%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case 2 -->
+    <div class="case-grid reveal" style="margin-top:20px;">
+      <div class="case-panel problem">
+        <div class="case-tag problem-tag">⚠ Before Retalp</div>
+        <span class="case-icon">📊</span>
+        <div class="case-title">Multi-Channel Inventory<br/>— Fragmented</div>
+        <div class="case-desc">Orders, discounts, and returns across online, offline, and B2B channels created blind spots. Allocation was guesswork.</div>
+        <div class="case-metric bad">
+          <div>
+            <div class="metric-num red">3×</div>
+            <div class="metric-label">More inventory imbalances<br/>than necessary</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-panel solution">
+        <div class="case-tag solution-tag">✓ With Retalp E³</div>
+        <span class="case-icon">📈</span>
+        <div class="case-title">Unified Omnichannel<br/>Intelligence Layer</div>
+        <div class="case-desc">Single source of truth across all channels with SKU-level and regional analytics. Allocation decisions now data-driven.</div>
+        <div class="case-desc" style="margin-top:14px;padding:14px 18px;background:rgba(61,184,112,.06);border:1px solid rgba(61,184,112,.15);border-radius:10px;font-family:var(--mono);font-size:0.8rem;color:var(--ink-60);line-height:1.6;">
+          Planners open Retalp: <span style="color:var(--g-vivid);">'Transfer 200 shirts from Delhi to Mumbai'</span>. One click. Updated across all channels instantly.
+        </div>
+        <div class="case-metric good">
+          <div>
+            <div class="metric-num green">↑ 94%</div>
+            <div class="metric-label">Fill rate improvement<br/>post-deployment</div>
+          </div>
+        </div>
+        <div class="mini-graph">
+          <div class="mg-bar" style="height:30%;"></div>
+          <div class="mg-bar" style="height:45%;"></div>
+          <div class="mg-bar" style="height:55%;"></div>
+          <div class="mg-bar" style="height:70%;"></div>
+          <div class="mg-bar" style="height:80%;"></div>
+          <div class="mg-bar active" style="height:90%;"></div>
+          <div class="mg-bar active" style="height:94%;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ DEPLOYMENT ROADMAP ═══════════════════ -->
+
+<section class="impact-section" id="impact">
+  <div class="wrap">
+    <div class="section-header center reveal in">
+      <div class="sec-kicker" style="justify-content:center;color:var(--g-vivid);">Impact Slider</div>
+      <h2 class="t-h2" style="color:var(--white);">Before &amp; after E³</h2>
+    </div>
+
+    <!-- Case 1 -->
+    <div class="case-grid reveal in">
+      <div class="case-panel problem">
+        <div class="case-tag problem-tag">⚠ Before Retalp</div>
+        <span class="case-icon">🏭</span>
+        <div class="case-title">Manufacturing Assembly<br>— Unvalidated</div>
+        <div class="case-desc">Manual verification gaps allowed machines with 200–300 components to leave assembly with missing parts. No traceability, no BOM validation.</div>
+        <div class="case-metric bad">
+          <div>
+            <div class="metric-num red">~12%</div>
+            <div class="metric-label">Field returns from<br>missing component issues</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-panel solution">
+        <div class="case-tag solution-tag">✓ With Retalp E³</div>
+        <span class="case-icon">✅</span>
+        <div class="case-title">RFID-Based Assembly<br>Traceability System</div>
+        <div class="case-desc">Real-time BOM validation at every assembly stage. RFID tracks every component. Exceptions are caught before they leave the line.</div>
+        <div class="case-metric good">
+          <div>
+            <div class="metric-num green">Near Zero</div>
+            <div class="metric-label">Missing component<br>incidents post-deployment</div>
+          </div>
+        </div>
+        <div class="mini-graph">
+          <div class="mg-bar" style="height: 80%; opacity: 1;"></div>
+          <div class="mg-bar" style="height: 70%; opacity: 1;"></div>
+          <div class="mg-bar" style="height: 55%; opacity: 1;"></div>
+          <div class="mg-bar" style="height: 35%; opacity: 1;"></div>
+          <div class="mg-bar" style="height: 20%; opacity: 1;"></div>
+          <div class="mg-bar active" style="height: 8%; opacity: 1;"></div>
+          <div class="mg-bar active" style="height: 5%; opacity: 1;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case 2 -->
+    <div class="case-grid reveal in" style="margin-top:20px;">
+      <div class="case-panel problem">
+        <div class="case-tag problem-tag">⚠ Before Retalp</div>
+        <span class="case-icon">📊</span>
+        <div class="case-title">Multi-Channel Inventory<br>— Fragmented</div>
+        <div class="case-desc">Orders, discounts, and returns across online, offline, and B2B channels created blind spots. Allocation was guesswork.</div>
+        <div class="case-metric bad">
+          <div>
+            <div class="metric-num red">3×</div>
+            <div class="metric-label">More inventory imbalances<br>than necessary</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-panel solution">
+        <div class="case-tag solution-tag">✓ With Retalp E³</div>
+        <span class="case-icon">📈</span>
+        <div class="case-title">Unified Omnichannel<br>Intelligence Layer</div>
+        <div class="case-desc">Single source of truth across all channels with SKU-level and regional analytics. Allocation decisions now data-driven.</div>
+        <div class="case-metric good">
+          <div>
+            <div class="metric-num green">↑ 94%</div>
+            <div class="metric-label">Fill rate improvement<br>post-deployment</div>
+          </div>
+        </div>
+        <div class="mini-graph">
+          <div class="mg-bar" style="height: 30%; opacity: 1;"></div>
+          <div class="mg-bar" style="height: 45%; opacity: 1;"></div>
+          <div class="mg-bar" style="height: 55%; opacity: 1;"></div>
+          <div class="mg-bar" style="height: 70%; opacity: 1;"></div>
+          <div class="mg-bar" style="height: 80%; opacity: 1;"></div>
+          <div class="mg-bar active" style="height: 90%; opacity: 1;"></div>
+          <div class="mg-bar active" style="height: 94%; opacity: 1;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ HOW WE WORK (with Tech Proof) ═══════════════════ -->
+<section class="howwework-section" id="how-we-work">
+  <div class="wrap">
+    <div class="section-header center reveal in">
+      <div class="sec-kicker" style="justify-content:center;">How We Work</div>
+      <h2 class="t-h2">Deep Contextual Intelligence</h2>
+    </div>
+
+    <div class="tech-proof-box reveal d1 in">
+      <p>
+        <strong>E³'s Model Context Protocol</strong> gives our AI agents deep contextual intelligence—
+        understands your specific ERP quirks, field sales patterns, warehouse realities.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ DEPLOYMENT ROADMAP ═══════════════════ -->
+<section class="roadmap-section" id="roadmap">
+  <div class="wrap">
+    <div class="section-header center reveal in">
+      <div class="sec-kicker" style="justify-content:center;">Your Next 6 Weeks</div>
+      <h2 class="t-h2">From Discovery to Live<br>Operational System</h2>
+    </div>
+
+    <div class="roadmap-container">
+      <div class="roadmap-hero-text reveal in">
+        Most pilots take <span>4–6 weeks</span> from kickoff<br>to a live, measurable operational system.
+      </div>
+
+      <div class="pipeline reveal d1 in" id="pipeline">
+        <div class="pipeline-line">
+          <div class="pipeline-progress" id="pipelineProgress" style="height: 0.940246%;"></div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-dot-col">
+            <div class="step-dot active" id="dot0"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-week">Week 1 — Discover</div>
+            <div class="step-name">Operational Discovery</div>
+            <div class="step-desc">We map your existing data sources, workflows, and the operational gap costing you efficiency.</div>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-dot-col">
+            <div class="step-dot" id="dot1"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-week">Week 2 — Architect</div>
+            <div class="step-name">System Architecture</div>
+            <div class="step-desc">Retalp designs the focused operational system — data model, AI layer, workflow automation.</div>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-dot-col">
+            <div class="step-dot" id="dot2"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-week">Weeks 3–4 — Deploy</div>
+            <div class="step-name">E³ Implementation</div>
+            <div class="step-desc">We integrate with your ERP, CRM, POS, or IoT. The E³ engine goes live.</div>
+          </div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="step-dot-col">
+            <div class="step-dot" id="dot3"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-week">Weeks 5–6 — Scale</div>
+            <div class="step-name">Impact &amp; Expansion</div>
+            <div class="step-desc">We measure against baseline. With proof in hand, we design the next operational system.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FINAL CTA ═══════════════════ -->
+<section class="section pilot-section" id="pilot">
+  <div class="wrap">
+    <div class="section-header center reveal">
+      <div class="sec-kicker" style="justify-content:center;">Start a Pilot</div>
+      <h2 class="t-h2">Choose your first<br/>operational system</h2>
+      <p class="t-body" style="max-width:500px;margin:14px auto 0;">Pick one. See results in 4–6 weeks. Then expand.</p>
+    </div>
+
+    <div class="pilot-cards-grid">
+      <div class="pilot-card reveal">
+        <span class="pilot-emoji">📦</span>
+        <div class="pilot-title">Inventory Forecasting</div>
+        <div class="pilot-desc">Improve demand signals, reduce stock imbalances, optimise replenishment.</div>
+      </div>
+      <div class="pilot-card reveal d1">
+        <span class="pilot-emoji">🏭</span>
+        <div class="pilot-title">Production Planning</div>
+        <div class="pilot-desc">Align demand with machine capacity and raw material constraints.</div>
+      </div>
+      <div class="pilot-card reveal d2">
+        <span class="pilot-emoji">🤝</span>
+        <div class="pilot-title">Distributor Intelligence</div>
+        <div class="pilot-desc">Turn scattered field sales signals into structured planning data.</div>
+      </div>
+      <div class="pilot-card reveal d3">
+        <span class="pilot-emoji">🛒</span>
+        <div class="pilot-title">Omnichannel Inventory</div>
+        <div class="pilot-desc">Unify retail, online, and B2B inventory into one intelligent layer.</div>
+      </div>
+    </div>
+
+    <!-- Glassmorphism CTA card -->
+    <div class="cta-glass reveal d2">
+      <div class="t-mono" style="margin-bottom:16px;font-size:.75rem;color:var(--g-vivid);">READY TO BEGIN?</div>
+      <h2 class="t-h2 cta-headline" style="margin-bottom:14px;">See E³ in your operations.<br/>In 20 minutes.</h2>
+      <p class="t-body" style="margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;">Book a focused demo. We'll map your operational gap, show you the E³ fit, and design a pilot in one session.</p>
+      <div class="cta-actions-center">
+        <a href="#" class="btn-primary-lg" style="font-size:1rem;">
+          Book a 20-minute Demo
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8 3m5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#pilot" class="btn-ghost-lg">Select a Pilot System</a>
+      </div>
+      <p class="cta-note">No commitment · 20-minute session · Tailored to your operation</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+
+<section class="final-cta-section" id="final-cta">
+  <div class="wrap">
+    <div class="reveal in">
+      <p class="final-cta-headline">
+        The Fastest Way to Understand Retalp E³ Is to Deploy It.
+      </p>
+      <a href="retalp_landing.html" class="btn-primary-xl">
+        Start a Pilot Engagement
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L8 3m5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="retalp_landing.html" class="footer-brand-logo">
+          <div class="nav-logo-mark">
+            <img src="favicon.ico" alt="Retalp" style="width:20px;height:20px;object-fit:contain;">
+          </div>
+          <span class="nav-logo-text">Retal<span>p</span></span>
+        </a>
+        <p class="footer-tagline">Your business, your data, your reports.</p>
+        <span class="footer-tagline-highlight">Zero Waste Intelligence Platform.</span>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="index3.html#e3-engine">What is E³</a></li>
+          <li><a href="retalp_capabilities.html">Capabilities</a></li>
+          <li><a href="index3.html#impact">Results</a></li>
+          <li><a href="index3.html#pilot">Start a Pilot</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Operations</div>
+        <ul class="footer-links">
+          <li><a href="retalp_landing.html">Inventory Intel</a></li>
+          <li><a href="retalp_landing.html">Production Planning</a></li>
+          <li><a href="retalp_landing.html">Supply Chain</a></li>
+          <li><a href="retalp_landing.html">Sales Analytics</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="retalp_landing.html">About</a></li>
+          <li><a href="retalp_landing.html">Industries</a></li>
+          <li><a href="retalp_landing.html">Contact</a></li>
+          <li><a href="retalp_landing.html">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Retalp. All rights reserved.</div>
+      <div class="footer-status">
+        <span class="footer-status-dot"></span>
+        E³ System Online
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+
+<iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
+
+
+<div class="calendly-frame-tag" manager_id="2497071c-0378-466f-b574-ebe584bdabf2" id="2497071c-0378-466f-b574-ebe584bdabf2" style="height: 0px; width: 0px; visibility: hidden;"></div><div class="calendly-lifecycle-optibutton_singleton"><template shadowmode="closed"><div class="calendly-opti-root"></div></template></div>
+<script>
+/* ── Background Canvas: Animated Data Lines ── */
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes = [], lines = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Create sparse node grid
+  function initNodes() {
+    nodes = [];
+    const cols = Math.floor(W / 160);
+    const rows = Math.floor(H / 140);
+    for (let i = 0; i <= cols; i++) {
+      for (let j = 0; j <= rows; j++) {
+        nodes.push({
+          x: (i / cols) * W + (Math.random() - .5) * 60,
+          y: (j / rows) * H + (Math.random() - .5) * 60,
+          vx: (Math.random() - .5) * .15,
+          vy: (Math.random() - .5) * .15,
+        });
+      }
+    }
+  }
+  initNodes();
+
+  // Data pulses travelling along edges
+  const pulses = [];
+  function addPulse() {
+    if (nodes.length < 2) return;
+    const a = Math.floor(Math.random() * nodes.length);
+    let b = Math.floor(Math.random() * nodes.length);
+    while (b === a) b = Math.floor(Math.random() * nodes.length);
+    pulses.push({ a, b, t: 0, speed: .004 + Math.random() * .006 });
+  }
+  for (let i = 0; i < 6; i++) addPulse();
+  setInterval(addPulse, 1200);
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Move nodes
+    nodes.forEach(n => {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+    });
+
+    // Draw edges between nearby nodes
+    const maxDist = 200;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[j].x - nodes[i].x;
+        const dy = nodes[j].y - nodes[i].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < maxDist) {
+          const alpha = (1 - dist / maxDist) * 0.1;
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(61,184,112,${alpha})`;
+          ctx.lineWidth = .8;
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw nodes
+    nodes.forEach(n => {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(61,184,112,.18)';
+      ctx.fill();
+    });
+
+    // Draw pulses
+    for (let i = pulses.length - 1; i >= 0; i--) {
+      const p = pulses[i];
+      if (p.a >= nodes.length || p.b >= nodes.length) { pulses.splice(i, 1); continue; }
+      p.t += p.speed;
+      if (p.t >= 1) { pulses.splice(i, 1); continue; }
+
+      const na = nodes[p.a], nb = nodes[p.b];
+      const px = na.x + (nb.x - na.x) * p.t;
+      const py = na.y + (nb.y - na.y) * p.t;
+
+      // Trail
+      const trailLen = 0.15;
+      const t0 = Math.max(0, p.t - trailLen);
+      const tx0 = na.x + (nb.x - na.x) * t0;
+      const ty0 = na.y + (nb.y - na.y) * t0;
+      const grad = ctx.createLinearGradient(tx0, ty0, px, py);
+      grad.addColorStop(0, 'rgba(61,184,112,0)');
+      grad.addColorStop(1, 'rgba(93,232,154,.7)');
+      ctx.beginPath();
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.5;
+      ctx.moveTo(tx0, ty0);
+      ctx.lineTo(px, py);
+      ctx.stroke();
+
+      // Pulse dot
+      ctx.beginPath();
+      ctx.arc(px, py, 3, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(93,232,154,.9)';
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── Scroll Reveal ── */
+const reveals = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+reveals.forEach(el => revealObs.observe(el));
+
+// Hero reveals immediately
+setTimeout(() => {
+  document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('in'));
+}, 120);
+
+
+/* ── Smooth anchor scrolling ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+/* ── Capability carousel drag ── */
+const track = document.getElementById('capTrack');
+let isDragging = false, startX, scrollLeft;
+track.addEventListener('mousedown', e => {
+  isDragging = true; startX = e.pageX - track.offsetLeft;
+  scrollLeft = track.scrollLeft; track.classList.add('grabbing');
+});
+track.addEventListener('mouseleave', () => { isDragging = false; track.classList.remove('grabbing'); });
+track.addEventListener('mouseup', () => { isDragging = false; track.classList.remove('grabbing'); });
+track.addEventListener('mousemove', e => {
+  if (!isDragging) return; e.preventDefault();
+  const x = e.pageX - track.offsetLeft;
+  track.scrollLeft = scrollLeft - (x - startX) * 1.5;
+});
+
+/* ── Bento Card 1: Fragment icons ── */
+const fragContainer = document.getElementById('fragIcons');
+const icons = ['📊','🗄️','☁️','📋','🔌','📡','🏢','📱','⚙️','📂'];
+const positions = [
+  {x:0,y:0},{x:44,y:0},{x:88,y:0},{x:132,y:0},
+  {x:0,y:38},{x:132,y:38},
+  {x:0,y:76},{x:44,y:76},{x:88,y:76},{x:132,y:76},
+];
+const targets = [
+  {tx:'44px',ty:'28px'},{tx:'20px',ty:'28px'},{tx:'-4px',ty:'28px'},{tx:'-28px',ty:'28px'},
+  {tx:'20px',ty:'0px'},{tx:'-28px',ty:'0px'},
+  {tx:'20px',ty:'-28px'},{tx:'-4px',ty:'-28px'},{tx:'-28px',ty:'-28px'},{tx:'-52px',ty:'-28px'},
+];
+icons.forEach((ic, i) => {
+  const el = document.createElement('div');
+  el.className = 'frag-icon';
+  el.textContent = ic;
+  el.style.left = positions[i].x + 'px';
+  el.style.top = positions[i].y + 'px';
+  el.style.setProperty('--tx', targets[i].tx);
+  el.style.setProperty('--ty', targets[i].ty);
+  el.style.animationDelay = (i * 0.12) + 's';
+  fragContainer.appendChild(el);
+});
+
+/* ── Bento Card 3: Chaos → Straight animation ── */
+const chaosCard = document.getElementById('chaosCard').closest('.bento-card');
+const chaos1 = document.getElementById('chaos1');
+const chaos2 = document.getElementById('chaos2');
+const chaos3 = document.getElementById('chaos3');
+const straight1 = document.getElementById('straight1');
+const pulseDot = document.getElementById('pulse-dot');
+
+chaosCard.addEventListener('mouseenter', () => {
+  chaos1.style.transition = 'opacity .4s';
+  chaos2.style.transition = 'opacity .4s';
+  chaos3.style.transition = 'opacity .4s';
+  chaos1.style.opacity = '0.1';
+  chaos2.style.opacity = '0.05';
+  chaos3.style.opacity = '0.03';
+  straight1.style.stroke = 'rgba(61,184,112,.8)';
+  straight1.style.transition = 'stroke .4s .2s';
+  // Animate pulse dot
+  pulseDot.style.animation = 'moveDot 1.5s linear infinite';
+});
+chaosCard.addEventListener('mouseleave', () => {
+  chaos1.style.opacity = '1';
+  chaos2.style.opacity = '1';
+  chaos3.style.opacity = '1';
+  straight1.style.stroke = 'rgba(61,184,112,0)';
+  pulseDot.setAttribute('cx', '-10');
+});
+
+// Add keyframe for dot
+const styleEl = document.createElement('style');
+styleEl.textContent = `@keyframes moveDot { 0% { cx:-10; } 100% { cx:210; } }`;
+document.head.appendChild(styleEl);
+
+/* ── Pipeline Roadmap Scroll Animation ── */
+const pipeline = document.getElementById('pipeline');
+const progress = document.getElementById('pipelineProgress');
+const dots = [0,1,2,3,4].map(i => document.getElementById('dot'+i));
+
+function updatePipeline() {
+  if (!pipeline) return;
+  const rect = pipeline.getBoundingClientRect();
+  const vh = window.innerHeight;
+  const start = vh * 0.8;
+  const end = vh * 0.2;
+  const total = rect.height;
+
+  if (rect.top > start) { return; }
+
+  const scrolled = Math.min(1, Math.max(0, (start - rect.top) / (start - end + total)));
+  progress.style.height = (scrolled * 100) + '%';
+
+  dots.forEach((dot, i) => {
+    const threshold = i / (dots.length - 1);
+    if (scrolled >= threshold + .05) {
+      dot.className = 'step-dot done';
+    } else if (scrolled >= threshold - .05) {
+      dot.className = 'step-dot active';
+    } else {
+      dot.className = 'step-dot';
+    }
+  });
+}
+window.addEventListener('scroll', updatePipeline, { passive: true });
+updatePipeline();
+
+/* ── Mini graph hover ── */
+document.querySelectorAll('.case-panel.solution').forEach(panel => {
+  panel.addEventListener('mouseenter', () => {
+    panel.querySelectorAll('.mg-bar').forEach((bar, i) => {
+      setTimeout(() => bar.style.opacity = '1', i * 60);
+    });
+  });
+});
+</script>
+
+<script>
+/* ════════════════════════════════════════════════
+   PARALLEL RAIL CANVAS ANIMATION
+   Two tracks: Legacy (grey/jagged) vs E³ (green/glowing)
+════════════════════════════════════════════════ */
+(function() {
+  const canvas = document.getElementById('rail-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  // Resize canvas to match display width
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const wrapper = canvas.parentElement;
+    W = wrapper.offsetWidth || 800;
+    H = 240;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+  }
+
+  let W = 1, H = 240;
+
+  // ── Roadblock positions (as fraction 0–1 of width) ──
+  const ROADBLOCKS = [0.18, 0.37, 0.56, 0.74];
+
+  // ── Legacy track geometry ──
+  // The legacy line is drawn jagged and interrupted at each roadblock
+  function legacyY(x) {
+    // A gently wavy line with bigger jags near roadblocks
+    const base = H * 0.30;
+    let noise = Math.sin(x * 0.04) * 6 + Math.cos(x * 0.07) * 3;
+    // Add bigger jag near roadblock
+    ROADBLOCKS.forEach(rb => {
+      const rx = rb * W;
+      const dist = Math.abs(x - rx);
+      if (dist < 40) {
+        const t = 1 - dist / 40;
+        noise += Math.sin(t * Math.PI) * 18 * (x < rx ? -1 : 1);
+      }
+    });
+    return base + noise;
+  }
+
+  // ── Retalp track geometry ──
+  const RETALP_Y = H * 0.68; // perfectly flat green rail
+
+  // ── Data packets jumping from legacy → retalp ──
+  // Each packet starts on the legacy track, arcs down to retalp, travels to end
+  const dataPackets = [];
+
+  function spawnPacket() {
+    // Start behind a random roadblock
+    const rbIdx = Math.floor(Math.random() * ROADBLOCKS.length);
+    const startFrac = ROADBLOCKS[rbIdx] - 0.08 + Math.random() * 0.04;
+    const startX = startFrac * W;
+    dataPackets.push({
+      phase: 'legacy',    // legacy | arc | retalp
+      x: startX,
+      arcProgress: 0,
+      arcStartX: startX,
+      arcStartY: legacyY(startX),
+      arcEndX: startX + 30,
+      arcEndY: RETALP_Y,
+      retalpX: 0,
+      speed: 1.4 + Math.random() * 1.0,
+      size: 4 + Math.random() * 2,
+      color: `hsl(${140 + Math.random() * 30}, 80%, 65%)`,
+      trailPoints: [],
+    });
+  }
+
+  // Spawn initial packets
+  for (let i = 0; i < 3; i++) {
+    setTimeout(() => spawnPacket(), i * 900);
+  }
+  setInterval(spawnPacket, 1800);
+
+  // ── Glow pulse moving along retalp track ──
+  let glowPulseX = 0;
+  const glowPulseSpeed = 2.2;
+
+  // ── Animation clock ──
+  let tick = 0;
+  let rafId;
+
+  function draw() {
+    tick++;
+    ctx.clearRect(0, 0, W, H);
+
+    // ── BACKGROUND subtle gradient ──
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+    bgGrad.addColorStop(0, 'rgba(9,13,11,0)');
+    bgGrad.addColorStop(0.5, 'rgba(9,13,11,0.06)');
+    bgGrad.addColorStop(1, 'rgba(9,13,11,0)');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    // ── TRACK LABELS (left side) ──
+    ctx.font = '500 11px DM Mono, monospace';
+    ctx.letterSpacing = '0.06em';
+    ctx.fillStyle = 'rgba(160,160,160,.45)';
+    ctx.fillText('TRACK A — LEGACY', 14, H * 0.30 - 22);
+    ctx.fillStyle = 'rgba(61,184,112,.6)';
+    ctx.fillText('TRACK B — RETALP E³', 14, RETALP_Y - 20);
+
+    // ══════════════════════════════
+    //  LEGACY TRACK
+    // ══════════════════════════════
+
+    // Draw the legacy path (jagged grey line, dashed)
+    ctx.save();
+    ctx.beginPath();
+    ctx.setLineDash([6, 5]);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(110,120,115,.45)';
+
+    let prevRBEnd = 0;
+    // Draw segments between roadblocks, skip the roadblock zone
+    const rbZone = 22; // px either side of roadblock to leave gap
+
+    // Build full path first (no gaps) then clip out roadblock zones
+    ctx.beginPath();
+    ctx.moveTo(0, legacyY(0));
+    for (let x = 1; x <= W; x += 2) {
+      // Skip within roadblock zones
+      let inBlock = false;
+      for (const rb of ROADBLOCKS) {
+        const rx = rb * W;
+        if (Math.abs(x - rx) < rbZone) { inBlock = true; break; }
+      }
+      if (!inBlock) {
+        ctx.lineTo(x, legacyY(x));
+      } else {
+        ctx.moveTo(x + 1, legacyY(x + 1));
+      }
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+
+    // ── ROADBLOCKS on legacy track ──
+    ROADBLOCKS.forEach((rb, i) => {
+      const rx = rb * W;
+      const ry = legacyY(rx);
+
+      // Pulsing red glow ring
+      const pulse = 0.5 + 0.5 * Math.sin(tick * 0.06 + i * 1.4);
+
+      // Outer glow
+      const glowRad = ctx.createRadialGradient(rx, ry, 0, rx, ry, 28);
+      glowRad.addColorStop(0, `rgba(220,60,60,${0.18 * pulse})`);
+      glowRad.addColorStop(1, 'rgba(220,60,60,0)');
+      ctx.beginPath();
+      ctx.arc(rx, ry, 28, 0, Math.PI * 2);
+      ctx.fillStyle = glowRad;
+      ctx.fill();
+
+      // Warning hexagon / diamond shape
+      ctx.save();
+      ctx.translate(rx, ry);
+
+      // Draw warning shield
+      ctx.beginPath();
+      ctx.moveTo(0, -16);
+      ctx.lineTo(14, 8);
+      ctx.lineTo(-14, 8);
+      ctx.closePath();
+      ctx.fillStyle = `rgba(200,50,50,${0.6 + 0.2 * pulse})`;
+      ctx.fill();
+      ctx.strokeStyle = `rgba(255,100,100,${0.7 + 0.2 * pulse})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Exclamation mark
+      ctx.fillStyle = 'rgba(255,255,255,.9)';
+      ctx.font = 'bold 10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('!', 0, 0);
+
+      ctx.restore();
+
+      // Jagged "interrupt" lines either side
+      ctx.save();
+      ctx.strokeStyle = 'rgba(200,60,60,.5)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([3, 3]);
+      // Left interrupt
+      ctx.beginPath();
+      ctx.moveTo(rx - rbZone, ry - 8);
+      ctx.lineTo(rx - rbZone + 8, ry + 8);
+      ctx.lineTo(rx - 8, ry - 8);
+      ctx.stroke();
+      // Right interrupt
+      ctx.beginPath();
+      ctx.moveTo(rx + rbZone - 8, ry - 8);
+      ctx.lineTo(rx + rbZone, ry + 8);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+    });
+
+    // ══════════════════════════════
+    //  RETALP TRACK (glowing green)
+    // ══════════════════════════════
+
+    // Multi-layer glow
+    [18, 10, 5].forEach((spread, li) => {
+      const alphas = [0.06, 0.12, 0.5];
+      ctx.beginPath();
+      ctx.moveTo(0, RETALP_Y);
+      ctx.lineTo(W * 0.88, RETALP_Y);
+      ctx.strokeStyle = `rgba(61,184,112,${alphas[li]})`;
+      ctx.lineWidth = spread;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    });
+
+    // Core bright line
+    const trackGrad = ctx.createLinearGradient(0, 0, W * 0.88, 0);
+    trackGrad.addColorStop(0, 'rgba(45,122,79,.7)');
+    trackGrad.addColorStop(0.5, 'rgba(93,232,154,1)');
+    trackGrad.addColorStop(1, 'rgba(61,184,112,.6)');
+    ctx.beginPath();
+    ctx.moveTo(0, RETALP_Y);
+    ctx.lineTo(W * 0.88, RETALP_Y);
+    ctx.strokeStyle = trackGrad;
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // ── Travelling glow pulse on retalp track ──
+    glowPulseX += glowPulseSpeed;
+    if (glowPulseX > W * 0.88) glowPulseX = 0;
+    const pulseGrad = ctx.createRadialGradient(glowPulseX, RETALP_Y, 0, glowPulseX, RETALP_Y, 50);
+    pulseGrad.addColorStop(0, 'rgba(93,232,154,.45)');
+    pulseGrad.addColorStop(0.5, 'rgba(61,184,112,.12)');
+    pulseGrad.addColorStop(1, 'rgba(61,184,112,0)');
+    ctx.beginPath();
+    ctx.arc(glowPulseX, RETALP_Y, 50, 0, Math.PI * 2);
+    ctx.fillStyle = pulseGrad;
+    ctx.fill();
+
+    // Bright dot on pulse
+    ctx.beginPath();
+    ctx.arc(glowPulseX, RETALP_Y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(180,255,210,.9)';
+    ctx.fill();
+
+    // ── Speed tick marks along retalp track ──
+    for (let tx = 30; tx < W * 0.88; tx += 55) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(61,184,112,.2)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(tx, RETALP_Y - 7);
+      ctx.lineTo(tx, RETALP_Y + 7);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // ══════════════════════════════
+    //  DATA PACKETS  
+    // ══════════════════════════════
+    for (let i = dataPackets.length - 1; i >= 0; i--) {
+      const pk = dataPackets[i];
+
+      if (pk.phase === 'arc') {
+        // Quadratic arc from legacy to retalp
+        pk.arcProgress += 0.032;
+        if (pk.arcProgress >= 1) {
+          pk.phase = 'retalp';
+          pk.retalpX = pk.arcEndX;
+        }
+
+        const t = pk.arcProgress;
+        const ctrlX = (pk.arcStartX + pk.arcEndX) / 2;
+        const ctrlY = pk.arcStartY - 40; // arc upward
+        const cx = (1 - t) * (1 - t) * pk.arcStartX + 2 * (1 - t) * t * ctrlX + t * t * pk.arcEndX;
+        const cy = (1 - t) * (1 - t) * pk.arcStartY + 2 * (1 - t) * t * ctrlY + t * t * pk.arcEndY;
+
+        // Glow around arc packet
+        const arcGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, 12);
+        arcGlow.addColorStop(0, 'rgba(93,232,154,.6)');
+        arcGlow.addColorStop(1, 'rgba(61,184,112,0)');
+        ctx.beginPath();
+        ctx.arc(cx, cy, 12, 0, Math.PI * 2);
+        ctx.fillStyle = arcGlow;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, pk.size * 0.8, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(180,255,210,.9)';
+        ctx.fill();
+
+      } else if (pk.phase === 'retalp') {
+        pk.retalpX += pk.speed;
+
+        // Remove when past finish line
+        if (pk.retalpX > W * 0.89) {
+          dataPackets.splice(i, 1);
+          continue;
+        }
+
+        // Trail
+        pk.trailPoints.push({ x: pk.retalpX, y: RETALP_Y });
+        if (pk.trailPoints.length > 18) pk.trailPoints.shift();
+
+        for (let ti = 0; ti < pk.trailPoints.length - 1; ti++) {
+          const alpha = (ti / pk.trailPoints.length) * 0.6;
+          ctx.beginPath();
+          ctx.arc(pk.trailPoints[ti].x, pk.trailPoints[ti].y, 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(93,232,154,${alpha})`;
+          ctx.fill();
+        }
+
+        // Glow halo
+        const pglow = ctx.createRadialGradient(pk.retalpX, RETALP_Y, 0, pk.retalpX, RETALP_Y, 14);
+        pglow.addColorStop(0, 'rgba(93,232,154,.5)');
+        pglow.addColorStop(1, 'rgba(61,184,112,0)');
+        ctx.beginPath();
+        ctx.arc(pk.retalpX, RETALP_Y, 14, 0, Math.PI * 2);
+        ctx.fillStyle = pglow;
+        ctx.fill();
+
+        // Core dot
+        ctx.beginPath();
+        ctx.arc(pk.retalpX, RETALP_Y, pk.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(200,255,225,.95)';
+        ctx.fill();
+
+      } else if (pk.phase === 'legacy') {
+        // Move along legacy track until hitting a roadblock trigger
+        pk.x += pk.speed * 0.7;
+
+        // Check if we're approaching a roadblock — jump to arc
+        for (const rb of ROADBLOCKS) {
+          const rx = rb * W;
+          if (pk.x > rx - 45 && pk.x < rx - 25) {
+            pk.phase = 'arc';
+            pk.arcStartX = pk.x;
+            pk.arcStartY = legacyY(pk.x);
+            pk.arcEndX = rx + 40;
+            pk.arcEndY = RETALP_Y;
+            pk.arcProgress = 0;
+            break;
+          }
+        }
+
+        if (pk.x > W) { dataPackets.splice(i, 1); continue; }
+
+        const ly = legacyY(pk.x);
+
+        // Small grey packet on legacy track
+        const lglow = ctx.createRadialGradient(pk.x, ly, 0, pk.x, ly, 10);
+        lglow.addColorStop(0, 'rgba(180,180,180,.3)');
+        lglow.addColorStop(1, 'rgba(180,180,180,0)');
+        ctx.beginPath();
+        ctx.arc(pk.x, ly, 10, 0, Math.PI * 2);
+        ctx.fillStyle = lglow;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(pk.x, ly, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(180,180,180,.7)';
+        ctx.fill();
+      }
+    }
+
+    // ══════════════════════════════
+    //  FINISH LINE (right side)
+    // ══════════════════════════════
+    const finX = W * 0.88;
+
+    // Vertical dashed line
+    ctx.save();
+    ctx.setLineDash([5, 4]);
+    ctx.strokeStyle = 'rgba(61,184,112,.3)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(finX, H * 0.1);
+    ctx.lineTo(finX, H * 0.9);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+
+    // "EXECUTION" label
+    ctx.save();
+    ctx.font = '500 10px DM Mono, monospace';
+    ctx.fillStyle = 'rgba(61,184,112,.7)';
+    ctx.textAlign = 'center';
+    ctx.fillText('EXECUTION', finX, H * 0.12);
+    ctx.restore();
+
+    // Checkmark circle at finish
+    const finPulse = 0.7 + 0.3 * Math.sin(tick * 0.07);
+    const finGlow = ctx.createRadialGradient(finX, RETALP_Y, 0, finX, RETALP_Y, 30);
+    finGlow.addColorStop(0, `rgba(61,184,112,${0.25 * finPulse})`);
+    finGlow.addColorStop(1, 'rgba(61,184,112,0)');
+    ctx.beginPath();
+    ctx.arc(finX, RETALP_Y, 30, 0, Math.PI * 2);
+    ctx.fillStyle = finGlow;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(finX, RETALP_Y, 12, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(45,122,79,${0.8 * finPulse})`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(93,232,154,${0.9 * finPulse})`;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // ✓ checkmark
+    ctx.save();
+    ctx.strokeStyle = 'rgba(200,255,220,1)';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(finX - 5, RETALP_Y + 1);
+    ctx.lineTo(finX - 1, RETALP_Y + 5);
+    ctx.lineTo(finX + 6, RETALP_Y - 4);
+    ctx.stroke();
+    ctx.restore();
+
+    // ══════════════════════════════
+    //  CROSSING ARROWS (data jumping)
+    // ══════════════════════════════
+    // Faint vertical arrows showing data leaving legacy → retalp
+    ROADBLOCKS.forEach((rb, i) => {
+      const rx = rb * W - 50;
+      const topY = legacyY(rx);
+      const alpha = 0.2 + 0.15 * Math.sin(tick * 0.05 + i);
+
+      ctx.save();
+      ctx.strokeStyle = `rgba(93,232,154,${alpha})`;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(rx, topY + 10);
+      ctx.lineTo(rx, RETALP_Y - 10);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Arrow head pointing down to retalp
+      ctx.beginPath();
+      ctx.moveTo(rx - 4, RETALP_Y - 14);
+      ctx.lineTo(rx, RETALP_Y - 8);
+      ctx.lineTo(rx + 4, RETALP_Y - 14);
+      ctx.strokeStyle = `rgba(93,232,154,${alpha * 1.5})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.restore();
+    });
+
+    rafId = requestAnimationFrame(draw);
+  }
+
+  const railSection = document.getElementById('parallel-rail');
+  let railStarted = false;
+  const railObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !railStarted) { railStarted = true; resize(); draw(); }
+    });
+  }, { threshold: 0.05 });
+  if (railSection) railObserver.observe(railSection);
+  setTimeout(function(){ if (!railStarted) { railStarted = true; resize(); draw(); } }, 800);
+  window.addEventListener('resize', () => { if (railStarted) resize(); });
+})();
+</script>
+
+<script>
+/* ── Data Flow Animation — E³ section left card ── */
+(function() {
+  var canvas = document.querySelector('.track-visual canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = 600, H = 260;
+  function resize() {
+    var dpr = window.devicePixelRatio || 1;
+    var parent = canvas.parentElement;
+    W = parent.offsetWidth || 600; H = parent.offsetHeight || 260;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr, dpr);
+  }
+  var SOURCES = [{label:'ERP',fy:0.22},{label:'WMS',fy:0.50},{label:'IoT',fy:0.78}];
+  var OUTPUTS = [{label:'Plan',fy:0.22},{label:'Alert',fy:0.50},{label:'Action',fy:0.78}];
+  var NODE_R = 22, particles = [], tick = 0;
+  function spawnParticle() {
+    var s = SOURCES[Math.floor(Math.random()*SOURCES.length)];
+    var o = OUTPUTS[Math.floor(Math.random()*OUTPUTS.length)];
+    particles.push({sx:0.10,sy:s.fy,dx:0.90,dy:o.fy,t:-(Math.random()*0.3),speed:0.006+Math.random()*0.004});
+  }
+  for (var i=0;i<6;i++) setTimeout(spawnParticle, i*300);
+  setInterval(spawnParticle, 500);
+  function diamond(cx,cy,sz) {
+    ctx.beginPath();
+    ctx.moveTo(cx, cy-sz); ctx.lineTo(cx+sz, cy);
+    ctx.lineTo(cx, cy+sz); ctx.lineTo(cx-sz, cy);
+    ctx.closePath();
+  }
+  function draw() {
+    tick++;
+    ctx.clearRect(0,0,W,H);
+    var cx=W*0.50, cy=H*0.50;
+    ctx.strokeStyle='rgba(255,255,255,0.025)'; ctx.lineWidth=1;
+    for(var x=0;x<W;x+=48){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(var y=0;y<H;y+=48){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    SOURCES.forEach(function(s){
+      var sx=W*0.10+NODE_R,sy=H*s.fy;
+      ctx.beginPath();ctx.moveTo(sx,sy);ctx.bezierCurveTo(cx-60,sy,cx-60,cy,cx-NODE_R*1.4,cy);
+      ctx.strokeStyle='rgba(148,163,184,0.12)';ctx.lineWidth=1.5;ctx.stroke();
+    });
+    OUTPUTS.forEach(function(o){
+      var ox=W*0.90-NODE_R,oy=H*o.fy;
+      ctx.beginPath();ctx.moveTo(cx+NODE_R*1.4,cy);ctx.bezierCurveTo(cx+60,cy,cx+60,oy,ox,oy);
+      ctx.strokeStyle='rgba(16,185,129,0.15)';ctx.lineWidth=1.5;ctx.stroke();
+    });
+    SOURCES.forEach(function(s){
+      var nx=W*0.10,ny=H*s.fy;
+      ctx.beginPath();ctx.arc(nx,ny,NODE_R,0,Math.PI*2);ctx.fillStyle='rgba(15,23,42,0.9)';ctx.fill();
+      ctx.strokeStyle='rgba(148,163,184,0.5)';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.fillStyle='rgba(203,213,225,0.85)';ctx.font='bold 9px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(s.label,nx,ny);
+    });
+    var pulse=0.85+0.15*Math.sin(tick*0.045), dSize=30*pulse;
+    var glow=ctx.createRadialGradient(cx,cy,0,cx,cy,70);
+    glow.addColorStop(0,'rgba(16,185,129,'+(0.18*pulse)+')');glow.addColorStop(1,'rgba(16,185,129,0)');
+    ctx.beginPath();ctx.arc(cx,cy,70,0,Math.PI*2);ctx.fillStyle=glow;ctx.fill();
+    var dg=ctx.createLinearGradient(cx-dSize,cy-dSize,cx+dSize,cy+dSize);
+    dg.addColorStop(0,'rgba(4,120,87,0.95)');dg.addColorStop(1,'rgba(16,185,129,0.95)');
+    diamond(cx,cy,dSize);ctx.fillStyle=dg;ctx.fill();
+    ctx.strokeStyle='rgba(52,211,153,'+(0.7+0.3*pulse)+')';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle='#ffffff';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('E\u00B3',cx,cy);
+    ctx.fillStyle='rgba(52,211,153,0.7)';ctx.font='700 8px monospace';ctx.fillText('ENGINE',cx,cy+30);
+    OUTPUTS.forEach(function(o){
+      var nx=W*0.90,ny=H*o.fy;
+      var ng=ctx.createRadialGradient(nx,ny,0,nx,ny,NODE_R*2);ng.addColorStop(0,'rgba(16,185,129,0.15)');ng.addColorStop(1,'rgba(16,185,129,0)');
+      ctx.beginPath();ctx.arc(nx,ny,NODE_R*2,0,Math.PI*2);ctx.fillStyle=ng;ctx.fill();
+      ctx.beginPath();ctx.arc(nx,ny,NODE_R,0,Math.PI*2);ctx.fillStyle='rgba(4,46,36,0.9)';ctx.fill();
+      ctx.strokeStyle='rgba(16,185,129,0.7)';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.fillStyle='rgba(52,211,153,0.95)';ctx.font='bold 9px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(o.label,nx,ny);
+    });
+    for(var i=particles.length-1;i>=0;i--){
+      var p=particles[i]; p.t+=p.speed;
+      if(p.t>1.1){particles.splice(i,1);continue;} if(p.t<0)continue;
+      var t=Math.max(0,Math.min(1,p.t));
+      var px2,py2,color;
+      if(t<0.5){
+        var u=t/0.5,e=u*u*(3-2*u);
+        var sx2=W*p.sx+NODE_R,sy2=H*p.sy;
+        px2=sx2*(1-e)*(1-e)+2*(1-e)*e*(cx-60)+e*e*(cx-NODE_R*1.4);
+        py2=sy2*(1-e)*(1-e)+2*(1-e)*e*cy+e*e*cy;
+        color='rgba(148,163,184,'+(0.5+0.3*e)+')';
+      } else {
+        var u2=(t-0.5)/0.5,e2=u2*u2*(3-2*u2);
+        var ox2=W*p.dx-NODE_R,oy2=H*p.dy;
+        px2=(cx+NODE_R*1.4)*(1-e2)*(1-e2)+2*(1-e2)*e2*(cx+60)+e2*e2*ox2;
+        py2=cy*(1-e2)*(1-e2)+2*(1-e2)*e2*oy2+e2*e2*oy2;
+        var a=0.9-0.3*e2;
+        var pg=ctx.createRadialGradient(px2,py2,0,px2,py2,10);pg.addColorStop(0,'rgba(52,211,153,'+(a*0.5)+')');pg.addColorStop(1,'rgba(52,211,153,0)');
+        ctx.beginPath();ctx.arc(px2,py2,10,0,Math.PI*2);ctx.fillStyle=pg;ctx.fill();
+        color='rgba(52,211,153,'+a+')';
+      }
+      ctx.beginPath();ctx.arc(px2,py2,3,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  function init(){resize();draw();}
+  window.addEventListener('load',function(){setTimeout(init,200);});
+  setTimeout(init,300);
+  window.addEventListener('resize',function(){resize();});
+})();
+</script>
+</body></html>

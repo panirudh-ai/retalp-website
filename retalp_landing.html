@@ -539,6 +539,17 @@ body { font-family: var(--sans); background: #ffffff; color: #0a0a0a; line-heigh
 .hero-section [style*="rgba(0,0,0, .04)"]   { background: rgba(255,255,255,0.06) !important; }
 .hero-section [style*="rgba(0,0,0,.06)"],
 .hero-section [style*="rgba(0,0,0, .06)"]   { border-color: rgba(255,255,255,0.1) !important; }
+.hero-section [style*="rgba(0,0,0,.08)"]    { border-color: rgba(255,255,255,0.12) !important; }
+
+/* var(--muted) / var(--ink) inline overrides on dark cards */
+.bento-icon-area [style*="color:var(--muted)"],
+.bento-icon-area [style*="color: var(--muted)"] { color: rgba(255,255,255,0.55) !important; }
+.bento-icon-area [style*="color:var(--ink)"],
+.bento-icon-area [style*="color: var(--ink)"]   { color: #ffffff !important; }
+.bento-card [style*="color:var(--muted)"],
+.bento-card [style*="color: var(--muted)"]       { color: rgba(255,255,255,0.55) !important; }
+.hero-section [style*="color:var(--muted)"],
+.hero-section [style*="color: var(--muted)"]     { color: rgba(255,255,255,0.55) !important; }
 </style>
 <link rel="stylesheet" href="theme.css">
 </head>

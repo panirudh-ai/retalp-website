@@ -17,9 +17,9 @@
   --ink-60:       #2d2d2d;
   --surface:      #f4f4f4;
   --white:        #ffffff;
-  --dark-bg:      #0a0a0a;
-  --dark-green:   #111111;
-  --dark-surface: rgba(10,10,10,0.97);
+  --dark-bg:      #0f172a;
+  --dark-green:   #111827;
+  --dark-surface: rgba(15,23,42,0.97);
   --muted:        rgba(0,0,0,0.55);
   --line:         rgba(0,0,0,0.1);
   /* Green palette unchanged */
@@ -29,6 +29,32 @@
   --g-glow:  #34d399;
   --g-pale:  #d1fae5;
   --g-glass: rgba(16,185,129,.1);
+}
+
+/* ════════════════════════════════════════════════════════
+   CSS VARIABLE SCOPING — DARK CARDS & SECTIONS
+   Any inline style using var(--muted), var(--ink), etc.
+   inside a dark card or section auto-resolves to light.
+════════════════════════════════════════════════════════ */
+.bento-card, .cap-card, .cat-card, .step-content,
+.pilot-card, .automate-card, .metric-card, .impact-card,
+.sc-step, .missing-card, .workflow-step, .integration-card,
+.hero-mini-card, .cta-glass, .arch-diagram, .arch-layer,
+.section-dark, .e3-section, .impact-section,
+.automate-section, .howwework-section, .rail-section,
+.workflow-section, .integrations-section, .footer {
+  --muted:  rgba(255,255,255,0.55);
+  --ink:    #ffffff;
+  --ink-80: rgba(255,255,255,0.80);
+  --ink-60: rgba(255,255,255,0.62);
+  --line:   rgba(255,255,255,0.10);
+}
+
+/* Hero role-strip cards (no class — targeted by attribute) */
+.hero-section [style*="margin-top:36px"] > div {
+  --muted:  rgba(255,255,255,0.55);
+  --ink:    #ffffff;
+  --ink-60: rgba(255,255,255,0.62);
 }
 
 /* ════════════════════════════════════
@@ -111,6 +137,7 @@ html body #what-is-e3 {
   padding-bottom: 120px !important;
 }
 
+
 #what-is-e3 .bento-grid {
   margin-bottom: 0 !important;
 }
@@ -134,7 +161,7 @@ html body #what-is-e3 {
 .workflow-section,
 .integrations-section,
 .footer {
-  background: #0a0a0a !important;
+  background: #0f172a !important;
   color: #ffffff !important;
 }
 
@@ -252,7 +279,7 @@ html body #what-is-e3 {
 
 /* Role strip container rows */
 .hero-section [style*="margin-top:36px"] > div {
-  background: #111111 !important;
+  background: #111827 !important;
   border-color: rgba(255,255,255,0.07) !important;
   box-shadow: 0 2px 12px rgba(0,0,0,0.18) !important;
 }
@@ -293,7 +320,7 @@ html body #what-is-e3 {
    Keep dark so layers/chips are visible
 ════════════════════════════════════ */
 .arch-diagram {
-  background: #111111 !important;
+  background: #111827 !important;
   border-color: rgba(16,185,129,0.25) !important;
   box-shadow: 0 8px 48px rgba(0,0,0,0.25), 0 1px 4px rgba(0,0,0,0.15) !important;
 }
@@ -304,7 +331,7 @@ html body #what-is-e3 {
 
 /* individual layer cards inside the diagram */
 .arch-layer {
-  background: #1a1a1a !important;
+  background: #1e293b !important;
   border-color: rgba(255,255,255,0.08) !important;
   box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
 }
@@ -341,7 +368,7 @@ html body #what-is-e3 {
    Keep dark so chips/pulses are visible
 ════════════════════════════════════ */
 .hero-visual {
-  background: #111111 !important;
+  background: #111827 !important;
   border-radius: 24px !important;
   padding: 28px !important;
   box-shadow: 0 8px 48px rgba(0,0,0,0.25), 0 1px 4px rgba(0,0,0,0.15) !important;
@@ -372,7 +399,7 @@ html body #what-is-e3 {
    BENTO CARDS (on white sections)
 ════════════════════════════════════ */
 .bento-card {
-  background: #111111 !important;
+  background: #111827 !important;
   border-color: rgba(255,255,255,0.05) !important;
   /* shadow spreads sideways only — stops bleeding into the white gap below */
   box-shadow: 0 2px 16px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.03) inset !important;
@@ -391,13 +418,28 @@ html body #what-is-e3 {
 .bento-icon-area {
   background: rgba(255,255,255,0.04) !important;
   border-color: rgba(255,255,255,0.07) !important;
+  /* inherit dark-context variable scoping from parent .bento-card */
+  --muted:  rgba(255,255,255,0.55);
+  --ink:    #ffffff;
+  --ink-60: rgba(255,255,255,0.62);
 }
+
+/* ── Inline var() overrides inside bento widgets ── */
+.bento-icon-area [style*="color:var(--muted)"],
+.bento-icon-area [style*="color: var(--muted)"] { color: rgba(255,255,255,0.55) !important; }
+.bento-icon-area [style*="color:var(--ink)"],
+.bento-icon-area [style*="color: var(--ink)"]   { color: #ffffff !important; }
+.bento-icon-area [style*="color:var(--ink-60)"],
+.bento-icon-area [style*="color: var(--ink-60)"]{ color: rgba(255,255,255,0.62) !important; }
+/* progress-bar track rows that use rgba(0,0,0,.04) bg */
+.bento-icon-area [style*="background:rgba(0,0,0,.04)"],
+.bento-icon-area [style*="background: rgba(0,0,0,.04)"] { background: rgba(255,255,255,0.07) !important; }
 
 /* ════════════════════════════════════
    CAPABILITY / CAP CARDS (on white section)
 ════════════════════════════════════ */
 .cap-card {
-  background: #111111 !important;
+  background: #111827 !important;
   border-color: rgba(255,255,255,0.05) !important;
   box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
 }
@@ -409,7 +451,7 @@ html body #what-is-e3 {
 
 /* cat cards (capabilities) */
 .cat-card {
-  background: #111111 !important;
+  background: #111827 !important;
   border-color: rgba(255,255,255,0.05) !important;
   box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
 }
@@ -421,7 +463,7 @@ html body #what-is-e3 {
    AUTOMATE CARDS (on black section)
 ════════════════════════════════════ */
 .automate-card {
-  background: #1a1a1a !important;
+  background: #1e293b !important;
   border-color: rgba(255,255,255,0.07) !important;
   box-shadow: 0 4px 24px rgba(0,0,0,0.35),
               0 0 0 1px rgba(255,255,255,0.03) inset !important;
@@ -445,7 +487,7 @@ html body #what-is-e3 {
    ROADMAP / STEP CONTENT (on white)
 ════════════════════════════════════ */
 .step-content {
-  background: #111111 !important;
+  background: #111827 !important;
   border-color: rgba(255,255,255,0.06) !important;
   box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
 }
@@ -464,11 +506,11 @@ html body #what-is-e3 {
   box-shadow: 0 6px 32px rgba(0,0,0,0.18) !important;
 }
 .case-panel.problem {
-  background: #111111 !important;
+  background: #111827 !important;
   border-color: rgba(248,113,113,0.25) !important;
 }
 .case-panel.solution {
-  background: #111111 !important;
+  background: #111827 !important;
   border-color: rgba(16,185,129,0.25) !important;
 }
 .case-panel .case-title,
@@ -479,7 +521,7 @@ html body #what-is-e3 {
    PILOT CARDS
 ════════════════════════════════════ */
 .pilot-card {
-  background: #111111 !important;
+  background: #111827 !important;
   border-color: rgba(255,255,255,0.05) !important;
   box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
 }
@@ -495,7 +537,7 @@ html body #what-is-e3 {
 .integration-card,
 .results-card,
 .spider-node {
-  background: #111111 !important;
+  background: #111827 !important;
   border-color: rgba(255,255,255,0.06) !important;
   box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
 }
@@ -522,7 +564,7 @@ html body #what-is-e3 {
    CTA GLASS CARD
 ════════════════════════════════════ */
 .cta-glass {
-  background: #111111 !important;
+  background: #111827 !important;
   border-color: rgba(16,185,129,0.2) !important;
   box-shadow: 0 8px 48px rgba(0,0,0,0.25),
               0 0 0 1px rgba(16,185,129,0.08) inset !important;
@@ -538,7 +580,7 @@ html body #what-is-e3 {
 ════════════════════════════════════ */
 .metric-card,
 .impact-card {
-  background: #1a1a1a !important;
+  background: #1e293b !important;
   border-color: rgba(255,255,255,0.06) !important;
   box-shadow: 0 4px 24px rgba(0,0,0,0.3) !important;
 }
@@ -549,7 +591,7 @@ html body #what-is-e3 {
    HERO MINI CARDS (capabilities hero)
 ════════════════════════════════════ */
 .hero-mini-card {
-  background: #111111 !important;
+  background: #111827 !important;
   border-color: rgba(255,255,255,0.06) !important;
   box-shadow: 0 4px 20px rgba(0,0,0,0.2) !important;
 }
@@ -566,7 +608,7 @@ html body #what-is-e3 {
    SC STEPS
 ════════════════════════════════════ */
 .sc-step {
-  background: #1a1a1a !important;
+  background: #1e293b !important;
   border-color: rgba(255,255,255,0.06) !important;
   box-shadow: 0 4px 20px rgba(0,0,0,0.25) !important;
 }
@@ -577,7 +619,7 @@ html body #what-is-e3 {
    FOOTER
 ════════════════════════════════════ */
 .footer {
-  background: #0a0a0a !important;
+  background: #0f172a !important;
   border-top: 1px solid rgba(255,255,255,0.07) !important;
 }
 .footer-brand-logo .nav-logo-text { color: #ffffff !important; }
@@ -593,7 +635,7 @@ html body #what-is-e3 {
    RAIL / LEGACY TRACK SECTION
 ════════════════════════════════════ */
 .rail-section {
-  background: #0a0a0a !important;
+  background: #0f172a !important;
 }
 .rail-subtitle,
 .rail-legend-item,
@@ -765,6 +807,14 @@ html body #what-is-e3 {
   padding: 18px 28px !important;
 }
 
+/* roadmap-hero-text lives on a white section — override white var(--muted) to dark */
+.roadmap-hero-text {
+  color: rgba(0,0,0,0.62) !important;
+}
+.roadmap-hero-text span {
+  color: #059669 !important;
+}
+
 /* ── CTA glass internal padding ── */
 .cta-glass {
   padding: 40px 48px !important;
@@ -875,4 +925,70 @@ html body #what-is-e3 {
 /* ── Spotlight grid inline override ── */
 .spotlight-grid[style*="margin-top"] {
   margin-top: 40px !important;
+}
+
+/* ════════════════════════════════════
+   CAPABILITIES PAGE — non-hero sections
+   Original design is fully dark; only
+   the hero is flipped white by theme.css.
+   Restore dark bg + white text for all
+   other capabilities section classes.
+════════════════════════════════════ */
+.matrix-section,
+.spotlight-section,
+.replen-section,
+.sc-section,
+.carousel-section,
+.spider-section,
+.cta-section {
+  background: #0f172a !important;
+  color: #ffffff !important;
+}
+
+/* Section-level headings on dark bg */
+.matrix-section .t-h2,    .matrix-section .t-h3,
+.spotlight-section .t-h2, .spotlight-section .t-h3,
+.replen-section .t-h2,    .replen-section .t-h3,
+.sc-section .t-h2,        .sc-section .t-h3,
+.carousel-section .t-h2,  .carousel-section .t-h3,
+.spider-section .t-h2,    .spider-section .t-h3,
+.cta-section .t-h2,       .cta-section .t-h3 {
+  color: #ffffff !important;
+}
+
+/* Section-level body / small text on dark bg */
+.matrix-section .t-body,    .matrix-section .t-small,
+.spotlight-section .t-body, .spotlight-section .t-small,
+.replen-section .t-body,    .replen-section .t-small,
+.sc-section .t-body,        .sc-section .t-small,
+.carousel-section .t-body,  .carousel-section .t-small,
+.spider-section .t-body,    .spider-section .t-small,
+.cta-section .t-body,       .cta-section .t-small {
+  color: rgba(255,255,255,0.65) !important;
+}
+
+/* Ghost buttons on these dark sections stay white */
+.sc-section .btn-ghost-lg,
+.cta-section .btn-ghost-lg,
+.spider-section .btn-ghost-lg,
+.matrix-section .btn-ghost-lg,
+.spotlight-section .btn-ghost-lg,
+.replen-section .btn-ghost-lg {
+  color: rgba(255,255,255,0.65) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+}
+.sc-section .btn-ghost-lg:hover,
+.cta-section .btn-ghost-lg:hover,
+.spider-section .btn-ghost-lg:hover {
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,0.35) !important;
+  background: rgba(255,255,255,0.05) !important;
+}
+
+/* Carousel track fade matches dark bg */
+.carousel-section .cap-track-wrap::before {
+  background: linear-gradient(90deg, #0f172a, transparent) !important;
+}
+.carousel-section .cap-track-wrap::after {
+  background: linear-gradient(-90deg, #0f172a, transparent) !important;
 }

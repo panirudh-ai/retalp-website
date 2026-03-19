@@ -439,7 +439,7 @@ html body #what-is-e3 {
 ════════════════════════════════════ */
 .cap-card {
   background: #111827 !important;
-  border-color: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.14) !important;
   box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
 }
 .cap-card .t-h3,
@@ -451,7 +451,7 @@ html body #what-is-e3 {
 /* cat cards (capabilities) */
 .cat-card {
   background: #111827 !important;
-  border-color: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.13) !important;
   box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
 }
 .cat-card .cat-title   { color: #ffffff !important; }
@@ -472,8 +472,8 @@ html body #what-is-e3 {
 
 /* flow chips */
 .flow-chip.messy {
-  background: rgba(255,255,255,0.05) !important;
-  border-color: rgba(255,255,255,0.1) !important;
+  background: #0f1825 !important;
+  border-color: rgba(255,255,255,0.18) !important;
   color: rgba(255,255,255,0.65) !important;
 }
 .flow-chip.clean {
@@ -487,7 +487,7 @@ html body #what-is-e3 {
 ════════════════════════════════════ */
 .step-content {
   background: #111827 !important;
-  border-color: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.13) !important;
   box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
 }
 .step-content .t-h3,
@@ -521,7 +521,7 @@ html body #what-is-e3 {
 ════════════════════════════════════ */
 .pilot-card {
   background: #111827 !important;
-  border-color: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.13) !important;
   box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
 }
 .pilot-card .pilot-title { color: #ffffff !important; }
@@ -537,7 +537,7 @@ html body #what-is-e3 {
 .results-card,
 .spider-node {
   background: #111827 !important;
-  border-color: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.15) !important;
   box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
 }
 .missing-card .t-h3,
@@ -591,11 +591,37 @@ html body #what-is-e3 {
 ════════════════════════════════════ */
 .hero-mini-card {
   background: #111827 !important;
-  border-color: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.14) !important;
   box-shadow: 0 4px 20px rgba(0,0,0,0.2) !important;
 }
 .hero-mini-card .t-h3 { color: #ffffff !important; }
 .hero-mini-card .t-body { color: rgba(255,255,255,0.6) !important; }
+
+/* ════════════════════════════════════
+   CAPABILITIES HERO — white bg fixes
+   (specificity 0,2,0 beats 0,1,0 dark
+   overrides in capabilities style block)
+════════════════════════════════════ */
+/* "CAPABILITY CATEGORIES" inline-white label → dark on white */
+.hero-section div[style*="rgba(255,255,255,.3)"] {
+  color: rgba(0,0,0,0.38) !important;
+}
+/* Ghost button → dark on white hero */
+.hero-section .btn-ghost-lg {
+  color: rgba(0,0,0,0.6) !important;
+  border-color: rgba(0,0,0,0.18) !important;
+}
+.hero-section .btn-ghost-lg:hover {
+  color: #000000 !important;
+  border-color: rgba(0,0,0,0.35) !important;
+  background: rgba(0,0,0,0.04) !important;
+}
+/* Hero tagline pill → dark-tinted on white */
+.hero-section .hero-tagline {
+  color: var(--g-vivid) !important;
+  background: rgba(16,185,129,0.08) !important;
+  border-color: rgba(16,185,129,0.22) !important;
+}
 
 /* ════════════════════════════════════
    MATRIX / MINI MATRIX (capabilities)

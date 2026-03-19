@@ -280,8 +280,9 @@ body{font-family:var(--sans);background:#0f172a;color:#ffffff;line-height:1.6;ov
 
 .spider-canvas-wrap{
   position:relative;
-  width:100%;max-width:900px;
-  margin:64px auto 0;
+  width:min(100%, calc((100vh - 260px) / 0.9));
+  max-width:900px;
+  margin:48px auto 0;
   aspect-ratio:1/0.9;
 }
 
@@ -297,7 +298,7 @@ body{font-family:var(--sans);background:#0f172a;color:#ffffff;line-height:1.6;ov
   text-align:center;
   cursor:pointer;
   transition:all .3s var(--ease-smooth);
-  min-width:120px;
+  min-width:clamp(72px, 13.5%, 120px);
   backdrop-filter:blur(8px);
 }
 .spider-node:hover{border-color:rgba(61,184,112,.4);background:rgba(61,184,112,.1);transform:translate(-50%,-50%) scale(1.08);box-shadow:0 12px 40px rgba(0,0,0,.3);}
@@ -390,7 +391,8 @@ body{font-family:var(--sans);background:#0f172a;color:#ffffff;line-height:1.6;ov
   .flow-connector-h{display:none;}
   .pilot-cards-grid,.mini-matrix{grid-template-columns:repeat(2,1fr);}
   .footer-grid{grid-template-columns:1fr 1fr;}
-  .spider-node{min-width:90px;padding:10px 12px;}
+  .spider-node{min-width:clamp(66px,12%,90px);padding:10px 12px;}
+  .spider-center{width:80px!important;height:80px!important;}
 }
 @media(max-width:768px){
   .wrap{padding:0 20px;}
@@ -401,6 +403,11 @@ body{font-family:var(--sans);background:#0f172a;color:#ffffff;line-height:1.6;ov
   .hero-mini-grid{grid-template-columns:repeat(3,1fr);}
   .case-panel.problem{border-radius:22px 22px 4px 4px;}
   .case-panel.solution{border-radius:4px 4px 22px 22px;}
+  .spider-node{min-width:clamp(58px,12%,80px);padding:8px 10px;border-radius:10px;}
+  .spider-node-icon{font-size:.95rem;}
+  .spider-node-name{font-size:.65rem;}
+  .spider-node-benefit{display:none;}
+  .spider-center{width:68px!important;height:68px!important;}
 }
 
 /* ══════════════════════════════════════
@@ -411,6 +418,16 @@ body{font-family:var(--sans);background:#0f172a;color:#ffffff;line-height:1.6;ov
 body { background: #0f172a !important; color: #ffffff !important; }
 ::-webkit-scrollbar-track { background: #0f172a !important; }
 #bg-canvas { display: none !important; }
+
+/* Hero section — force dark (higher specificity 0,2,0 beats theme.css 0,1,0) */
+.hero-section.section {
+  background: #0f172a !important;
+  color: #ffffff !important;
+}
+.hero-section.section .t-hero,
+.hero-section.section .t-h2,
+.hero-section.section .t-h3 { color: #ffffff !important; }
+.hero-section.section .t-body { color: rgba(255,255,255,0.6) !important; }
 
 
 /* Typography */

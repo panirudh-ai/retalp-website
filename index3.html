@@ -477,16 +477,16 @@ body { font-family: var(--sans); background: #ffffff; color: #0a0a0a; line-heigh
 .bento-title { font-family: var(--sans); font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
 .bento-desc { font-size: 0.88rem; color: rgba(255,255,255,.5); line-height: 1.65; }
 .frag-icons {
-  position: relative; width: 160px; height: 100px;
+  position: relative; width: 176px; height: 120px;
 }
 .frag-icon {
   position: absolute;
-  width: 32px; height: 32px;
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.20);
-  border-radius: 8px;
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 9px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   transition: all .6s var(--ease-smooth);
 }
 .bento-card:hover .frag-icon { transform: translate(var(--tx), var(--ty)); background: rgba(61,184,112,.12); border-color: rgba(61,184,112,.3); }
@@ -793,7 +793,7 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
 .bento-desc { color: rgba(255,255,255,0.55); }
 .bento-title { color: #ffffff; }
 .bento-label { color: var(--g-vivid); }
-.frag-icon { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
+.frag-icon { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.18); }
 
 /* Rail section */
 .rail-section { background: #1e293b; }
@@ -1067,10 +1067,10 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:8px;">
       <span style="font-size:.78rem;color:rgba(0,0,0,.4);">Works with</span>
-      <span style="font-size:.78rem;color:rgba(0,0,0,.55);">Fashion &amp; Apparel</span>
-      <span style="font-size:.78rem;color:rgba(0,0,0,.55);">Manufacturing</span>
-      <span style="font-size:.78rem;color:rgba(0,0,0,.55);">Consumer Brands</span>
-      <span style="font-size:.78rem;color:rgba(0,0,0,.55);">Retail</span>
+      <span style="font-size:.78rem;color:rgba(0,0,0,.55);padding:0 16px;">Fashion &amp; Apparel</span>
+      <span style="font-size:.78rem;color:rgba(0,0,0,.55);padding:0 16px;">Manufacturing</span>
+      <span style="font-size:.78rem;color:rgba(0,0,0,.55);padding:0 16px;">Consumer Brands</span>
+      <span style="font-size:.78rem;color:rgba(0,0,0,.55);padding:0 16px;">Retail</span>
     </div>
   </div>
 </section>
@@ -1148,7 +1148,16 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
       <div class="bento-card reveal">
         <div class="bento-icon-area">
           <div class="frag-icons" id="fragIcons">
-            <!-- Will be populated by JS -->
+            <div class="frag-icon" style="left:0px;top:0px;--tx:44px;--ty:28px;">📊</div>
+            <div class="frag-icon" style="left:48px;top:0px;--tx:20px;--ty:28px;">🗄️</div>
+            <div class="frag-icon" style="left:96px;top:0px;--tx:-4px;--ty:28px;">☁️</div>
+            <div class="frag-icon" style="left:144px;top:0px;--tx:-28px;--ty:28px;">📋</div>
+            <div class="frag-icon" style="left:0px;top:44px;--tx:20px;--ty:0px;">🔌</div>
+            <div class="frag-icon" style="left:144px;top:44px;--tx:-28px;--ty:0px;">📡</div>
+            <div class="frag-icon" style="left:0px;top:88px;--tx:20px;--ty:-28px;">🏢</div>
+            <div class="frag-icon" style="left:48px;top:88px;--tx:-4px;--ty:-28px;">📱</div>
+            <div class="frag-icon" style="left:96px;top:88px;--tx:-28px;--ty:-28px;">⚙️</div>
+            <div class="frag-icon" style="left:144px;top:88px;--tx:-52px;--ty:-28px;">📂</div>
           </div>
           <div class="merge-center" id="mergeCtr">⚡</div>
         </div>
@@ -2070,30 +2079,7 @@ track.addEventListener('mousemove', e => {
   track.scrollLeft = scrollLeft - (x - startX) * 1.5;
 });
 
-/* ── Bento Card 1: Fragment icons ── */
-const fragContainer = document.getElementById('fragIcons');
-const icons = ['📊','🗄️','☁️','📋','🔌','📡','🏢','📱','⚙️','📂'];
-const positions = [
-  {x:0,y:0},{x:44,y:0},{x:88,y:0},{x:132,y:0},
-  {x:0,y:38},{x:132,y:38},
-  {x:0,y:76},{x:44,y:76},{x:88,y:76},{x:132,y:76},
-];
-const targets = [
-  {tx:'44px',ty:'28px'},{tx:'20px',ty:'28px'},{tx:'-4px',ty:'28px'},{tx:'-28px',ty:'28px'},
-  {tx:'20px',ty:'0px'},{tx:'-28px',ty:'0px'},
-  {tx:'20px',ty:'-28px'},{tx:'-4px',ty:'-28px'},{tx:'-28px',ty:'-28px'},{tx:'-52px',ty:'-28px'},
-];
-icons.forEach((ic, i) => {
-  const el = document.createElement('div');
-  el.className = 'frag-icon';
-  el.textContent = ic;
-  el.style.left = positions[i].x + 'px';
-  el.style.top = positions[i].y + 'px';
-  el.style.setProperty('--tx', targets[i].tx);
-  el.style.setProperty('--ty', targets[i].ty);
-  el.style.animationDelay = (i * 0.12) + 's';
-  fragContainer.appendChild(el);
-});
+/* ── Bento Card 1: Fragment icons are now static HTML ── */
 
 /* ── Bento Card 3: Chaos → Straight animation ── */
 const chaosCard = document.getElementById('chaosCard').closest('.bento-card');

@@ -416,8 +416,7 @@ html body #what-is-e3 {
 .bento-card .t-small { color: rgba(255,255,255,0.4) !important; }
 
 .bento-icon-area {
-  background: rgba(255,255,255,0.04) !important;
-  border-color: rgba(255,255,255,0.07) !important;
+  background: transparent !important;
   /* inherit dark-context variable scoping from parent .bento-card */
   --muted:  rgba(255,255,255,0.55);
   --ink:    #ffffff;
@@ -830,8 +829,13 @@ html body #what-is-e3 {
   padding: 28px 24px !important;
 }
 .bento-icon-area {
-  height: 96px !important;
+  height: 120px !important;
   margin-bottom: 16px !important;
+}
+
+/* Problem cards (what-is-e3) need more height for the 3×3 icon grid */
+#what-is-e3 .bento-icon-area {
+  height: 160px !important;
 }
 
 /* ── Professional typography polish ── */

@@ -260,6 +260,7 @@ html body #what-is-e3 {
 
 .hero-section .t-body { color: rgba(0,0,0,0.62) !important; }
 .hero-section .t-small { color: rgba(0,0,0,0.42) !important; }
+.hero-section .hero-stat-label { color: rgba(0,0,0,0.55) !important; }
 
 /* eyebrow badge */
 .hero-eyebrow {

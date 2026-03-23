@@ -40,9 +40,14 @@
 .pilot-card, .automate-card, .metric-card, .impact-card,
 .sc-step, .missing-card, .workflow-step, .integration-card,
 .hero-mini-card, .cta-glass, .arch-diagram, .arch-layer,
+.value-card, .team-card, .story-card, .diff-card,
+.hqf-item, .origin-card, .philo-card, .why-pillar,
+.field-panel, .pilot-tracker,
 .section-dark, .e3-section, .impact-section,
 .automate-section, .howwework-section, .rail-section,
-.workflow-section, .integrations-section, .footer {
+.workflow-section, .integrations-section,
+.story-section, .team-section, .why-section,
+.pipeline-section, .expansion-section, .footer {
   --muted:  rgba(255,255,255,0.55);
   --ink:    #ffffff;
   --ink-80: rgba(255,255,255,0.80);
@@ -88,7 +93,19 @@ html, body {
 .roadmap-section,
 .final-cta-section,
 .missing-section,
-.results-section {
+.results-section,
+.values-section,
+.field-section,
+.diff-section,
+.philosophy-section,
+.honest-section,
+.guarantee-section,
+.matrix-section,
+.pilot-section,
+.spotlight-section,
+.replenishment-section,
+.sc-section,
+.spider-section {
   background: #ffffff !important;
   color: #0a0a0a !important;
 }
@@ -99,7 +116,14 @@ html, body {
 .roadmap-section .t-h2,.roadmap-section .t-h3,
 .final-cta-section .t-h2, .final-cta-section .t-h3,
 .missing-section .t-h2, .missing-section .t-h3,
-.results-section .t-h2, .results-section .t-h3 {
+.results-section .t-h2, .results-section .t-h3,
+.values-section .t-h2,  .values-section .t-h3,
+.field-section .t-h2,   .field-section .t-h3,
+.diff-section .t-h2,    .diff-section .t-h3,
+.philosophy-section .t-h2, .philosophy-section .t-h3,
+.honest-section .t-h2,  .honest-section .t-h3,
+.guarantee-section .t-h2, .guarantee-section .t-h3,
+.pilot-section .t-h2,   .pilot-section .t-h3 {
   color: #0a0a0a !important;
 }
 
@@ -109,7 +133,14 @@ html, body {
 .roadmap-section .t-body,
 .final-cta-section .t-body,
 .missing-section .t-body,
-.results-section .t-body {
+.results-section .t-body,
+.values-section .t-body,
+.field-section .t-body,
+.diff-section .t-body,
+.philosophy-section .t-body,
+.honest-section .t-body,
+.guarantee-section .t-body,
+.pilot-section .t-body {
   color: rgba(0,0,0,0.62) !important;
 }
 
@@ -150,7 +181,8 @@ html body #what-is-e3 {
 /* ════════════════════════════════════
    BLACK SECTIONS
    Dark sections, e3, impact, automate,
-   howwework, rail, workflow, footer
+   howwework, rail, workflow, footer,
+   about/process dark sections
 ════════════════════════════════════ */
 .section-dark,
 .e3-section,
@@ -160,6 +192,11 @@ html body #what-is-e3 {
 .rail-section,
 .workflow-section,
 .integrations-section,
+.story-section,
+.team-section,
+.why-section,
+.pipeline-section,
+.expansion-section,
 .footer {
   background: #0f172a !important;
   color: #ffffff !important;
@@ -174,7 +211,12 @@ html body #what-is-e3 {
 .automate-section .t-h2, .automate-section .t-h3,
 .howwework-section .t-h2, .howwework-section .t-h3,
 .rail-section .t-h2,  .rail-section .t-h3,
-.workflow-section .t-h2, .workflow-section .t-h3 {
+.workflow-section .t-h2, .workflow-section .t-h3,
+.story-section .t-h2,  .story-section .t-h3,
+.team-section .t-h2,   .team-section .t-h3,
+.why-section .t-h2,    .why-section .t-h3,
+.pipeline-section .t-h2, .pipeline-section .t-h3,
+.expansion-section .t-h2, .expansion-section .t-h3 {
   color: #ffffff !important;
 }
 
@@ -184,13 +226,22 @@ html body #what-is-e3 {
 .automate-section .t-body,
 .howwework-section .t-body,
 .rail-section .t-body,
-.workflow-section .t-body {
+.workflow-section .t-body,
+.story-section .t-body,
+.team-section .t-body,
+.why-section .t-body,
+.pipeline-section .t-body,
+.expansion-section .t-body {
   color: rgba(255,255,255,0.65) !important;
 }
 
 .section-dark .t-small,
 .e3-section .t-small,
-.impact-section .t-small {
+.impact-section .t-small,
+.story-section .t-small,
+.team-section .t-small,
+.why-section .t-small,
+.pipeline-section .t-small {
   color: rgba(255,255,255,0.42) !important;
 }
 
@@ -1022,3 +1073,54 @@ html body #what-is-e3 {
 .carousel-section .cap-track-wrap::after {
   background: linear-gradient(-90deg, #0f172a, transparent) !important;
 }
+
+/* ════════════════════════════════════
+   ABOUT & PROCESS — all panels/cards
+   Use same dark card style as rest of site
+════════════════════════════════════ */
+
+/* field-section panels (about) */
+.field-panel {
+  background: #111827 !important;
+  border-color: rgba(255,255,255,0.12) !important;
+  border-radius: 20px !important;
+}
+.field-panel.left               { border-color: rgba(16,185,129,0.25) !important; }
+.field-panel-title              { color: #ffffff !important; }
+.field-industry                 { color: rgba(255,255,255,0.85) !important; }
+.field-problem                  { color: rgba(255,255,255,0.45) !important; }
+.right-metric-num               { color: #10b981 !important; }
+.right-metric-label             { color: rgba(255,255,255,0.65) !important; }
+.right-metric-context           { color: rgba(255,255,255,0.3) !important; }
+.right-metric-row               { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.08) !important; }
+.field-icon                     { background: rgba(255,255,255,0.06) !important; border-color: rgba(255,255,255,0.1) !important; }
+
+/* honest-section panels (process) */
+.honest-panel {
+  background: #111827 !important;
+  border-radius: 20px !important;
+}
+.honest-panel.bad               { border-color: rgba(248,113,113,0.25) !important; }
+.honest-panel.good              { border-color: rgba(16,185,129,0.25) !important; }
+.honest-title                   { color: #ffffff !important; }
+.honest-item-title              { color: rgba(255,255,255,0.85) !important; }
+.honest-item-text               { color: rgba(255,255,255,0.5) !important; }
+
+/* hqf-items (about hero) */
+.hqf-item                       { background: #111827 !important; border-color: rgba(255,255,255,0.1) !important; }
+.hqf-num                        { color: #10b981 !important; }
+.hqf-label                      { color: rgba(255,255,255,0.55) !important; }
+
+/* origin-card (about hero) */
+.origin-card                    { background: #111827 !important; }
+.origin-kicker                  { color: #10b981 !important; }
+.origin-quote                   { color: rgba(255,255,255,0.75) !important; }
+.origin-name                    { color: rgba(255,255,255,0.85) !important; }
+.origin-role                    { color: rgba(255,255,255,0.35) !important; }
+.origin-stat-num                { color: #10b981 !important; }
+.origin-stat-label              { color: rgba(255,255,255,0.3) !important; }
+
+/* guarantee-box (process) */
+.guarantee-box                  { background: #111827 !important; border-color: rgba(16,185,129,0.3) !important; }
+.guarantee-title                { color: #ffffff !important; }
+.guarantee-sub                  { color: rgba(255,255,255,0.55) !important; }

@@ -1040,8 +1040,6 @@ body { font-family:var(--sans); background:var(--ink); color:var(--white); line-
   const CELL = 80, NODE_PROB = 0.55, TRACE_ALPHA = 0.09, DOT_ALPHA = 0.22, PULSE_SPEED = 1.6;
   let nodes = [], traces = [], pulses = [];
   const stars = [];
-  const STAR_COUNT = 6;
-
   function spawnStar() {
     const goRight = Math.random() > 0.5;
     const baseAngle = 20 + Math.random() * 20;
@@ -1051,9 +1049,9 @@ body { font-family:var(--sans); background:var(--ink); color:var(--white); line-
     const x = goRight ? Math.random() * W * 0.6 : W * 0.4 + Math.random() * W * 0.6;
     const y = -(Math.random() * 60);
     stars.push({ x, y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed, length, alpha: 0.65+Math.random()*0.3, width: 0.8+Math.random()*0.9, dead:false });
+    setTimeout(spawnStar, 15000 + Math.random() * 20000);
   }
-  for (let i=0;i<STAR_COUNT;i++) setTimeout(()=>spawnStar(), i*800+Math.random()*1200);
-  setInterval(()=>{ if(stars.filter(s=>!s.dead).length<STAR_COUNT) spawnStar(); },600);
+  setTimeout(spawnStar, 8000 + Math.random() * 10000);
 
   function resize() { W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; build(); }
 

@@ -1127,23 +1127,20 @@ body { font-family: var(--sans); background: var(--ink); color: var(--white); li
 
   /* ── shooting stars ── */
   const stars = [];
-  const STAR_COUNT = 6;   // max simultaneous shooting stars
-
   function spawnStar() {
-    const goRight = Math.random() > 0.5;          // random L→R or R→L
-    const baseAngle = 20 + Math.random() * 20;    // 20–40° downward tilt
+    const goRight = Math.random() > 0.5;
+    const baseAngle = 20 + Math.random() * 20;
     const angle = goRight
-      ? baseAngle * Math.PI / 180                  // left-to-right
-      : (180 - baseAngle) * Math.PI / 180;         // right-to-left
+      ? baseAngle * Math.PI / 180
+      : (180 - baseAngle) * Math.PI / 180;
 
     const speed  = 5 + Math.random() * 4;
-    const length = 45 + Math.random() * 50;        // short: 45–95 px
+    const length = 45 + Math.random() * 50;
 
-    /* spawn from top edge, spread across full width */
     const x = goRight
-      ? Math.random() * W * 0.6                    // start left portion
-      : W * 0.4 + Math.random() * W * 0.6;         // start right portion
-    const y = -(Math.random() * 60);               // just above viewport
+      ? Math.random() * W * 0.6
+      : W * 0.4 + Math.random() * W * 0.6;
+    const y = -(Math.random() * 60);
 
     stars.push({
       x, y,
@@ -1154,15 +1151,13 @@ body { font-family: var(--sans); background: var(--ink); color: var(--white); li
       width: 0.8 + Math.random() * 0.9,
       dead: false,
     });
+
+    /* schedule the next star: 15–35 seconds later */
+    setTimeout(spawnStar, 15000 + Math.random() * 20000);
   }
 
-  for (let i = 0; i < STAR_COUNT; i++) {
-    /* stagger initial positions so they don't all spawn at once */
-    setTimeout(() => spawnStar(), i * 800 + Math.random() * 1200);
-  }
-  setInterval(() => {
-    if (stars.filter(s => !s.dead).length < STAR_COUNT) spawnStar();
-  }, 600);
+  /* first star fires after 8–18 seconds — unhurried */
+  setTimeout(spawnStar, 8000 + Math.random() * 10000);
 
   function resize() {
     W = canvas.width  = window.innerWidth;

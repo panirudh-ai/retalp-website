@@ -20,6 +20,26 @@
       background: rgba(10,10,10,0.98); border-color: rgba(16,185,129,0.5);
       box-shadow: 0 4px 28px rgba(0,0,0,0.3), 0 0 0 3px rgba(16,185,129,0.08) inset;
     }
+
+    /* ── Light mode: floating over a dark section ── */
+    .nav-island.nav-light-bg {
+      background: rgba(255,255,255,0.94);
+      border-color: rgba(0,0,0,0.1);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1), 0 0 0 3px rgba(16,185,129,0.04) inset;
+    }
+    .nav-island.nav-light-bg.scrolled {
+      background: rgba(255,255,255,0.98);
+      border-color: rgba(0,0,0,0.14);
+      box-shadow: 0 4px 28px rgba(0,0,0,0.13);
+    }
+    .nav-island.nav-light-bg .nav-logo-text { color: #0a0a0a; }
+    .nav-island.nav-light-bg .nav-logo-text span { color: #059669; }
+    .nav-island.nav-light-bg .nav-sep { background: rgba(0,0,0,0.14); }
+    .nav-island.nav-light-bg .nav-link { color: rgba(0,0,0,0.52); }
+    .nav-island.nav-light-bg .nav-link:hover { color: #0a0a0a; }
+    .nav-island.nav-light-bg .nav-link.active { color: #0a0a0a; }
+    .nav-island.nav-light-bg .nav-cta { background: #059669; color: #ffffff; }
+    .nav-island.nav-light-bg .nav-cta:hover { background: #047857; box-shadow: 0 4px 20px rgba(5,150,105,0.35); }
     .nav-logo-pill { display: flex; align-items: center; gap: 8px; text-decoration: none; margin-right: 8px; }
     .nav-logo-mark { width: 28px; height: 28px; background: transparent; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .nav-logo-mark img { width: 20px; height: 20px; object-fit: contain; }
@@ -91,8 +111,53 @@
     if (link) link.classList.add('active');
   }
 
-  /* ── Scroll shadow ── */
-  window.addEventListener('scroll', function () {
+  /* ── Scroll: shadow + adaptive theme ── */
+  function getEffectiveBg(el) {
+    while (el && el !== document.documentElement) {
+      const bg = window.getComputedStyle(el).backgroundColor;
+      if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') return bg;
+      el = el.parentElement;
+    }
+    return window.getComputedStyle(document.body).backgroundColor;
+  }
+
+  function isLightColor(rgba) {
+    const m = rgba.match(/[\d.]+/g);
+    if (!m || m.length < 3) return true;
+    return (0.2126 * +m[0] + 0.7152 * +m[1] + 0.0722 * +m[2]) > 140;
+  }
+
+  function detectBgBehindNav() {
+    const navMid = nav.getBoundingClientRect().bottom + 10;
+    const candidates = document.querySelectorAll('section, header, main, .hero-section, [class*="section"], [class*="hero"], [class*="block"]');
+    let bestBg = null;
+    let bestArea = 0;
+    for (const el of candidates) {
+      if (el === nav || nav.contains(el) || el.contains(nav)) continue;
+      const rect = el.getBoundingClientRect();
+      if (rect.top > navMid || rect.bottom < navMid) continue;
+      const bg = window.getComputedStyle(el).backgroundColor;
+      if (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') continue;
+      const area = rect.width * rect.height;
+      if (area > bestArea) { bestArea = area; bestBg = bg; }
+    }
+    return bestBg || window.getComputedStyle(document.body).backgroundColor;
+  }
+
+  let ticking = false;
+  function updateNav() {
     nav.classList.toggle('scrolled', window.scrollY > 60);
-  }, { passive: true });
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      ticking = false;
+      const bg = detectBgBehindNav();
+      /* dark bg behind nav → show light/white nav */
+      nav.classList.toggle('nav-light-bg', !isLightColor(bg));
+    });
+  }
+
+  window.addEventListener('scroll', updateNav, { passive: true });
+  window.addEventListener('resize', updateNav, { passive: true });
+  setTimeout(updateNav, 150);
 })();

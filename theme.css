@@ -105,7 +105,8 @@ html, body {
 .spotlight-section,
 .replenishment-section,
 .sc-section,
-.spider-section {
+.spider-section,
+.cta-section {
   background: #ffffff !important;
   color: #0a0a0a !important;
 }
@@ -1021,8 +1022,7 @@ html body #what-is-e3 {
 .replen-section,
 .sc-section,
 .carousel-section,
-.spider-section,
-.cta-section {
+.spider-section {
   background: #0f172a !important;
   color: #ffffff !important;
 }
@@ -1033,8 +1033,7 @@ html body #what-is-e3 {
 .replen-section .t-h2,    .replen-section .t-h3,
 .sc-section .t-h2,        .sc-section .t-h3,
 .carousel-section .t-h2,  .carousel-section .t-h3,
-.spider-section .t-h2,    .spider-section .t-h3,
-.cta-section .t-h2,       .cta-section .t-h3 {
+.spider-section .t-h2,    .spider-section .t-h3 {
   color: #ffffff !important;
 }
 
@@ -1044,14 +1043,12 @@ html body #what-is-e3 {
 .replen-section .t-body,    .replen-section .t-small,
 .sc-section .t-body,        .sc-section .t-small,
 .carousel-section .t-body,  .carousel-section .t-small,
-.spider-section .t-body,    .spider-section .t-small,
-.cta-section .t-body,       .cta-section .t-small {
+.spider-section .t-body,    .spider-section .t-small {
   color: rgba(255,255,255,0.65) !important;
 }
 
 /* Ghost buttons on these dark sections stay white */
 .sc-section .btn-ghost-lg,
-.cta-section .btn-ghost-lg,
 .spider-section .btn-ghost-lg,
 .matrix-section .btn-ghost-lg,
 .spotlight-section .btn-ghost-lg,
@@ -1060,7 +1057,6 @@ html body #what-is-e3 {
   border-color: rgba(255,255,255,0.18) !important;
 }
 .sc-section .btn-ghost-lg:hover,
-.cta-section .btn-ghost-lg:hover,
 .spider-section .btn-ghost-lg:hover {
   color: #ffffff !important;
   border-color: rgba(255,255,255,0.35) !important;

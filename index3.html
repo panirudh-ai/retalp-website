@@ -955,6 +955,48 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
 /* hero role-strip card borders use rgba(0,0,0,.08) for tags row */
 .hero-section [style*="rgba(0,0,0,.08)"]         { border-color: rgba(255,255,255,0.12) !important; }
 
+/* ── Dual Track Diagram ── */
+.dual-track { position: relative; width: 100%; height: 195px; margin-top: 50px; overflow: visible; }
+.dual-track-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.track-pin { position: absolute; top: 68px; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; z-index: 2; }
+.pin-badge { width: 48px; height: 48px; border: 2px solid rgba(220,60,60,0.70); border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(6,12,20,0.92); box-shadow: 0 0 16px rgba(220,60,60,0.28), 0 0 4px rgba(220,60,60,0.15) inset; }
+.pin-icon { font-size: 1.2rem; line-height: 1; }
+.pin-label { margin-top: 9px; font-family: var(--mono); font-size: 0.70rem; color: rgba(225,85,85,0.92); white-space: nowrap; letter-spacing: 0.02em; }
+.tl { position: absolute; display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 0.70rem; left: 0; z-index: 3; pointer-events: none; background: #0f172a; padding: 3px 10px 3px 0; border-radius: 4px; }
+.tl-a { top: 68px; transform: translateY(-50%); color: rgba(148,163,184,0.65); }
+.tl-b { top: 158px; transform: translateY(-50%); color: rgba(52,211,153,0.90); }
+.tl-sample { display: inline-block; width: 18px; height: 2px; border-radius: 1px; flex-shrink: 0; }
+.tl-sample-gray { background: rgba(148,163,184,0.5); }
+.tl-sample-green { background: #34d399; box-shadow: 0 0 6px #34d399; }
+.dual-track-particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+@keyframes pin-pulse { 0%,100% { box-shadow: 0 0 16px rgba(220,60,60,0.28); } 50% { box-shadow: 0 0 26px rgba(220,60,60,0.55); } }
+.pin-badge { animation: pin-pulse 2.2s ease-in-out infinite; }
+
+/* ── E³ Flow Diagram ── */
+.e3-diagram { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 100%; position: relative; padding: 0 4px; }
+.e3-inputs { display: flex; flex-direction: column; gap: 10px; z-index: 1; width: 148px; }
+.e3-input-chip { display: flex; align-items: center; gap: 9px; padding: 9px 12px; background: rgba(220,60,60,0.09); border: 1px dashed rgba(220,80,80,0.50); border-radius: 10px; font-family: var(--mono); font-size: 0.71rem; color: rgba(240,110,110,0.90); white-space: nowrap; animation: 3s ease-in-out infinite float-data; }
+.e3-input-chip:nth-child(1) { animation-delay: 0s; }
+.e3-input-chip:nth-child(2) { animation-delay: .25s; }
+.e3-input-chip:nth-child(3) { animation-delay: .5s; }
+.e3-input-chip:nth-child(4) { animation-delay: .75s; }
+.e3-input-chip:nth-child(5) { animation-delay: 1s; }
+.e3-chip-icon { width: 13px; height: 13px; flex-shrink: 0; opacity: 0.8; stroke: rgba(240,100,100,0.8); }
+.e3-center { position: relative; display: flex; align-items: center; justify-content: center; width: 200px; height: 200px; flex-shrink: 0; }
+.e3-center::before { content: ""; position: absolute; inset: -30px; border-radius: 50%; background: radial-gradient(circle, rgba(61,184,112,0.22) 0%, rgba(61,184,112,0.08) 55%, transparent 75%); pointer-events: none; }
+.e3-ring { position: absolute; border-radius: 50%; border: 1px dashed rgba(61,184,112,0.35); }
+.e3-ring-outer { width: 190px; height: 190px; animation: 10s linear infinite spin-ring; }
+.e3-ring-inner { width: 144px; height: 144px; animation: 7s linear infinite reverse spin-ring; }
+@keyframes spin-ring { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.e3-outputs { display: flex; flex-direction: column; gap: 11px; z-index: 1; width: 152px; }
+.e3-output-item { display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: rgba(61,184,112,0.10); border: 1px solid rgba(61,184,112,0.38); border-radius: 10px; font-size: 0.78rem; font-weight: 500; color: var(--g-mid); white-space: nowrap; animation: 3s ease-in-out infinite action-appear; }
+.e3-output-item:nth-child(1) { animation-delay: 0s; }
+.e3-output-item:nth-child(2) { animation-delay: .5s; }
+.e3-output-item:nth-child(3) { animation-delay: 1s; }
+.e3-output-item:nth-child(4) { animation-delay: 1.5s; }
+.e3-out-icon { width: 14px; height: 14px; flex-shrink: 0; stroke: var(--g-mid); fill: none; }
+.e3-connector-svg { position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible; }
+
 </style>
 <link rel="stylesheet" href="theme.css">
 </head>
@@ -992,59 +1034,114 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
 
       </div>
 
-      <!-- Right: Interactive SVG Animation -->
+      <!-- Right: E³ Flow Diagram -->
       <div class="hero-visual reveal d2 in">
-        <div class="hero-svg-wrap">
-          <!-- Top: messy data labels -->
-          <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:28px;">
-            <div class="flow-chip messy">ERP_raw.csv</div>
-            <div class="flow-chip messy">pos_dump_q3.xls</div>
-            <div class="flow-chip messy">crm_export.json</div>
-            <div class="flow-chip messy">inventory_v7.xlsx</div>
-            <div class="flow-chip messy">iot_stream_raw</div>
+        <div class="e3-diagram">
+
+          <!-- Left: Input data sources -->
+          <div class="e3-inputs">
+            <div class="e3-input-chip">
+              <svg class="e3-chip-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+              ERP_raw.csv
+            </div>
+            <div class="e3-input-chip">
+              <svg class="e3-chip-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+              pos_dump_q3.xls
+            </div>
+            <div class="e3-input-chip">
+              <svg class="e3-chip-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16,16 12,12 8,16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+              crm_export.json
+            </div>
+            <div class="e3-input-chip">
+              <svg class="e3-chip-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+              inventory_v7
+            </div>
+            <div class="e3-input-chip">
+              <svg class="e3-chip-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
+              iot_stream
+            </div>
           </div>
 
-          <!-- Centre flow row -->
-          <div class="hero-flow-row">
-            <!-- Left input side -->
-            <div style="display:flex;flex-direction:column;gap:8px;min-width:110px;">
-              <div class="flow-chip messy" style="animation-delay:.15s;">{ undefined }</div>
-              <div class="flow-chip messy" style="animation-delay:.45s;">NULL → ?</div>
-              <div class="flow-chip messy" style="animation-delay:.75s;">⚠ mismatch</div>
-            </div>
-
-            <!-- Connector left -->
-            <div class="flow-connector"></div>
-
-            <!-- E³ Diamond -->
+          <!-- Center: E³ Diamond with rings -->
+          <div class="e3-center">
+            <div class="e3-ring e3-ring-outer"></div>
+            <div class="e3-ring e3-ring-inner"></div>
             <div class="e3-diamond">
               <div class="e3-label">E<sub>3</sub></div>
             </div>
+          </div>
 
-            <!-- Connector right -->
-            <div class="flow-connector right"></div>
-
-            <!-- Right output side -->
-            <div style="display:flex;flex-direction:column;gap:8px;min-width:130px;">
-              <div class="action-pulse"><div class="action-dot"></div>🚚 Dispatch now</div>
-              <div class="action-pulse"><div class="action-dot"></div>📦 Restock SKU-42</div>
-              <div class="action-pulse"><div class="action-dot"></div>⚡ Alert: shortage</div>
-              <div class="action-pulse"><div class="action-dot"></div>✅ Plan optimized</div>
+          <!-- Right: Output actions -->
+          <div class="e3-outputs">
+            <div class="e3-output-item">
+              <div class="action-dot"></div>
+              <svg class="e3-out-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              Dispatch now
+            </div>
+            <div class="e3-output-item">
+              <div class="action-dot"></div>
+              <svg class="e3-out-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5"/></svg>
+              Restock SKU-42
+            </div>
+            <div class="e3-output-item">
+              <div class="action-dot"></div>
+              <svg class="e3-out-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></svg>
+              Alert: shortage
+            </div>
+            <div class="e3-output-item">
+              <div class="action-dot"></div>
+              <svg class="e3-out-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+              Plan optimized
             </div>
           </div>
 
-          <!-- Bottom: clean outputs -->
-          <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:28px;">
-            <div class="flow-chip clean">inventory.forecast</div>
-            <div class="flow-chip clean">production.plan</div>
-            <div class="flow-chip clean">dispatch.order</div>
-            <div class="flow-chip clean">supply.alert</div>
-          </div>
+          <!-- SVG connector lines (drawn by script below) -->
+          <svg class="e3-connector-svg" aria-hidden="true"></svg>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+(function() {
+  function drawE3Lines() {
+    var diagram = document.querySelector('.e3-diagram');
+    var svg = diagram && diagram.querySelector('.e3-connector-svg');
+    if (!diagram || !svg) return;
+    var dRect = diagram.getBoundingClientRect();
+    if (!dRect.width) return;
+    svg.setAttribute('width', dRect.width);
+    svg.setAttribute('height', dRect.height);
+    var inputs = diagram.querySelectorAll('.e3-input-chip');
+    var outputs = diagram.querySelectorAll('.e3-output-item');
+    var center = diagram.querySelector('.e3-center');
+    var cRect = center.getBoundingClientRect();
+    var cx = cRect.left - dRect.left + cRect.width / 2;
+    var cy = cRect.top - dRect.top + cRect.height / 2;
+    /* diamond is 120px rotated 45° → half-diagonal ≈ 85px */
+    var lx = cx - 82, rx = cx + 82;
+    var lines = '';
+    inputs.forEach(function(el) {
+      var r = el.getBoundingClientRect();
+      var x1 = r.right - dRect.left, y1 = r.top - dRect.top + r.height / 2;
+      lines += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + lx + '" y2="' + cy + '" stroke="rgba(210,70,70,0.35)" stroke-width="1" stroke-dasharray="4 3"/>';
+    });
+    outputs.forEach(function(el) {
+      var r = el.getBoundingClientRect();
+      var x2 = r.left - dRect.left, y2 = r.top - dRect.top + r.height / 2;
+      lines += '<line x1="' + rx + '" y1="' + cy + '" x2="' + x2 + '" y2="' + y2 + '" stroke="rgba(61,184,112,0.40)" stroke-width="1"/>';
+    });
+    svg.innerHTML = lines;
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { requestAnimationFrame(drawE3Lines); });
+  } else {
+    requestAnimationFrame(drawE3Lines);
+  }
+  window.addEventListener('resize', drawE3Lines);
+})();
+</script>
 
 <!-- ═══ WHO IT'S FOR + WORKS WITH ═══ -->
 <section style="padding:36px 0;">
@@ -1094,23 +1191,74 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
       </div>
     </div>
 
-    <!-- Rail Canvas -->
-    <div class="rail-canvas-wrapper reveal d2">
-      <canvas id="rail-canvas" style="width:100%;display:block;"></canvas>
+    <!-- Dual Track Diagram -->
+    <div class="dual-track reveal d2 in">
 
-      <!-- Roadblock labels below the canvas -->
-      <div class="rail-roadblock-labels">
-        <div class="rl-item"><div class="rl-dot"></div>Manual Entry</div>
-        <div class="rl-item"><div class="rl-dot"></div>Siloed Data</div>
-        <div class="rl-item"><div class="rl-dot"></div>Delayed Decisions</div>
-        <div class="rl-item"><div class="rl-dot"></div>No Visibility</div>
+      <!-- Track A label -->
+      <div class="tl tl-a"><span class="tl-sample tl-sample-gray"></span>Track A – Legacy</div>
+      <!-- Track B label -->
+      <div class="tl tl-b"><span class="tl-sample tl-sample-green"></span>Track B – E³</div>
+
+      <!-- Pin 1 -->
+      <div class="track-pin" style="left:22%">
+        <div class="pin-badge"><span class="pin-icon">⏳</span></div>
+        <div class="pin-label">Manual Entry</div>
+      </div>
+      <!-- Pin 2 -->
+      <div class="track-pin" style="left:40%">
+        <div class="pin-badge"><span class="pin-icon">🔒</span></div>
+        <div class="pin-label">Data Silo</div>
+      </div>
+      <!-- Pin 3 -->
+      <div class="track-pin" style="left:60%">
+        <div class="pin-badge"><span class="pin-icon">🕐</span></div>
+        <div class="pin-label">Delayed Decision</div>
+      </div>
+      <!-- Pin 4 -->
+      <div class="track-pin" style="left:80%">
+        <div class="pin-badge"><span class="pin-icon">👁</span></div>
+        <div class="pin-label">No Visibility</div>
       </div>
 
-      <!-- Finish -->
-      <div class="rail-finish-label reveal d3">
-        <div class="rail-finish-icon">✅</div>
-        Execution Reached
-      </div>
+      <!-- SVG: track lines, smooth wave distortions, connectors, dots -->
+      <svg class="dual-track-svg" viewBox="0 0 1000 195" preserveAspectRatio="none" aria-hidden="true">
+
+        <!-- Track A: gray dashed straight segments (gaps at each pin's wave span) -->
+        <line x1="0"   y1="68" x2="188" y2="68" stroke="rgba(148,163,184,0.50)" stroke-width="1.5" stroke-dasharray="7 5"/>
+        <line x1="252" y1="68" x2="368" y2="68" stroke="rgba(148,163,184,0.50)" stroke-width="1.5" stroke-dasharray="7 5"/>
+        <line x1="432" y1="68" x2="568" y2="68" stroke="rgba(148,163,184,0.50)" stroke-width="1.5" stroke-dasharray="7 5"/>
+        <line x1="632" y1="68" x2="768" y2="68" stroke="rgba(148,163,184,0.50)" stroke-width="1.5" stroke-dasharray="7 5"/>
+        <line x1="832" y1="68" x2="1000" y2="68" stroke="rgba(148,163,184,0.50)" stroke-width="1.5" stroke-dasharray="7 5"/>
+
+        <!-- Smooth signal-interference waves at each pin (quadratic bezier, ±20px amplitude) -->
+        <path d="M188,68 Q196,28 204,68 Q212,108 220,68 Q228,28 236,68 Q244,108 252,68" fill="none" stroke="rgba(148,163,184,0.70)" stroke-width="1.5"/>
+        <path d="M368,68 Q376,28 384,68 Q392,108 400,68 Q408,28 416,68 Q424,108 432,68" fill="none" stroke="rgba(148,163,184,0.70)" stroke-width="1.5"/>
+        <path d="M568,68 Q576,28 584,68 Q592,108 600,68 Q608,28 616,68 Q624,108 632,68" fill="none" stroke="rgba(148,163,184,0.70)" stroke-width="1.5"/>
+        <path d="M768,68 Q776,28 784,68 Q792,108 800,68 Q808,28 816,68 Q824,108 832,68" fill="none" stroke="rgba(148,163,184,0.70)" stroke-width="1.5"/>
+
+        <!-- Vertical green connectors: all 4 pins down to Track B -->
+        <line x1="220" y1="155" x2="220" y2="96" stroke="rgba(52,211,153,0.50)" stroke-width="1.5"/>
+        <line x1="400" y1="155" x2="400" y2="96" stroke="rgba(52,211,153,0.50)" stroke-width="1.5"/>
+        <line x1="600" y1="155" x2="600" y2="96" stroke="rgba(52,211,153,0.50)" stroke-width="1.5"/>
+        <line x1="800" y1="155" x2="800" y2="96" stroke="rgba(52,211,153,0.50)" stroke-width="1.5"/>
+
+        <!-- Track B: layered neon glow -->
+        <line x1="0" y1="158" x2="1000" y2="158" stroke="rgba(52,211,153,0.06)" stroke-width="28"/>
+        <line x1="0" y1="158" x2="1000" y2="158" stroke="rgba(52,211,153,0.14)" stroke-width="14"/>
+        <line x1="0" y1="158" x2="1000" y2="158" stroke="rgba(52,211,153,0.30)" stroke-width="6"/>
+        <line x1="0" y1="158" x2="1000" y2="158" stroke="#34d399"               stroke-width="2.5"/>
+
+        <!-- Green dots at all 4 connector positions -->
+        <circle cx="220" cy="158" r="10" fill="rgba(52,211,153,0.18)"/>
+        <circle cx="220" cy="158" r="5"  fill="#34d399"/>
+        <circle cx="400" cy="158" r="10" fill="rgba(52,211,153,0.18)"/>
+        <circle cx="400" cy="158" r="5"  fill="#34d399"/>
+        <circle cx="600" cy="158" r="10" fill="rgba(52,211,153,0.18)"/>
+        <circle cx="600" cy="158" r="5"  fill="#34d399"/>
+        <circle cx="800" cy="158" r="10" fill="rgba(52,211,153,0.18)"/>
+        <circle cx="800" cy="158" r="5"  fill="#34d399"/>
+      </svg>
+      <canvas class="dual-track-particles"></canvas>
     </div>
 
     <!-- Stats row -->
@@ -1371,28 +1519,6 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
       <p class="e3-subtitle">
         Uses Model Context Protocol for LLM agents with deep contextual intelligence from YOUR data sources.
       </p>
-    </div>
-
-    <div class="split-track-container">
-      <!-- Split Track Visual -->
-      <div class="track-visual reveal d1 in">
-        <canvas id="dataflow-canvas" style="width:100%;height:100%;display:block;border-radius:20px;"></canvas>
-      </div>
-
-      <!-- Live Action Log -->
-      <div class="action-log reveal d2 in">
-        <div class="action-log-header">
-          <div class="action-log-dot"></div>
-          <span class="action-log-title">Live Action Log</span>
-        </div>
-        <div class="action-log-body" id="actionLogBody">
-          
-          
-          
-          
-          
-        <div class="log-entry"><span class="time">[08:08]</span> <span class="label">E3-ACTION:</span> <span class="action">Transfer initiated Mumbai → Delhi</span></div><div class="log-entry"><span class="time">[08:09]</span> <span class="label">E3-ACTION:</span> <span class="action">Production schedule optimized</span></div><div class="log-entry"><span class="time">[08:10]</span> <span class="label">SYSTEM:</span> <span class="warning">Demand spike detected Region-North</span></div><div class="log-entry"><span class="time">[08:11]</span> <span class="label">E3-ACTION:</span> <span class="action">Auto-allocation adjusted</span></div><div class="log-entry"><span class="time">[08:12]</span> <span class="label">E3-ACTION:</span> <span class="action">Vendor notification sent</span></div></div>
-      </div>
     </div>
 
     <div style="text-align:center;" class="reveal d3 in">
@@ -2021,8 +2147,129 @@ document.querySelectorAll('.case-panel.solution').forEach(panel => {
 
 <script>
 /* ════════════════════════════════════════════════
-   PARALLEL RAIL CANVAS ANIMATION
-   Two tracks: Legacy (grey/jagged) vs E³ (green/glowing)
+   DUAL TRACK PARTICLE ANIMATION
+   Overlay canvas — SVG diagram unchanged
+════════════════════════════════════════════════ */
+(function() {
+  var canvas = document.querySelector('.dual-track-particles');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = 1, H = 195;
+
+  function resize() {
+    var dpr = window.devicePixelRatio || 1;
+    var parent = canvas.parentElement;
+    W = parent.offsetWidth || 800;
+    H = parent.offsetHeight || 195;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(dpr, dpr);
+  }
+
+  /* Track Y positions matching SVG viewBox ratios */
+  function ay() { return H * 68  / 195; }
+  function by() { return H * 158 / 195; }
+
+  /* Pin x fractions matching HTML left% values */
+  var PINS = [0.22, 0.40, 0.60, 0.80];
+  var packets = [];
+
+  function spawnPacket() {
+    var idx  = Math.floor(Math.random() * PINS.length);
+    var startX = (PINS[idx] - 0.09) * W;
+    packets.push({
+      phase: 'legacy',
+      x: startX,
+      pinX: PINS[idx] * W,
+      speed: 1.3 + Math.random() * 0.9,
+      size:  2.8 + Math.random() * 1.4,
+      arcProgress: 0,
+      arcStartX: 0, arcStartY: 0,
+      color: 'hsl(' + (138 + Math.random() * 28) + ',78%,62%)'
+    });
+  }
+
+  for (var i = 0; i < 4; i++) setTimeout(spawnPacket, i * 550);
+  setInterval(spawnPacket, 1500);
+
+  var glowX = 0;
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    var AY = ay(), BY = by();
+
+    /* ── Moving glow pulse along Track B ── */
+    glowX += 2.6;
+    if (glowX > W + 80) glowX = -80;
+    var gg = ctx.createRadialGradient(glowX, BY, 0, glowX, BY, 70);
+    gg.addColorStop(0, 'rgba(52,211,153,0.30)');
+    gg.addColorStop(1, 'rgba(52,211,153,0)');
+    ctx.save();
+    ctx.scale(1, 0.18);
+    ctx.beginPath();
+    ctx.arc(glowX, BY / 0.18, 70, 0, Math.PI * 2);
+    ctx.fillStyle = gg;
+    ctx.fill();
+    ctx.restore();
+
+    /* ── Packets ── */
+    for (var i = packets.length - 1; i >= 0; i--) {
+      var p = packets[i];
+
+      if (p.phase === 'legacy') {
+        p.x += p.speed;
+        if (p.x >= p.pinX - 3) {
+          p.phase = 'arc';
+          p.arcStartX = p.x; p.arcStartY = AY;
+          p.arcProgress = 0;
+        }
+        if (p.x > W + 10) { packets.splice(i, 1); continue; }
+        ctx.beginPath();
+        ctx.arc(p.x, AY, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(148,163,184,0.85)';
+        ctx.fill();
+
+      } else if (p.phase === 'arc') {
+        p.arcProgress += 0.048;
+        if (p.arcProgress >= 1) { p.phase = 'retalp'; p.x = p.arcStartX; continue; }
+        var t = p.arcProgress;
+        /* Quadratic bezier: straight down from Track A to Track B */
+        var cpx = p.arcStartX, cpy = AY + (BY - AY) * 0.5;
+        var bpx = (1-t)*(1-t)*p.arcStartX + 2*(1-t)*t*cpx + t*t*p.arcStartX;
+        var bpy = (1-t)*(1-t)*p.arcStartY + 2*(1-t)*t*cpy + t*t*BY;
+        ctx.beginPath();
+        ctx.arc(bpx, bpy, p.size * 0.85, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(52,211,153,' + (0.45 + 0.45 * t) + ')';
+        ctx.fill();
+
+      } else { /* retalp */
+        p.x += p.speed * 1.25;
+        if (p.x > W + 10) { packets.splice(i, 1); continue; }
+        /* Glow halo */
+        var rg = ctx.createRadialGradient(p.x, BY, 0, p.x, BY, p.size * 6);
+        rg.addColorStop(0, 'rgba(52,211,153,0.40)');
+        rg.addColorStop(1, 'rgba(52,211,153,0)');
+        ctx.beginPath(); ctx.arc(p.x, BY, p.size * 6, 0, Math.PI * 2);
+        ctx.fillStyle = rg; ctx.fill();
+        /* Core */
+        ctx.beginPath(); ctx.arc(p.x, BY, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color; ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  function init() { resize(); draw(); }
+  window.addEventListener('load', function() { setTimeout(init, 150); });
+  setTimeout(init, 250);
+  window.addEventListener('resize', resize);
+})();
+
+/* ════════════════════════════════════════════════
+   PARALLEL RAIL CANVAS ANIMATION — now unused
 ════════════════════════════════════════════════ */
 (function() {
   const canvas = document.getElementById('rail-canvas');
@@ -2493,7 +2740,7 @@ document.querySelectorAll('.case-panel.solution').forEach(panel => {
 </script>
 
 <script>
-/* ── Data Flow Animation — E³ section left card ── */
+/* ── Data Flow Animation — removed (replaced by dual-track diagram) ── */
 (function() {
   var canvas = document.querySelector('.track-visual canvas');
   if (!canvas) return;

@@ -312,16 +312,28 @@ html body #what-is-e3 {
   gap: 12px !important;
 }
 
-/* "See the Platform" ghost button on white hero bg */
+/* Ghost button on white hero bg */
 .hero-section .btn-ghost-lg {
   color: #0a0a0a !important;
-  border-color: rgba(0,0,0,0.18) !important;
+  border-color: rgba(0,0,0,0.45) !important;
   background: transparent !important;
 }
 .hero-section .btn-ghost-lg:hover {
   background: #0a0a0a !important;
   color: #ffffff !important;
   border-color: #0a0a0a !important;
+}
+
+/* Ghost button on dark guarantee bg */
+.guarantee-section .btn-ghost-lg {
+  color: rgba(255,255,255,0.85) !important;
+  border-color: rgba(255,255,255,0.4) !important;
+  background: transparent !important;
+}
+.guarantee-section .btn-ghost-lg:hover {
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,0.75) !important;
+  background: rgba(255,255,255,0.08) !important;
 }
 
 /* ════════════════════════════════════

@@ -143,8 +143,8 @@
             </div>
             <span class="nav-logo-text">Retal<span>p</span></span>
           </a>
-          <p class="footer-tagline">Your business, your data, your reports.</p>
-          <span class="footer-tagline-highlight">Zero Waste Intelligence Platform.</span>
+          <p class="footer-tagline">Your Data. Our Execution.</p>
+          <span class="footer-tagline-highlight">Eliminating Operational Friction through Autonomous Decision Systems.</span>
         </div>
         <div>
           <div class="footer-col-title">Platform</div>

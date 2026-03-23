@@ -74,6 +74,8 @@ body { font-family: var(--sans); background: #ffffff; color: #0a0a0a; line-heigh
 .hero-sub { margin-bottom: 44px; max-width: 520px; color: var(--muted); }
 
 .hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.hero-industries { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+.industry-tag { display: inline-block; padding: 4px 13px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.13); border-radius: 100px; font-size: 0.71rem; color: rgba(255,255,255,0.55); font-family: var(--mono); letter-spacing: 0.04em; }
 
 .btn-primary-lg { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; background: var(--g-mid); color: var(--white); font-size: 0.95rem; font-weight: 600; border-radius: 14px; border: none; cursor: pointer; text-decoration: none; transition: all .25s var(--ease-smooth); box-shadow: rgba(61, 184, 112, 0) 0px 0px 0px 0px; position: relative; }
 
@@ -1021,8 +1023,17 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
         </h1>
 
         <p class="t-body hero-sub reveal d2 in">
-          Transform fragmented ERP, CRM, and spreadsheet data into autonomous operational execution.
+          Your ERP&sol; capture data. Retalp E³ turns it into decisions &mdash; replenishment, allocation, production.
         </p>
+
+        <div class="hero-industries reveal d2 in">
+          <span class="industry-tag">Retail</span>
+          <span class="industry-tag">Manufacturing</span>
+          <span class="industry-tag">Fashion</span>
+          <span class="industry-tag">Distribution</span>
+          <span class="industry-tag">FMCG</span>
+          <span class="industry-tag">Pharma</span>
+        </div>
 
         <div class="hero-actions reveal d3 in">
           <a href="index3.html#pilot" class="btn-primary-lg">
@@ -1175,8 +1186,8 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
 
     <div class="rail-header reveal">
       <div class="sec-kicker" style="justify-content:center;">E³ – Enterprise Execution Engine</div>
-      <h2 class="t-h2">The Legacy Rail vs.<br/>The <span style="color:var(--g-vivid);">Retalp Layer</span></h2>
-      <p class="rail-subtitle">Your current process is fragmented, delayed, and interrupted at every step. Retalp E³ runs a parallel execution layer that picks up your data and bypasses every roadblock.</p>
+      <h2 class="t-h2">The Siloed Path vs.<br/>The <span style="color:var(--g-vivid);">Retalp Thread</span></h2>
+      <p class="rail-subtitle">Your current process jumps between ERP &rarr; Excel &rarr; email &rarr; warehouse calls. E³ runs parallel &mdash; picks up the data and delivers the decision directly where it executes.</p>
     </div>
 
     <!-- Legend -->
@@ -1309,7 +1320,7 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
         </div>
         <div class="bento-label">Problem 01</div>
         <div class="bento-title">Fragmented Data Sources</div>
-        <div class="bento-desc">Every Monday: Export ERP to Excel (2h), POS dump to Sheets (1h), CRM report (1h). Numbers don't match. Planners pick the version they trust most.</div>
+        <div class="bento-desc">Monday planning starts with exports from 5 systems that never match.</div>
       </div>
 
       <!-- Card 2: AI Outside Workflow -->
@@ -1338,7 +1349,7 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
         </div>
         <div class="bento-label">Problem 02</div>
         <div class="bento-title">AI Outside the Workflow</div>
-        <div class="bento-desc">BI sends 12 dashboards. Planning team ignores them. WhatsApp group decides allocation Thursday night.</div>
+        <div class="bento-desc">BI sends 12 dashboards. Planning team ignores them. WhatsApp group decides allocation.</div>
       </div>
 
       <!-- Card 3: Manual Coordination -->
@@ -1367,7 +1378,7 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
 <section class="section" id="outputs" style="padding-bottom:0;">
   <div class="wrap">
     <div class="section-header reveal">
-      <div class="sec-kicker">Concrete Outputs</div>
+      <div class="sec-kicker">Retalp E³ Delivers Concrete Outputs</div>
       <h2 class="t-h2" style="max-width:640px;">What you see every morning</h2>
     </div>
 
@@ -1536,7 +1547,7 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
     <div class="section-header center reveal in">
       <div class="sec-kicker" style="justify-content:center;">Operational Systems &amp; Capabilities</div>
       <h2 class="t-h2">Systems E³ powers this quarter</h2>
-      <p class="t-body" style="max-width:540px;margin:14px auto 0;">Start with one system, see results in 4–6 weeks, then expand.</p>
+      <p class="t-body" style="max-width:540px;margin:14px auto 0;"></p>
     </div>
     <div class="cap-grid-6">
       <div class="cap-card reveal in">
@@ -1778,13 +1789,14 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
 <section class="roadmap-section" id="roadmap">
   <div class="wrap">
     <div class="section-header center reveal in">
-      <div class="sec-kicker" style="justify-content:center;">Your Next 6 Weeks</div>
+      <div class="sec-kicker" style="justify-content:center;">Results in 6 Weeks</div>
       <h2 class="t-h2">From Discovery to Live<br>Operational System</h2>
     </div>
 
     <div class="roadmap-container">
       <div class="roadmap-hero-text reveal in">
-        Most pilots take <span>4–6 weeks</span> from kickoff<br>to a live, measurable operational system.
+        Most pilots take <span>4–6 weeks</span> from kickoff<br>to a live, measurable operational system.<br>
+        <span style="font-size:0.9em;opacity:0.7;">Zero disruption to existing ERP/IT workflows.</span>
       </div>
 
       <div class="pipeline reveal d1 in" id="pipeline">
@@ -1875,7 +1887,7 @@ svg.chaos-svg { width: 100%; height: 100%; overflow: visible; }
     <!-- Glassmorphism CTA card -->
     <div class="cta-glass reveal d2">
       <div class="t-mono" style="margin-bottom:16px;font-size:.75rem;color:var(--g-vivid);">READY TO BEGIN?</div>
-      <h2 class="t-h2 cta-headline" style="margin-bottom:14px;">See E³ in your operations.<br/>In 20 minutes.</h2>
+      <h2 class="t-h2 cta-headline" style="margin-bottom:14px;">See E³ in your operations.</h2>
       <p class="t-body" style="margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;">Book a focused demo. We'll map your operational gap, show you the E³ fit, and design a pilot in one session.</p>
       <div class="cta-actions-center">
         <a href="#" class="btn-primary-lg" style="font-size:1rem;">

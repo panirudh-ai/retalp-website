@@ -147,12 +147,13 @@
           <span class="footer-tagline-highlight">Eliminating Operational Friction through Autonomous Decision Systems.</span>
         </div>
         <div>
-          <div class="footer-col-title">Platform</div>
+          <div class="footer-col-title">Pages</div>
           <ul class="footer-links">
-            <li><a href="index3.html#e3-engine">What is E³</a></li>
+            <li><a href="index3.html">Retalp</a></li>
+            <li><a href="retalpE3.html">Retalp E³</a></li>
             <li><a href="retalp_capabilities.html">Capabilities</a></li>
-            <li><a href="index3.html#impact">Results</a></li>
-            <li><a href="index3.html#pilot">Start a Pilot</a></li>
+            <li><a href="retalp_about (1).html">About</a></li>
+            <li><a href="retalp_process.html">Process</a></li>
           </ul>
         </div>
         <div>

@@ -50,15 +50,21 @@
     }
     .site-footer .footer-brand-logo .nav-logo-text span { color: #10b981; }
     .site-footer .footer-tagline {
-      color: rgba(255,255,255,0.45);
-      font-size: 0.83rem;
-      line-height: 1.55;
-      margin: 0 0 6px;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.95rem;
+      font-weight: 400;
+      line-height: 1.5;
+      margin: 10px 0 6px;
+      letter-spacing: 0.01em;
     }
     .site-footer .footer-tagline-highlight {
+      display: block;
       color: #10b981;
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-top: 2px;
     }
     .site-footer .footer-col-title {
       color: rgba(255,255,255,0.35);
@@ -380,8 +386,8 @@
             </div>
             <span class="nav-logo-text">Retal<span>p</span></span>
           </a>
-          <p class="footer-tagline">YOUR DATA</p>
-          <span class="footer-tagline-highlight">Retalp E³ AI AUTOMATION</span>
+          <p class="footer-tagline">Your data.</p>
+          <span class="footer-tagline-highlight">Retalp E³ — AI that executes.</span>
         </div>
         <div>
           <div class="footer-col-title">Platform</div>
@@ -405,7 +411,7 @@
         <div>
           <div class="footer-col-title">Company</div>
           <ul class="footer-links">
-            <li><a href="index3.html">About</a></li>
+            <li><a href="retalp_about (1).html">About</a></li>
             <li><a href="index3.html">Industries</a></li>
             <li><a href="#" onclick="openContactModal();return false;">Contact</a></li>
             <li><a href="privacy.html">Privacy</a></li>
@@ -416,7 +422,7 @@
         <div class="footer-copy">© 2026 Retalp. All rights reserved.</div>
         <div class="footer-status">
           <span class="footer-status-dot"></span>
-          E³ System Online
+          Retalp E³ System Online
         </div>
       </div>
     </div>

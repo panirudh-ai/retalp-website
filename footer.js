@@ -395,7 +395,7 @@
             <li><a href="index3.html">Retalp</a></li>
             <li><a href="retalpE3.html">Retalp E³</a></li>
             <li><a href="retalp_capabilities.html">Capabilities</a></li>
-            <li><a href="retalp_about (1).html">About</a></li>
+            <li><a href="retalp_about.html">About</a></li>
             <li><a href="retalp_process.html">Process</a></li>
           </ul>
         </div>
@@ -411,7 +411,7 @@
         <div>
           <div class="footer-col-title">Company</div>
           <ul class="footer-links">
-            <li><a href="retalp_about (1).html">About</a></li>
+            <li><a href="retalp_about.html">About</a></li>
             <li><a href="index3.html">Industries</a></li>
             <li><a href="#" onclick="openContactModal();return false;">Contact</a></li>
             <li><a href="privacy.html">Privacy</a></li>

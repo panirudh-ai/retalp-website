@@ -1038,21 +1038,7 @@ body { font-family:var(--sans); background:var(--ink); color:var(--white); line-
   const ctx = canvas.getContext('2d');
   let W, H;
   const CELL = 80, NODE_PROB = 0.55, TRACE_ALPHA = 0.09, DOT_ALPHA = 0.22, PULSE_SPEED = 1.6;
-  let nodes = [], traces = [], pulses = [];
-  const stars = [];
-  function spawnStar() {
-    const goRight = Math.random() > 0.5;
-    const baseAngle = 20 + Math.random() * 20;
-    const angle = goRight ? baseAngle * Math.PI / 180 : (180 - baseAngle) * Math.PI / 180;
-    const speed = 5 + Math.random() * 4;
-    const length = 45 + Math.random() * 50;
-    const x = goRight ? Math.random() * W * 0.6 : W * 0.4 + Math.random() * W * 0.6;
-    const y = -(Math.random() * 60);
-    stars.push({ x, y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed, length, alpha: 0.65+Math.random()*0.3, width: 0.8+Math.random()*0.9, dead:false });
-    setTimeout(spawnStar, 15000 + Math.random() * 20000);
-  }
-  setTimeout(spawnStar, 8000 + Math.random() * 10000);
-
+  let nodes = [], traces = [];
   function resize() { W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; build(); }
 
   function build() {
@@ -1072,16 +1058,7 @@ body { font-family:var(--sans); background:var(--ink); color:var(--white); line-
       if(r+1<rows&&grid[r+1]&&grid[r+1][c]&&Math.random()>0.25) traces.push({a:n,b:grid[r+1][c]});
       if(c+1<cols&&r+1<rows&&grid[r+1]&&grid[r+1][c+1]&&Math.random()>0.88) traces.push({a:n,b:grid[r+1][c+1]});
     }
-    for(let i=0;i<10;i++) spawnPulse();
   }
-
-  function spawnPulse() {
-    if(!traces.length) return;
-    const tr=traces[Math.floor(Math.random()*traces.length)];
-    const fwd=Math.random()>.5;
-    pulses.push({trace:tr,t:0,fwd,speed:PULSE_SPEED/Math.hypot(tr.b.x-tr.a.x,tr.b.y-tr.a.y)});
-  }
-  setInterval(spawnPulse,300);
 
   function draw() {
     ctx.clearRect(0,0,W,H);
@@ -1090,42 +1067,6 @@ body { font-family:var(--sans); background:var(--ink); color:var(--white); line-
       ctx.strokeStyle=`rgba(61,184,112,${TRACE_ALPHA})`; ctx.lineWidth=1; ctx.stroke();
     });
     nodes.forEach(n=>{ ctx.beginPath(); ctx.arc(n.x,n.y,2,0,Math.PI*2); ctx.fillStyle=`rgba(61,184,112,${DOT_ALPHA})`; ctx.fill(); });
-    for(let i=pulses.length-1;i>=0;i--) {
-      const p=pulses[i]; p.t+=p.speed;
-      if(p.t>=1){pulses.splice(i,1);continue;}
-      const a=p.fwd?p.trace.a:p.trace.b, b=p.fwd?p.trace.b:p.trace.a;
-      const totalDx=b.x-a.x,totalDy=b.y-a.y,mid={x:b.x,y:a.y};
-      const segLen1=Math.abs(totalDx),segLen2=Math.abs(totalDy),totalLen=segLen1+segLen2||1;
-      const traveled=p.t*totalLen;
-      let px,py;
-      if(traveled<=segLen1){px=a.x+(b.x-a.x)*(traveled/(segLen1||1));py=a.y;}
-      else{px=b.x;py=a.y+(b.y-a.y)*((traveled-segLen1)/(segLen2||1));}
-      const tailT=Math.max(0,p.t-0.18),tailLen=tailT*totalLen;
-      let tx,ty;
-      if(tailLen<=segLen1){tx=a.x+(b.x-a.x)*(tailLen/(segLen1||1));ty=a.y;}
-      else{tx=b.x;ty=a.y+(b.y-a.y)*((tailLen-segLen1)/(segLen2||1));}
-      const grad=ctx.createLinearGradient(tx,ty,px,py);
-      grad.addColorStop(0,'rgba(61,184,112,0)'); grad.addColorStop(1,'rgba(93,232,154,0.85)');
-      ctx.beginPath(); ctx.moveTo(tx,ty);
-      if(tailLen<=segLen1&&traveled<=segLen1) ctx.lineTo(px,py);
-      else if(tailLen>segLen1) ctx.lineTo(px,py);
-      else { ctx.lineTo(mid.x,mid.y); ctx.lineTo(px,py); }
-      ctx.strokeStyle=grad; ctx.lineWidth=1.8; ctx.stroke();
-      ctx.beginPath(); ctx.arc(px,py,2.8,0,Math.PI*2); ctx.fillStyle='rgba(93,232,154,0.95)'; ctx.fill();
-      ctx.beginPath(); ctx.arc(px,py,5,0,Math.PI*2); ctx.fillStyle='rgba(93,232,154,0.15)'; ctx.fill();
-    }
-    for(let i=stars.length-1;i>=0;i--) {
-      const s=stars[i]; if(s.dead){stars.splice(i,1);continue;}
-      s.x+=s.vx; s.y+=s.vy;
-      if(s.y>H+s.length||s.x>W+s.length||s.x<-s.length){s.dead=true;continue;}
-      const tx2=s.x-Math.cos(Math.atan2(s.vy,s.vx))*s.length,ty2=s.y-Math.sin(Math.atan2(s.vy,s.vx))*s.length;
-      const grad2=ctx.createLinearGradient(tx2,ty2,s.x,s.y);
-      grad2.addColorStop(0,'rgba(4,120,87,0)'); grad2.addColorStop(0.5,`rgba(5,150,105,${s.alpha*0.45})`); grad2.addColorStop(1,`rgba(4,120,87,${s.alpha})`);
-      ctx.beginPath(); ctx.moveTo(tx2,ty2); ctx.lineTo(s.x,s.y); ctx.strokeStyle=grad2; ctx.lineWidth=s.width+0.5; ctx.lineCap='round'; ctx.stroke();
-      const hg=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,7);
-      hg.addColorStop(0,`rgba(6,178,120,${s.alpha})`); hg.addColorStop(0.4,`rgba(4,120,87,${s.alpha*0.55})`); hg.addColorStop(1,'rgba(4,120,87,0)');
-      ctx.beginPath(); ctx.arc(s.x,s.y,7,0,Math.PI*2); ctx.fillStyle=hg; ctx.fill();
-    }
     requestAnimationFrame(draw);
   }
   resize(); window.addEventListener('resize',()=>resize()); draw();

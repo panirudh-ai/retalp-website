@@ -99,7 +99,7 @@ body{font-family:var(--sans);background:#0f172a;color:#ffffff;line-height:1.6;ov
 
 /* Hero 3×3 mini-grid preview */
 .hero-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.hero-mini-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 14px;transition:all .3s var(--ease-smooth);cursor:pointer;position:relative;overflow:hidden;}
+.hero-mini-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 14px;transition:all .3s var(--ease-smooth);cursor:pointer;position:relative;overflow:hidden;text-align:center;}
 .hero-mini-card::before{content:'';position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg,rgba(61,184,112,.1) 0%,transparent 60%);opacity:0;transition:opacity .3s;}
 .hero-mini-card:hover{border-color:rgba(61,184,112,.4);transform:translateY(-3px) scale(1.02);box-shadow:0 12px 36px rgba(0,0,0,.3);}
 .hero-mini-card:hover::before{opacity:1;}

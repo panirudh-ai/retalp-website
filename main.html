@@ -67,17 +67,33 @@
   .nav-link.active::before { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
   .nav-cta {
     display: flex; align-items: center; gap: 8px; padding: 10px 22px;
-    background: var(--g-mid); color: #ffffff; font-size: 0.85rem;
+    background: #ffffff; color: #059669; font-size: 0.85rem;
     font-weight: 600; font-family: var(--sans);
-    border-radius: 100px; border: none; cursor: pointer;
+    border-radius: 100px; border: 1.5px solid #059669; cursor: pointer;
     text-decoration: none; transition: all .25s var(--ease-smooth);
   }
   .nav-cta:hover {
-    background: var(--g-vivid);
+    background: #059669; color: #ffffff;
     box-shadow: rgba(61,184,112,0.35) 0 0 28px 4px;
     transform: scale(1.04);
   }
   .nav-cta svg { width: 14px; height: 14px; }
+
+  /* ── Theme switching ── */
+  .nav-island { transition: all .35s cubic-bezier(.4,0,.2,1); }
+  .nav-island.nav-light-bg {
+    background: rgba(255,255,255,0.94);
+    border-color: rgba(0,0,0,0.1);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+  }
+  .nav-island.nav-light-bg .nav-logo-text { color: #0a0a0a; }
+  .nav-island.nav-light-bg .nav-logo-text span { color: #059669; }
+  .nav-island.nav-light-bg .nav-sep { background: rgba(0,0,0,0.14); }
+  .nav-island.nav-light-bg .nav-link { color: rgba(0,0,0,0.52); }
+  .nav-island.nav-light-bg .nav-link:hover { color: #0a0a0a; }
+  .nav-island.nav-light-bg .nav-link.active { color: #0a0a0a; }
+  .nav-island.nav-light-bg .nav-cta { background: #059669; color: #ffffff; border: 1.5px solid #059669; }
+  .nav-island.nav-light-bg .nav-cta:hover { background: #047857; color: #ffffff; box-shadow: 0 4px 20px rgba(5,150,105,0.35); }
 
   @media (max-width: 768px) {
     .nav-island { left: 20px; right: 20px; transform: none; top: 16px; }
@@ -121,7 +137,16 @@
     document.getElementById('content-frame').src = url;
     document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
     if (clickedEl) clickedEl.classList.add('active');
+    // Reset theme on page change; iframe will send correct theme once loaded
+    document.getElementById('navIsland').classList.remove('nav-light-bg');
   }
+
+  // Listen for theme messages from iframe
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.retalpNavTheme) {
+      document.getElementById('navIsland').classList.toggle('nav-light-bg', e.data.retalpNavTheme === 'dark');
+    }
+  });
 </script>
 
 </body>

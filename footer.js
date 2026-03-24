@@ -380,8 +380,8 @@
             </div>
             <span class="nav-logo-text">Retal<span>p</span></span>
           </a>
-          <p class="footer-tagline">Your Data. Our Execution.</p>
-          <span class="footer-tagline-highlight">Eliminating Operational Friction through Autonomous Decision Systems.</span>
+          <p class="footer-tagline">YOUR DATA</p>
+          <span class="footer-tagline-highlight">Retalp E³ AI AUTOMATION</span>
         </div>
         <div>
           <div class="footer-col-title">Platform</div>

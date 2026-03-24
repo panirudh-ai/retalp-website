@@ -45,8 +45,9 @@ body { font-family:var(--sans); background:var(--ink); color:var(--white); line-
 #bg-canvas { position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.55; }
 
 /* ── LAYOUT ── */
-.wrap { max-width:1280px; margin:0 auto; padding:0 40px; position:relative; z-index:2; }
-.section { padding:120px 0; position:relative; }
+.wrap { max-width:1280px; margin:0 auto; padding:0 80px; position:relative; z-index:2; }
+html { scroll-snap-type: y proximity; }
+.section { padding:120px 0; position:relative; scroll-snap-align:start; }
 
 /* ── TYPOGRAPHY ── */
 .t-hero { font-family:var(--sans); font-size:clamp(2.6rem,5.5vw,5.2rem); font-weight:700; line-height:1.08; letter-spacing:-0.035em; }
@@ -515,7 +516,7 @@ body { font-family:var(--sans); background:var(--ink); color:var(--white); line-
   .footer-grid{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:768px){
-  .wrap{padding:0 20px;}
+  .wrap{padding:0 32px;}
   .philosophy-grid{grid-template-columns:1fr;}
   .expansion-grid{grid-template-columns:repeat(2,1fr);}
   .pilot-cards-grid{grid-template-columns:repeat(2,1fr);}

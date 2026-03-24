@@ -37,9 +37,10 @@ body { font-family: var(--sans); background: #ffffff; color: #0a0a0a; line-heigh
 
 .t-small { font-size: 0.875rem; color: rgba(255,255,255,0.45); }
 
-.wrap { max-width: 1280px; margin: 0px auto; padding: 0px 40px; position: relative; z-index: 2; }
+.wrap { max-width: 1280px; margin: 0px auto; padding: 0px 80px; position: relative; z-index: 2; }
 
-.section { padding: 120px 0px; position: relative; }
+html { scroll-snap-type: y proximity; }
+.section { padding: 120px 0px; position: relative; scroll-snap-align: start; }
 
 .section-sm { padding: 80px 0px; }
 
@@ -431,7 +432,7 @@ body { font-family: var(--sans); background: #ffffff; color: #0a0a0a; line-heigh
 }
 
 @media (max-width: 768px) {
-  .wrap { padding: 0px 20px; }
+  .wrap { padding: 0px 32px; }
   .nav-island { left: 20px; right: 20px; transform: none; top: 16px; }
   .nav-link:not(:last-child) { display: none; }
   .cap-grid { grid-template-columns: 1fr; }
